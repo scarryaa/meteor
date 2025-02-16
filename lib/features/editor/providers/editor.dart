@@ -1,5 +1,6 @@
 import 'package:meteor/features/editor/models/line_buffer.dart';
 import 'package:meteor/features/editor/models/state.dart';
+import 'package:meteor/features/editor/providers/cursor_manager.dart';
 import 'package:meteor/shared/models/cursor.dart';
 import 'package:meteor/shared/models/position.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,21 +17,10 @@ class Editor extends _$Editor {
   void insert(Position position, String text) {
     final List<String> textLines = text.split('\n');
     final int newlineCount = textLines.length - 1;
-    Cursor? newCursor;
 
-    if (newlineCount == 0) {
-      // Single-line insert
-      newCursor = state.cursor.copyWith(
-        column: state.cursor.column + textLines.first.length,
-      );
-    } else {
-      // Multi-line insert
-      newCursor = state.cursor.copyWith(
-        line: state.cursor.line + newlineCount,
-        column: textLines.last.length,
-      );
-    }
-
+    final Cursor newCursor = ref
+        .read(editorCursorManagerProvider.notifier)
+        .adjustAfterInsert(state.cursor, textLines, newlineCount);
     final newBuffer = state.buffer.insert(position, text);
 
     state = state.copyWith(buffer: newBuffer, cursor: newCursor);
@@ -59,25 +49,14 @@ class Editor extends _$Editor {
       );
     }
 
-    Cursor? newCursor;
-
     if (start.line == 0 && start.column == -1) {
       return;
     }
 
-    if (start.line == end.line) {
-      // Single-line delete
-      newCursor = Cursor.fromPosition(start);
-    } else {
-      // Multi-line delete
-      newCursor = Cursor.fromPosition(start);
-    }
-
     final result = state.buffer.delete(start, end);
-
-    if (result.mergePosition != Position.zero) {
-      newCursor = Cursor.fromPosition(result.mergePosition);
-    }
+    final newCursor = ref
+        .read(editorCursorManagerProvider.notifier)
+        .adjustAfterDelete(start, end, result.mergePosition);
 
     state = state.copyWith(buffer: result.newBuffer, cursor: newCursor);
   }
