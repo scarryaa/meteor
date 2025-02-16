@@ -10,9 +10,32 @@ class EditorKeyboardHandler {
 
   EditorKeyboardHandler(this.editor, this.state);
 
+  bool _handleArrowKeys(KeyEvent event) {
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowLeft:
+        editor.moveLeft();
+        return true;
+      case LogicalKeyboardKey.arrowRight:
+        editor.moveRight();
+        return true;
+      case LogicalKeyboardKey.arrowUp:
+        editor.moveUp();
+        return true;
+      case LogicalKeyboardKey.arrowDown:
+        editor.moveDown();
+        return true;
+    }
+
+    return false;
+  }
+
   KeyEventResult handleKeyEvent(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
       return KeyEventResult.ignored;
+    }
+
+    if (_handleArrowKeys(event)) {
+      return KeyEventResult.handled;
     }
 
     switch (event.logicalKey) {

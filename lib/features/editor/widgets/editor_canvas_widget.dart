@@ -26,6 +26,7 @@ class EditorCanvasWidget extends ConsumerWidget {
       painter: EditorPainter(
         lines: state.buffer.lines,
         cursor: state.cursor,
+        selection: state.selection,
         metrics: metrics,
       ),
     );

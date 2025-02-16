@@ -60,4 +60,32 @@ class Editor extends _$Editor {
 
     state = state.copyWith(buffer: result.newBuffer, cursor: newCursor);
   }
+
+  void moveLeft() {
+    final cursorManager = ref.read(editorCursorManagerProvider.notifier);
+    state = state.copyWith(
+      cursor: cursorManager.moveLeft(state.buffer, state.cursor),
+    );
+  }
+
+  void moveRight() {
+    final cursorManager = ref.read(editorCursorManagerProvider.notifier);
+    state = state.copyWith(
+      cursor: cursorManager.moveRight(state.buffer, state.cursor),
+    );
+  }
+
+  void moveUp() {
+    final cursorManager = ref.read(editorCursorManagerProvider.notifier);
+    state = state.copyWith(
+      cursor: cursorManager.moveUp(state.buffer, state.cursor),
+    );
+  }
+
+  void moveDown() {
+    final cursorManager = ref.read(editorCursorManagerProvider.notifier);
+    state = state.copyWith(
+      cursor: cursorManager.moveDown(state.buffer, state.cursor),
+    );
+  }
 }
