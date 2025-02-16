@@ -23,10 +23,18 @@ class Editor extends _$Editor {
   }
 
   void selectAll() {
+    final lastLineIndex = state.buffer.lineCount - 1;
+    final lastLineLength = state.buffer.getLineLength(lastLineIndex);
+
     state = state.copyWith(
       selection: ref
           .read(editorSelectionManagerProvider.notifier)
           .selectAll(state.buffer),
+      cursor: state.cursor.copyWith(
+        line: lastLineIndex,
+        column: lastLineLength,
+        targetColumn: lastLineLength,
+      ),
     );
   }
 

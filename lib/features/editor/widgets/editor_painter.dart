@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:meteor/features/editor/models/selection.dart';
@@ -89,11 +91,20 @@ class EditorPainter extends CustomPainter {
       // Multi-line selection
 
       // First line
+      final cursorOnFirstLine = _cursor.line == normalized.anchor.line;
       double firstLeft = normalized.anchor.column * _metrics.charWidth;
       double firstTop = normalized.anchor.line * _metrics.lineHeight;
       double firstWidth =
-          (_lines[normalized.anchor.line].length - normalized.anchor.column) *
-          _metrics.charWidth;
+          cursorOnFirstLine
+              ? (_lines[normalized.anchor.line].length -
+                      normalized.anchor.column) *
+                  _metrics.charWidth
+              : max(
+                _metrics.charWidth,
+                (_lines[normalized.anchor.line].length -
+                        normalized.anchor.column) *
+                    _metrics.charWidth,
+              );
 
       canvas.drawRect(
         Rect.fromLTWH(firstLeft, firstTop, firstWidth, selectionHeight),
@@ -104,7 +115,10 @@ class EditorPainter extends CustomPainter {
       for (int i = normalized.anchor.line + 1; i < normalized.focus.line; i++) {
         double left = 0;
         double top = i * _metrics.lineHeight;
-        double width = _lines[i].length * _metrics.charWidth;
+        double width = max(
+          _metrics.charWidth,
+          _lines[i].length * _metrics.charWidth,
+        );
 
         canvas.drawRect(
           Rect.fromLTWH(left, top, width, selectionHeight),
@@ -113,9 +127,16 @@ class EditorPainter extends CustomPainter {
       }
 
       // Last line
+      final cursorOnLastLine = _cursor.line == normalized.focus.line;
       double lastLeft = 0;
       double lastTop = normalized.focus.line * _metrics.lineHeight;
-      double lastWidth = normalized.focus.column * _metrics.charWidth;
+      double lastWidth =
+          cursorOnLastLine
+              ? normalized.focus.column * _metrics.charWidth
+              : max(
+                normalized.focus.column * _metrics.charWidth,
+                _metrics.charWidth,
+              );
 
       canvas.drawRect(
         Rect.fromLTWH(lastLeft, lastTop, lastWidth, selectionHeight),
