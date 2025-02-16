@@ -11,11 +11,22 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.20.5
+  riverpod_annotation: ^2.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+  freezed: ^2.5.8
+  json_serializable: ^6.9.4
+  riverpod_generator: ^2.6.4
+  custom_lint: ^0.7.3
+  riverpod_lint: ^2.6.4
 
 flutter:
   uses-material-design: true
