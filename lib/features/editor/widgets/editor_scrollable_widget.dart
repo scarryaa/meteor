@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/widgets/editor_canvas_widget.dart';
+import 'package:meteor/features/editor/widgets/editor_gesture_handler_widget.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorScrollableWidget extends ConsumerWidget {
@@ -33,7 +34,9 @@ class EditorScrollableWidget extends ConsumerWidget {
             child: SingleChildScrollView(
               controller: hScrollController,
               scrollDirection: Axis.horizontal,
-              child: EditorCanvasWidget(constraints: constraints),
+              child: EditorGestureHandlerWidget(
+                child: EditorCanvasWidget(constraints: constraints),
+              ),
             ),
           ),
         ),

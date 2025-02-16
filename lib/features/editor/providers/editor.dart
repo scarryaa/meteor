@@ -193,4 +193,15 @@ class Editor extends _$Editor {
 
     _updateOrClearSelection(extendSelection);
   }
+
+  void moveTo(Position position, {bool extendSelection = false}) {
+    _updateOrClearSelection(extendSelection);
+
+    final cursorManager = ref.read(editorCursorManagerProvider.notifier);
+    state = state.copyWith(
+      cursor: cursorManager.moveTo(state.buffer, position),
+    );
+
+    _updateOrClearSelection(extendSelection);
+  }
 }

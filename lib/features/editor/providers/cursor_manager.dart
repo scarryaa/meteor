@@ -59,6 +59,20 @@ class EditorCursorManager extends _$EditorCursorManager {
     return newCursor;
   }
 
+  Cursor moveTo(IBuffer buffer, Position position) {
+    final clampedLine = position.line.clamp(0, buffer.lineCount - 1);
+    final clampedColumn = position.column.clamp(
+      0,
+      buffer.getLineLength(clampedLine),
+    );
+
+    return Cursor(
+      line: clampedLine,
+      column: clampedColumn,
+      targetColumn: clampedColumn,
+    );
+  }
+
   Cursor moveLeft(IBuffer buffer, Cursor cursor) {
     if (cursor.column > 0) {
       // Move left within line
