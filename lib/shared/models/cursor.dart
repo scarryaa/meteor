@@ -16,4 +16,36 @@ class Cursor with _$Cursor {
   factory Cursor.fromPosition(Position position) {
     return Cursor(line: position.line, column: position.column);
   }
+
+  operator >(Cursor other) {
+    if (line == other.line) return column > other.column;
+    return line > other.line;
+  }
+
+  operator >=(Cursor other) {
+    if (line == other.line) return column >= other.column;
+    return line >= other.line;
+  }
+
+  operator <(Cursor other) {
+    if (line == other.line) return column < other.column;
+    return line < other.line;
+  }
+
+  operator <=(Cursor other) {
+    if (line == other.line) return column <= other.column;
+    return line <= other.line;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! Cursor) return false;
+
+    return line == other.line &&
+        column == other.column &&
+        targetColumn == other.targetColumn;
+  }
+
+  @override
+  int get hashCode => Object.hash(line, column, targetColumn);
 }

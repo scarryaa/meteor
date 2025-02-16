@@ -37,6 +37,28 @@ class Editor extends _$Editor {
   }
 
   void delete(Position start, Position end) {
+    if (start > end) {
+      throw RangeError('start position cannot be greater than end position');
+    }
+
+    if (start.line > state.buffer.lineCount ||
+        end.line > state.buffer.lineCount) {
+      throw RangeError(
+        'start line or end line cannot be greater than buffer line count',
+      );
+    }
+
+    if (start.line < 0 || end.line < 0) {
+      throw RangeError('start or end line cannot be less than 0');
+    }
+
+    if (start.column > state.buffer.getLineLength(start.line) ||
+        end.column > state.buffer.getLineLength(end.line)) {
+      throw RangeError(
+        'start column or end column cannot be greater than buffer target line length',
+      );
+    }
+
     Cursor? newCursor;
 
     if (start.line == 0 && start.column == -1) {
