@@ -76,11 +76,10 @@ class EditorPainter extends CustomPainter {
 
     if (normalized.anchor.line == normalized.focus.line) {
       // Single-line selection
-
       double left = normalized.anchor.column * _metrics.charWidth;
       double top = normalized.anchor.line * _metrics.lineHeight;
       double width =
-          (_lines[normalized.anchor.line].length - normalized.anchor.column) *
+          (normalized.focus.column - normalized.anchor.column) *
           _metrics.charWidth;
 
       canvas.drawRect(
