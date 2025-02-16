@@ -4,5 +4,6 @@ part 'position.freezed.dart';
 
 @freezed
 class Position with _$Position {
-  const factory Position() = _Position;
+  const factory Position({@Default(0) int line, @Default(0) int column,}) =
+      _Position;
 }
