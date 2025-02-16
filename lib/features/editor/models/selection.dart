@@ -18,10 +18,10 @@ class Selection with _$Selection {
   );
 
   Selection normalized() {
-    return Selection(
-      anchor: anchor > focus ? focus : anchor,
-      focus: focus > anchor ? anchor : focus,
-    );
+    if (anchor > focus) {
+      return Selection(anchor: focus, focus: anchor);
+    }
+    return this;
   }
 
   @override

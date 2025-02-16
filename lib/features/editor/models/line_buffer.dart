@@ -32,11 +32,10 @@ class LineBuffer extends IBuffer {
 
       // Last line
       newLines[end.line] = newLines[end.line].substring(end.column);
+      if (newLines[end.line].isEmpty) newLines.removeAt(end.line);
 
       // Middle lines
       newLines.removeRange(start.line + 1, end.line);
-
-      if (newLines[end.line].isEmpty) newLines.removeAt(end.line);
     }
 
     return DeleteResult(
@@ -81,16 +80,16 @@ class LineBuffer extends IBuffer {
 
   @override
   IBuffer insert(Position position, String text) {
-    if (position.line >= _lines.length && _lines.isNotEmpty ||
+    if (position.line >= _lines.length ||
         position.line < 0 ||
-        (_lines.isNotEmpty && position.column > _lines[position.line].length) ||
+        (position.column > _lines[position.line].length) ||
         position.column < 0) {
       throw RangeError('Invalid position');
     }
 
     final List<String> textLines = text.split('\n');
     final newlineCount = textLines.length - 1;
-    final List<String> newLines = _lines.isEmpty ? [] : List.of(_lines);
+    final List<String> newLines = _lines.isEmpty ? [''] : List.of(_lines);
 
     if (_lines.isEmpty) {
       return LineBuffer(lines: textLines);

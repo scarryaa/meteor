@@ -1,6 +1,8 @@
 import 'package:meteor/features/editor/models/line_buffer.dart';
+import 'package:meteor/features/editor/models/selection.dart';
 import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/cursor_manager.dart';
+import 'package:meteor/features/editor/providers/selection_manager.dart';
 import 'package:meteor/shared/models/cursor.dart';
 import 'package:meteor/shared/models/position.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,6 +17,23 @@ class Editor extends _$Editor {
   }
 
   void insert(Position position, String text) {
+    if (state.selection != Selection.empty) {
+      position = state.selection.normalized().anchor;
+
+      final res = ref
+          .read(editorSelectionManagerProvider.notifier)
+          .deleteSelectedText(state.buffer, state.selection);
+
+      state = state.copyWith(
+        buffer: res.newBuffer,
+        cursor:
+            res.mergePosition == Position.zero
+                ? Cursor.fromPosition(position)
+                : Cursor.fromPosition(res.mergePosition),
+        selection: res.newSelection,
+      );
+    }
+
     final List<String> textLines = text.split('\n');
     final int newlineCount = textLines.length - 1;
 
@@ -27,6 +46,22 @@ class Editor extends _$Editor {
   }
 
   void delete(Position start, Position end) {
+    if (state.selection != Selection.empty) {
+      final res = ref
+          .read(editorSelectionManagerProvider.notifier)
+          .deleteSelectedText(state.buffer, state.selection);
+
+      state = state.copyWith(
+        buffer: res.newBuffer,
+        cursor:
+            res.mergePosition == Position.zero
+                ? state.cursor
+                : Cursor.fromPosition(res.mergePosition),
+        selection: res.newSelection,
+      );
+      return;
+    }
+
     if (start > end) {
       throw RangeError('start position cannot be greater than end position');
     }
@@ -61,31 +96,59 @@ class Editor extends _$Editor {
     state = state.copyWith(buffer: result.newBuffer, cursor: newCursor);
   }
 
-  void moveLeft() {
+  void _updateOrClearSelection(bool extendSelection) {
+    state = state.copyWith(
+      selection: ref
+          .read(editorSelectionManagerProvider.notifier)
+          .updateOrClearSelection(
+            state.cursor,
+            state.selection,
+            extendSelection: extendSelection,
+          ),
+    );
+  }
+
+  void moveLeft({bool extendSelection = false}) {
+    _updateOrClearSelection(extendSelection);
+
     final cursorManager = ref.read(editorCursorManagerProvider.notifier);
     state = state.copyWith(
       cursor: cursorManager.moveLeft(state.buffer, state.cursor),
     );
+
+    _updateOrClearSelection(extendSelection);
   }
 
-  void moveRight() {
+  void moveRight({bool extendSelection = false}) {
+    _updateOrClearSelection(extendSelection);
+
     final cursorManager = ref.read(editorCursorManagerProvider.notifier);
     state = state.copyWith(
       cursor: cursorManager.moveRight(state.buffer, state.cursor),
     );
+
+    _updateOrClearSelection(extendSelection);
   }
 
-  void moveUp() {
+  void moveUp({bool extendSelection = false}) {
+    _updateOrClearSelection(extendSelection);
+
     final cursorManager = ref.read(editorCursorManagerProvider.notifier);
     state = state.copyWith(
       cursor: cursorManager.moveUp(state.buffer, state.cursor),
     );
+
+    _updateOrClearSelection(extendSelection);
   }
 
-  void moveDown() {
+  void moveDown({bool extendSelection = false}) {
+    _updateOrClearSelection(extendSelection);
+
     final cursorManager = ref.read(editorCursorManagerProvider.notifier);
     state = state.copyWith(
       cursor: cursorManager.moveDown(state.buffer, state.cursor),
     );
+
+    _updateOrClearSelection(extendSelection);
   }
 }

@@ -11,18 +11,20 @@ class EditorKeyboardHandler {
   EditorKeyboardHandler(this.editor, this.state);
 
   bool _handleArrowKeys(KeyEvent event) {
+    final isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+
     switch (event.logicalKey) {
       case LogicalKeyboardKey.arrowLeft:
-        editor.moveLeft();
+        editor.moveLeft(extendSelection: isShiftPressed);
         return true;
       case LogicalKeyboardKey.arrowRight:
-        editor.moveRight();
+        editor.moveRight(extendSelection: isShiftPressed);
         return true;
       case LogicalKeyboardKey.arrowUp:
-        editor.moveUp();
+        editor.moveUp(extendSelection: isShiftPressed);
         return true;
       case LogicalKeyboardKey.arrowDown:
-        editor.moveDown();
+        editor.moveDown(extendSelection: isShiftPressed);
         return true;
     }
 
