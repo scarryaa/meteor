@@ -16,6 +16,39 @@ class Editor extends _$Editor {
     return EditorState(buffer: LineBuffer());
   }
 
+  String getSelectedText() {
+    return ref
+        .read(editorSelectionManagerProvider.notifier)
+        .getSelectedText(state.buffer, state.cursor, state.selection);
+  }
+
+  void selectAll() {
+    state = state.copyWith(
+      selection: ref
+          .read(editorSelectionManagerProvider.notifier)
+          .selectAll(state.buffer),
+    );
+  }
+
+  void deleteSelectedText() {
+    if (state.selection != Selection.empty) {
+      final Position selectionAnchor = state.selection.normalized().anchor;
+
+      final res = ref
+          .read(editorSelectionManagerProvider.notifier)
+          .deleteSelectedText(state.buffer, state.selection);
+
+      state = state.copyWith(
+        buffer: res.newBuffer,
+        cursor:
+            res.mergePosition == Position.zero
+                ? Cursor.fromPosition(selectionAnchor)
+                : Cursor.fromPosition(res.mergePosition),
+        selection: res.newSelection,
+      );
+    }
+  }
+
   void insert(Position position, String text) {
     if (state.selection != Selection.empty) {
       position = state.selection.normalized().anchor;
@@ -47,6 +80,7 @@ class Editor extends _$Editor {
 
   void delete(Position start, Position end) {
     if (state.selection != Selection.empty) {
+      final Position selectionAnchor = state.selection.normalized().anchor;
       final res = ref
           .read(editorSelectionManagerProvider.notifier)
           .deleteSelectedText(state.buffer, state.selection);
@@ -55,7 +89,7 @@ class Editor extends _$Editor {
         buffer: res.newBuffer,
         cursor:
             res.mergePosition == Position.zero
-                ? state.cursor
+                ? Cursor.fromPosition(selectionAnchor)
                 : Cursor.fromPosition(res.mergePosition),
         selection: res.newSelection,
       );

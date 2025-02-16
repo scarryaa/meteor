@@ -1,18 +1,73 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/models/state.dart';
+import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/shared/models/position.dart';
 
 class EditorKeyboardHandler {
   final Editor editor;
   final EditorState state;
+  final ClipboardManager clipboardManager;
+  final AsyncValue<String?> clipboardText;
 
-  EditorKeyboardHandler(this.editor, this.state);
+  EditorKeyboardHandler(
+    this.editor,
+    this.state,
+    this.clipboardManager,
+    this.clipboardText,
+  );
 
-  bool _handleArrowKeys(KeyEvent event) {
-    final isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+  Future<void> _handlePaste() async {
+    final text = clipboardText.value;
 
+    if (text != null) {
+      editor.insert(Position.fromCursor(state.cursor), text);
+    }
+  }
+
+  bool _handleShortcutKeys(
+    KeyEvent event,
+    bool isShiftPressed,
+    bool isMetaOrControlPressed,
+  ) {
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyA:
+        if (isMetaOrControlPressed) {
+          // Select all
+          editor.selectAll();
+          return true;
+        }
+      case LogicalKeyboardKey.keyC:
+        if (isMetaOrControlPressed) {
+          // Copy
+          final text = editor.getSelectedText();
+          clipboardManager.setText(text);
+          return true;
+        }
+      case LogicalKeyboardKey.keyX:
+        if (isMetaOrControlPressed) {
+          // Cut
+          final text = editor.getSelectedText();
+          clipboardManager.setText(text);
+          editor.deleteSelectedText();
+          return true;
+        }
+      case LogicalKeyboardKey.keyV:
+        if (isMetaOrControlPressed) {
+          // Paste
+          _handlePaste();
+          return true;
+        }
+    }
+
+    return false;
+  }
+
+  bool _handleArrowKeys(KeyEvent event, bool isShiftPressed) {
     switch (event.logicalKey) {
       case LogicalKeyboardKey.arrowLeft:
         editor.moveLeft(extendSelection: isShiftPressed);
@@ -36,7 +91,17 @@ class EditorKeyboardHandler {
       return KeyEventResult.ignored;
     }
 
-    if (_handleArrowKeys(event)) {
+    final isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+    final isMetaOrControlPressed =
+        Platform.isMacOS
+            ? HardwareKeyboard.instance.isMetaPressed
+            : HardwareKeyboard.instance.isControlPressed;
+
+    if (_handleShortcutKeys(event, isShiftPressed, isMetaOrControlPressed)) {
+      return KeyEventResult.handled;
+    }
+
+    if (_handleArrowKeys(event, isShiftPressed)) {
       return KeyEventResult.handled;
     }
 
