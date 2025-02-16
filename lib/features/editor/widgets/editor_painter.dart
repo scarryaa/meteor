@@ -191,7 +191,11 @@ class EditorPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant EditorPainter oldDelegate) {
+    return _lines != oldDelegate._lines ||
+        _cursor != oldDelegate._cursor ||
+        _selection != oldDelegate._selection ||
+        _metrics != oldDelegate._metrics ||
+        _visibleLines != oldDelegate._visibleLines;
   }
 }
