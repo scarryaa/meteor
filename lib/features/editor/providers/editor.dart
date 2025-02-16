@@ -16,6 +16,25 @@ class Editor extends _$Editor {
     return EditorState(buffer: LineBuffer());
   }
 
+  void selectLine(int line, {bool extendSelection = false}) {
+    final newSelection = ref
+        .read(editorSelectionManagerProvider.notifier)
+        .selectLine(
+          state.buffer,
+          state.selection,
+          line,
+          extendSelection: extendSelection,
+        );
+
+    state = state.copyWith(
+      selection: newSelection,
+      cursor:
+          newSelection.anchor.line > line
+              ? Cursor(line: line, column: 0)
+              : Cursor(line: line, column: state.buffer.getLineLength(line)),
+    );
+  }
+
   String getSelectedText() {
     return ref
         .read(editorSelectionManagerProvider.notifier)

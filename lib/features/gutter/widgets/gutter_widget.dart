@@ -1,8 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
+import 'package:meteor/features/gutter/models/metrics.dart';
 import 'package:meteor/features/gutter/providers/measurer.dart';
 import 'package:meteor/features/gutter/widgets/gutter_painter.dart';
+import 'package:meteor/shared/models/position.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class GutterWidget extends ConsumerStatefulWidget {
@@ -60,9 +63,74 @@ class GutterWidgetState extends ConsumerState<GutterWidget> {
     }
   }
 
+  Position _positionFromOffset(
+    Offset offset,
+    GutterMetrics metrics,
+    EditorState state,
+  ) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset adjustedOffset = renderBox.globalToLocal(offset);
+
+    adjustedOffset = Offset(adjustedOffset.dx, adjustedOffset.dy);
+
+    final targetLine = (adjustedOffset.dy / metrics.lineHeight).floor();
+    final targetColumn = (adjustedOffset.dx / metrics.charWidth).floor();
+
+    final clampedLine = targetLine.clamp(0, state.buffer.lineCount - 1);
+    final clampedColumn = targetColumn.clamp(
+      0,
+      state.buffer.getLineLength(clampedLine),
+    );
+
+    return Position(line: clampedLine, column: clampedColumn);
+  }
+
+  void _handleTapDown(
+    TapDownDetails details,
+    EditorState state,
+    Editor editor,
+    GutterMetrics metrics,
+  ) {
+    Position position = _positionFromOffset(
+      details.globalPosition,
+      metrics,
+      state,
+    );
+    editor.selectLine(position.line);
+  }
+
+  void _handlePanStart(
+    DragStartDetails details,
+    EditorState state,
+    Editor editor,
+    GutterMetrics metrics,
+  ) {
+    Position position = _positionFromOffset(
+      details.globalPosition,
+      metrics,
+      state,
+    );
+    editor.selectLine(position.line);
+  }
+
+  void _handlePanUpdate(
+    DragUpdateDetails details,
+    EditorState state,
+    Editor editor,
+    GutterMetrics metrics,
+  ) {
+    Position position = _positionFromOffset(
+      details.globalPosition,
+      metrics,
+      state,
+    );
+    editor.selectLine(position.line, extendSelection: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(editorProvider);
+    final editor = ref.read(editorProvider.notifier);
     final measurer = ref.read(gutterMeasurerProvider.notifier);
     final metrics = ref.watch(gutterMeasurerProvider);
     final vScrollController = ref.watch(
@@ -94,18 +162,29 @@ class GutterWidgetState extends ConsumerState<GutterWidget> {
                     vOffset,
                   );
 
-                  return CustomPaint(
-                    willChange: true,
-                    isComplex: true,
-                    size: measurer.getSize(
-                      constraints,
-                      state.buffer.lineCount - 1,
-                    ),
-                    painter: GutterPainter(
-                      cursor: state.cursor,
-                      selection: state.selection,
-                      metrics: metrics,
-                      visibleLines: visibleLines,
+                  return GestureDetector(
+                    onTapDown:
+                        (details) =>
+                            _handleTapDown(details, state, editor, metrics),
+                    onPanStart:
+                        (details) =>
+                            _handlePanStart(details, state, editor, metrics),
+                    onPanUpdate:
+                        (details) =>
+                            _handlePanUpdate(details, state, editor, metrics),
+                    child: CustomPaint(
+                      willChange: true,
+                      isComplex: true,
+                      size: measurer.getSize(
+                        constraints,
+                        state.buffer.lineCount - 1,
+                      ),
+                      painter: GutterPainter(
+                        cursor: state.cursor,
+                        selection: state.selection,
+                        metrics: metrics,
+                        visibleLines: visibleLines,
+                      ),
                     ),
                   );
                 },

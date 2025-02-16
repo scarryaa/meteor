@@ -14,6 +14,34 @@ class EditorSelectionManager extends _$EditorSelectionManager {
     return;
   }
 
+  Selection selectLine(
+    IBuffer buffer,
+    Selection selection,
+    int line, {
+    bool extendSelection = false,
+  }) {
+    if (extendSelection) {
+      return Selection(
+        anchor:
+            selection.anchor.line > line
+                ? Position(
+                  line: selection.anchor.line,
+                  column: buffer.getLineLength(selection.anchor.line),
+                )
+                : Position(line: selection.anchor.line, column: 0),
+        focus:
+            selection.anchor.line > line
+                ? Position(line: line, column: 0)
+                : Position(line: line, column: buffer.getLineLength(line)),
+      );
+    } else {
+      return Selection(
+        anchor: Position(line: line, column: 0),
+        focus: Position(line: line, column: buffer.getLineLength(line)),
+      );
+    }
+  }
+
   Selection updateOrClearSelection(
     Cursor cursor,
     Selection selection, {
