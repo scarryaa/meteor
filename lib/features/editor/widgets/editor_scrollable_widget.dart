@@ -35,7 +35,15 @@ class EditorScrollableWidget extends ConsumerWidget {
               controller: hScrollController,
               scrollDirection: Axis.horizontal,
               child: EditorGestureHandlerWidget(
-                child: EditorCanvasWidget(constraints: constraints),
+                child: ListenableBuilder(
+                  listenable: Listenable.merge([
+                    vScrollController,
+                    hScrollController,
+                  ]),
+                  builder:
+                      (context, child) =>
+                          EditorCanvasWidget(constraints: constraints),
+                ),
               ),
             ),
           ),

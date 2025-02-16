@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/providers/measurer.dart';
 import 'package:meteor/features/editor/widgets/editor_painter.dart';
+import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorCanvasWidget extends ConsumerWidget {
   const EditorCanvasWidget({super.key, required this.constraints});
@@ -14,6 +15,24 @@ class EditorCanvasWidget extends ConsumerWidget {
     final metrics = ref.watch(editorMeasurerProvider);
     final measurer = ref.read(editorMeasurerProvider.notifier);
     final state = ref.watch(editorProvider);
+    final vScrollController = ref.watch(
+      scrollControllerByKeyProvider('editorVScrollController'),
+    );
+    final hScrollController = ref.watch(
+      scrollControllerByKeyProvider('editorHScrollController'),
+    );
+    final double vOffset =
+        vScrollController.hasClients ? vScrollController.offset : 0;
+    final double hOffset =
+        hScrollController.hasClients ? hScrollController.offset : 0;
+
+    final visibleLines = measurer.getVisibleLines(
+      state.buffer,
+      constraints.maxWidth,
+      constraints.maxHeight,
+      vOffset,
+      hOffset,
+    );
 
     return CustomPaint(
       willChange: true,
@@ -28,6 +47,7 @@ class EditorCanvasWidget extends ConsumerWidget {
         cursor: state.cursor,
         selection: state.selection,
         metrics: metrics,
+        visibleLines: visibleLines,
       ),
     );
   }

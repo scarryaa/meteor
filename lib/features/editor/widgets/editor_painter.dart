@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:meteor/features/editor/models/selection.dart';
 import 'package:meteor/shared/models/cursor.dart';
+import 'package:meteor/shared/models/visible_lines.dart';
 
 class EditorPainter extends CustomPainter {
   EditorPainter({
@@ -11,17 +12,20 @@ class EditorPainter extends CustomPainter {
     required Cursor cursor,
     required Selection selection,
     required EditorMetrics metrics,
+    required VisibleLines visibleLines,
   }) : _textPainter = TextPainter(textDirection: TextDirection.ltr),
        _lines = lines,
        _cursor = cursor,
        _selection = selection,
-       _metrics = metrics;
+       _metrics = metrics,
+       _visibleLines = visibleLines;
 
   final TextPainter _textPainter;
   final List<String> _lines;
   final Cursor _cursor;
   final Selection _selection;
   final EditorMetrics _metrics;
+  final VisibleLines _visibleLines;
 
   static const fontFamily = 'MesloLGL Nerd Font Mono';
   static const fontSize = 15.0;
@@ -40,11 +44,23 @@ class EditorPainter extends CustomPainter {
     _drawSelection(canvas, size);
   }
 
+  String _getVisibleText(String line) {
+    final int start = min(_visibleLines.firstVisibleChar!, line.length);
+    final int end = min(_visibleLines.lastVisibleChar!, line.length);
+    return line.substring(start, end);
+  }
+
   void _drawText(Canvas canvas, Size size) {
-    for (int i = 0; i < _lines.length; i++) {
+    for (
+      int i = _visibleLines.firstVisibleLine;
+      i < _visibleLines.lastVisibleLine;
+      i++
+    ) {
+      final String visibleText = _getVisibleText(_lines[i]);
+
       _textPainter
         ..text = TextSpan(
-          text: _lines[i],
+          text: visibleText,
           style: TextStyle(
             fontSize: fontSize,
             fontFamily: fontFamily,
@@ -52,7 +68,13 @@ class EditorPainter extends CustomPainter {
           ),
         )
         ..layout()
-        ..paint(canvas, Offset(0, i * _textPainter.height));
+        ..paint(
+          canvas,
+          Offset(
+            _visibleLines.firstVisibleChar! * _metrics.charWidth,
+            i * _metrics.lineHeight,
+          ),
+        );
     }
   }
 
@@ -74,13 +96,30 @@ class EditorPainter extends CustomPainter {
 
     final selectionHeight = _metrics.lineHeight;
 
+    // Early return if selection is completely outside visible region
+    if (normalized.focus.line < _visibleLines.firstVisibleLine &&
+            normalized.anchor.line < _visibleLines.firstVisibleLine ||
+        normalized.focus.line > _visibleLines.lastVisibleLine &&
+            normalized.anchor.line > _visibleLines.lastVisibleLine) {
+      return;
+    }
+
     if (normalized.anchor.line == normalized.focus.line) {
       // Single-line selection
+      if (normalized.anchor.line < _visibleLines.firstVisibleLine ||
+          normalized.anchor.line >= _visibleLines.lastVisibleLine) {
+        return;
+      }
+
+      final lineLength = _lines[normalized.anchor.line].length;
+
       double left = normalized.anchor.column * _metrics.charWidth;
       double top = normalized.anchor.line * _metrics.lineHeight;
-      double width =
-          (normalized.focus.column - normalized.anchor.column) *
-          _metrics.charWidth;
+      double width = min(
+        (normalized.focus.column - normalized.anchor.column) *
+            _metrics.charWidth,
+        (lineLength - normalized.anchor.column) * _metrics.charWidth,
+      );
 
       canvas.drawRect(
         Rect.fromLTWH(left, top, width, selectionHeight),
@@ -91,33 +130,34 @@ class EditorPainter extends CustomPainter {
 
       // First line
       final cursorOnFirstLine = _cursor.line == normalized.anchor.line;
-      double firstLeft = normalized.anchor.column * _metrics.charWidth;
-      double firstTop = normalized.anchor.line * _metrics.lineHeight;
-      double firstWidth =
-          cursorOnFirstLine
-              ? (_lines[normalized.anchor.line].length -
-                      normalized.anchor.column) *
-                  _metrics.charWidth
-              : max(
-                _metrics.charWidth,
-                (_lines[normalized.anchor.line].length -
-                        normalized.anchor.column) *
-                    _metrics.charWidth,
-              );
+      if (normalized.anchor.line >= _visibleLines.firstVisibleLine &&
+          normalized.anchor.line < _visibleLines.lastVisibleLine) {
+        final firstLineLength = _lines[normalized.anchor.line].length;
 
-      canvas.drawRect(
-        Rect.fromLTWH(firstLeft, firstTop, firstWidth, selectionHeight),
-        selectionPaint,
-      );
+        double firstLeft = normalized.anchor.column * _metrics.charWidth;
+        double firstTop = normalized.anchor.line * _metrics.lineHeight;
+        double firstWidth = max(
+          cursorOnFirstLine ? 0 : _metrics.charWidth,
+          (firstLineLength - normalized.anchor.column) * _metrics.charWidth,
+        );
+
+        canvas.drawRect(
+          Rect.fromLTWH(firstLeft, firstTop, firstWidth, selectionHeight),
+          selectionPaint,
+        );
+      }
 
       // Middle lines
-      for (int i = normalized.anchor.line + 1; i < normalized.focus.line; i++) {
+      for (
+        int i = max(normalized.anchor.line + 1, _visibleLines.firstVisibleLine);
+        i < min(normalized.focus.line, _visibleLines.lastVisibleLine);
+        i++
+      ) {
+        final lineLength = _lines[i].length;
+
         double left = 0;
         double top = i * _metrics.lineHeight;
-        double width = max(
-          _metrics.charWidth,
-          _lines[i].length * _metrics.charWidth,
-        );
+        double width = max(_metrics.charWidth, lineLength * _metrics.charWidth);
 
         canvas.drawRect(
           Rect.fromLTWH(left, top, width, selectionHeight),
@@ -127,20 +167,26 @@ class EditorPainter extends CustomPainter {
 
       // Last line
       final cursorOnLastLine = _cursor.line == normalized.focus.line;
-      double lastLeft = 0;
-      double lastTop = normalized.focus.line * _metrics.lineHeight;
-      double lastWidth =
-          cursorOnLastLine
-              ? normalized.focus.column * _metrics.charWidth
-              : max(
-                normalized.focus.column * _metrics.charWidth,
-                _metrics.charWidth,
-              );
+      if (normalized.focus.line >= _visibleLines.firstVisibleLine &&
+          normalized.focus.line < _visibleLines.lastVisibleLine) {
+        final lastLineLength = _lines[normalized.focus.line].length;
 
-      canvas.drawRect(
-        Rect.fromLTWH(lastLeft, lastTop, lastWidth, selectionHeight),
-        selectionPaint,
-      );
+        double lastLeft = 0;
+        double lastTop = normalized.focus.line * _metrics.lineHeight;
+        double lastWidth = min(
+          normalized.focus.column * _metrics.charWidth,
+          lastLineLength * _metrics.charWidth,
+        );
+
+        if (normalized.focus.column == 0 && !cursorOnLastLine) {
+          lastWidth = max(_metrics.charWidth, lastWidth);
+        }
+
+        canvas.drawRect(
+          Rect.fromLTWH(lastLeft, lastTop, lastWidth, selectionHeight),
+          selectionPaint,
+        );
+      }
     }
   }
 

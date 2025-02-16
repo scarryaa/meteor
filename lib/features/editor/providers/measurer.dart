@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:meteor/features/editor/interfaces/buffer.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
+import 'package:meteor/shared/models/visible_lines.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'measurer.g.dart';
@@ -51,5 +53,30 @@ class EditorMeasurer extends _$EditorMeasurer {
     }
 
     return Size(width, height);
+  }
+
+  VisibleLines getVisibleLines(
+    IBuffer buffer,
+    double viewportWidth,
+    double viewportHeight,
+    double vScrollOffset,
+    double hScrollOffset,
+  ) {
+    final firstVisibleLine = (vScrollOffset / _metrics.lineHeight).floor();
+    final lastVisibleLine = min(
+      ((viewportHeight + vScrollOffset) / _metrics.lineHeight).ceil(),
+      buffer.lineCount,
+    );
+
+    final firstVisibleChar = (hScrollOffset / _metrics.charWidth).floor();
+    final lastVisibleChar =
+        ((viewportWidth + hScrollOffset) / _metrics.charWidth).floor();
+
+    return VisibleLines(
+      firstVisibleLine: firstVisibleLine,
+      lastVisibleLine: lastVisibleLine,
+      firstVisibleChar: firstVisibleChar,
+      lastVisibleChar: lastVisibleChar,
+    );
   }
 }
