@@ -128,6 +128,16 @@ void main() {
     });
 
     group('delete', () {
+      test('backspace', () {
+        editor.delete(
+          Position(line: 1, column: -1),
+          Position(line: 1, column: 0),
+        );
+
+        expect(editor.state.buffer.toString(), 'hellobeautiful\nmoon');
+        expect(editor.state.cursor, Cursor(line: 0, column: 5));
+      });
+
       test('start or end out of range (throws)', () {
         // start cannot be greater than end
         expect(
