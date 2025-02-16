@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:meteor/shared/models/position.dart';
 
 part 'cursor.freezed.dart';
 
@@ -9,4 +10,10 @@ class Cursor with _$Cursor {
     @Default(0) int column,
     @Default(0) int targetColumn,
   }) = _Cursor;
+
+  const Cursor._();
+
+  factory Cursor.fromPosition(Position position) {
+    return Cursor(line: position.line, column: position.column);
+  }
 }

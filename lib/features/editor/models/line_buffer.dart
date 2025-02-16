@@ -132,4 +132,7 @@ class LineBuffer extends IBuffer {
   String toString() {
     return _lines.join('\n');
   }
+
+  @override
+  List<String> get lines => _lines;
 }

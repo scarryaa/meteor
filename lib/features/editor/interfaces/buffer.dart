@@ -7,6 +7,7 @@ abstract class IBuffer {
 
   int get lineCount;
   int get longestLineLength;
+  List<String> get lines;
 
   String getLine(int line);
   int getLineLength(int line);
