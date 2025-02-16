@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -30,5 +32,24 @@ class EditorMeasurer extends _$EditorMeasurer {
     );
 
     return _metrics;
+  }
+
+  Size getSize(
+    BoxConstraints? constraints,
+    int lineCount,
+    int longestLineLength,
+  ) {
+    double contentHeight = lineCount * _metrics.lineHeight;
+    double contentWidth = longestLineLength * _metrics.charWidth;
+
+    double width = contentWidth + _metrics.widthPadding;
+    double height = contentHeight + _metrics.heightPadding;
+
+    if (constraints != null) {
+      width = max(width, constraints.maxWidth);
+      height = max(height, constraints.maxHeight);
+    }
+
+    return Size(width, height);
   }
 }

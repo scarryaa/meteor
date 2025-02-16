@@ -13,19 +13,30 @@ class EditorWidget extends ConsumerWidget {
     final editor = ref.read(editorProvider.notifier);
     final state = ref.watch(editorProvider);
     final metrics = ref.watch(editorMeasurerProvider);
+    final measurer = ref.read(editorMeasurerProvider.notifier);
 
     final keyboardHandler = EditorKeyboardHandler(editor, state);
 
-    return Focus(
-      autofocus: true,
-      onKeyEvent: keyboardHandler.handleKeyEvent,
-      child: CustomPaint(
-        painter: EditorPainter(
-          lines: state.buffer.lines,
-          cursor: state.cursor,
-          metrics: metrics,
-        ),
-      ),
+    return LayoutBuilder(
+      builder:
+          (context, constraints) => Focus(
+            autofocus: true,
+            onKeyEvent: keyboardHandler.handleKeyEvent,
+            child: CustomPaint(
+              willChange: true,
+              isComplex: true,
+              size: measurer.getSize(
+                constraints,
+                state.buffer.lineCount - 1,
+                state.buffer.longestLineLength,
+              ),
+              painter: EditorPainter(
+                lines: state.buffer.lines,
+                cursor: state.cursor,
+                metrics: metrics,
+              ),
+            ),
+          ),
     );
   }
 }
