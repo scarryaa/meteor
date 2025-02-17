@@ -74,8 +74,8 @@ class MainPage extends HookConsumerWidget {
               FileExplorerWidget(),
               Expanded(
                 child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTapDown: (_) {
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
                     if (activeTab != null) {
                       editorFocusNode.requestFocus();
                       focusNode.unfocus();
@@ -87,7 +87,6 @@ class MainPage extends HookConsumerWidget {
                     focusNode: focusNode,
                     descendantsAreFocusable: true,
                     descendantsAreTraversable: true,
-                    canRequestFocus: !editorFocusNode.hasFocus,
                     autofocus: true,
                     onKeyEvent:
                         (node, event) => _handleKeyEvent(node, event, ref),

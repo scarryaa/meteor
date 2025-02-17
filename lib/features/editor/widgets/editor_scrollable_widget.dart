@@ -93,34 +93,40 @@ class _EditorScrollableWidgetState
             );
         return false;
       },
-      child: Scrollbar(
-        controller: vScrollController,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.basic,
         child: Scrollbar(
-          controller: hScrollController,
-          notificationPredicate: (notification) => notification.depth == 1,
-          child: ScrollConfiguration(
-            behavior: ScrollBehavior().copyWith(
-              scrollbars: false,
-              physics: const ClampingScrollPhysics(),
-              overscroll: false,
-            ),
-            child: SingleChildScrollView(
-              controller: vScrollController,
+          controller: vScrollController,
+          child: Scrollbar(
+            controller: hScrollController,
+            notificationPredicate: (notification) => notification.depth == 1,
+            child: ScrollConfiguration(
+              behavior: ScrollBehavior().copyWith(
+                scrollbars: false,
+                physics: const ClampingScrollPhysics(),
+                overscroll: false,
+              ),
               child: SingleChildScrollView(
-                controller: hScrollController,
-                scrollDirection: Axis.horizontal,
-                child: EditorGestureHandlerWidget(
-                  path: widget.path,
-                  child: ListenableBuilder(
-                    listenable: Listenable.merge([
-                      vScrollController,
-                      hScrollController,
-                    ]),
-                    builder:
-                        (context, child) => EditorCanvasWidget(
-                          path: widget.path,
-                          constraints: widget.constraints,
-                        ),
+                controller: vScrollController,
+                child: SingleChildScrollView(
+                  controller: hScrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.text,
+                    child: EditorGestureHandlerWidget(
+                      path: widget.path,
+                      child: ListenableBuilder(
+                        listenable: Listenable.merge([
+                          vScrollController,
+                          hScrollController,
+                        ]),
+                        builder:
+                            (context, child) => EditorCanvasWidget(
+                              path: widget.path,
+                              constraints: widget.constraints,
+                            ),
+                      ),
+                    ),
                   ),
                 ),
               ),
