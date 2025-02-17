@@ -17,6 +17,10 @@ class Editor extends _$Editor {
     return EditorState(buffer: LineBuffer(), originalContent: '');
   }
 
+  void setState(EditorState newState) {
+    state = newState;
+  }
+
   void setOriginalContent(String content) {
     state = state.copyWith(originalContent: content);
   }

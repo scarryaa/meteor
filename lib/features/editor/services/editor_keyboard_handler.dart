@@ -6,19 +6,24 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
+import 'package:meteor/shared/models/commands/editor_delete_command.dart';
+import 'package:meteor/shared/models/commands/editor_insert_command.dart';
 import 'package:meteor/shared/models/position.dart';
+import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
 
 class EditorKeyboardHandler {
   final Editor editor;
   final SaveManager saveManager;
   final EditorState state;
+  final CommandManager commandManager;
   final ClipboardManager clipboardManager;
   final AsyncValue<String?> clipboardText;
 
   EditorKeyboardHandler(
     this.editor,
     this.saveManager,
+    this.commandManager,
     this.state,
     this.clipboardManager,
     this.clipboardText,
@@ -28,7 +33,14 @@ class EditorKeyboardHandler {
     final text = clipboardText.value;
 
     if (text != null) {
-      editor.insert(Position.fromCursor(state.cursor), text);
+      commandManager.execute(
+        EditorInsertCommand(
+          editor,
+          state,
+          Position.fromCursor(state.cursor),
+          text,
+        ),
+      );
     }
   }
 
@@ -38,6 +50,20 @@ class EditorKeyboardHandler {
     bool isMetaOrControlPressed,
   ) {
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyZ:
+        if (isMetaOrControlPressed) {
+          if (isShiftPressed) {
+            // Redo
+            commandManager.redo();
+            return true;
+          } else {
+            // Undo
+            commandManager.undo();
+            return true;
+          }
+        }
+        return false;
+
       case LogicalKeyboardKey.keyS:
         if (isMetaOrControlPressed) {
           if (isShiftPressed) {
@@ -70,7 +96,17 @@ class EditorKeyboardHandler {
           // Cut
           final text = editor.getSelectedText();
           clipboardManager.setText(text);
-          editor.deleteSelectedText();
+          commandManager.execute(
+            EditorDeleteCommand(
+              editor,
+              state,
+              Position(
+                line: state.cursor.line,
+                column: state.cursor.column - 1,
+              ),
+              Position.fromCursor(state.cursor),
+            ),
+          );
           return true;
         }
       case LogicalKeyboardKey.keyV:
@@ -124,19 +160,37 @@ class EditorKeyboardHandler {
 
     switch (event.logicalKey) {
       case LogicalKeyboardKey.enter:
-        editor.insert(Position.fromCursor(state.cursor), '\n');
+        commandManager.execute(
+          EditorInsertCommand(
+            editor,
+            state,
+            Position.fromCursor(state.cursor),
+            '\n',
+          ),
+        );
         return KeyEventResult.handled;
 
       case LogicalKeyboardKey.backspace:
-        editor.delete(
-          Position(line: state.cursor.line, column: state.cursor.column - 1),
-          Position.fromCursor(state.cursor),
+        commandManager.execute(
+          EditorDeleteCommand(
+            editor,
+            state,
+            Position(line: state.cursor.line, column: state.cursor.column - 1),
+            Position.fromCursor(state.cursor),
+          ),
         );
         return KeyEventResult.handled;
 
       default:
         if (event.character != null) {
-          editor.insert(Position.fromCursor(state.cursor), event.character!);
+          commandManager.execute(
+            EditorInsertCommand(
+              editor,
+              state,
+              Position.fromCursor(state.cursor),
+              event.character!,
+            ),
+          );
           return KeyEventResult.handled;
         }
     }
