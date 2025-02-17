@@ -15,6 +15,10 @@ class SaveManager extends _$SaveManager {
   }
 
   Future<void> save(String path, String content) async {
+    if (path.startsWith('meteor-tmp')) {
+      return saveAs(path, content);
+    }
+
     final fileManager = ref.read(fileManagerProvider.notifier);
 
     fileManager.writeFileAsString(path, content);
