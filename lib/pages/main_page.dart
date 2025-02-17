@@ -53,6 +53,9 @@ class MainPage extends HookConsumerWidget {
     final tabManager = ref.read(tabManagerProvider.notifier);
     final activeTab = ref.read(tabManagerProvider.notifier).getActiveTab();
     final focusNode = useFocusNode();
+    final editorFocusNode = ref.watch(
+      focusNodeByKeyProvider('editorFocusNode'),
+    );
 
     return Column(
       children: [
@@ -63,6 +66,7 @@ class MainPage extends HookConsumerWidget {
               FileExplorerWidget(),
               Expanded(
                 child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTapDown: (_) => focusNode.requestFocus(),
                   child: Focus(
                     focusNode: focusNode,
@@ -71,7 +75,7 @@ class MainPage extends HookConsumerWidget {
                         (node, event) => _handleKeyEvent(node, event, ref),
                     child:
                         tabs.isEmpty
-                            ? _buildEmptyView(tabManager)
+                            ? _buildEmptyView(tabManager, editorFocusNode)
                             : Column(
                               children: [
                                 TabBarWidget(),
@@ -99,7 +103,7 @@ class MainPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildEmptyView(TabManager tabManager) {
+  Widget _buildEmptyView(TabManager tabManager, FocusNode editorFocusNode) {
     return Center(
       child: Column(
         spacing: 8,
@@ -109,6 +113,7 @@ class MainPage extends HookConsumerWidget {
           TextButton(
             onPressed: () {
               tabManager.addTab('');
+              editorFocusNode.requestFocus();
             },
             child: Text('Open a new tab'),
           ),
