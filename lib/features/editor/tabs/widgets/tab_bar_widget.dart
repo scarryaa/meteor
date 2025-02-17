@@ -51,16 +51,47 @@ class TabBarWidget extends HookConsumerWidget {
                 ),
               ),
             ),
-
-            IconButton(
-              icon: const Icon(Icons.add, size: 16),
-              onPressed: () => tabManager.addTab(''),
-              style: IconButton.styleFrom(
-                minimumSize: const Size(35, 35),
-                padding: EdgeInsets.zero,
-              ),
-            ),
+            _buildAddTabButton(tabManager, scrollController),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddTabButton(
+    TabManager tabManager,
+    ScrollController scrollController,
+  ) {
+    final isHovered = useState(false);
+
+    return Container(
+      width: 35,
+      height: 35,
+      decoration: BoxDecoration(
+        border: Border(left: BorderSide(color: const Color(0x25FFFFFF))),
+      ),
+      padding: const EdgeInsets.all(7.5),
+      child: GestureDetector(
+        onTapDown: (_) {
+          tabManager.addTab('');
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          });
+        },
+        child: MouseRegion(
+          onEnter: (_) => isHovered.value = true,
+          onExit: (_) => isHovered.value = false,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color:
+                  isHovered.value
+                      ? const Color(0x40FFFFFF)
+                      : Colors.transparent,
+            ),
+            child: Icon(Icons.add, size: 16, color: Color(0xA0FFFFFF)),
+          ),
         ),
       ),
     );
