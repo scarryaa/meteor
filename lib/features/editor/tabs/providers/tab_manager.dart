@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/tabs/models/tab.dart';
 import 'package:meteor/features/editor/tabs/providers/scroll_position_store.dart';
+import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'tab_manager.g.dart';
@@ -91,6 +92,33 @@ class TabManager extends _$TabManager {
               (tab) => tab.path == path ? tab.copyWith(isDirty: isDirty) : tab,
             )
             .toList();
+  }
+
+  void updateTabPath(String oldPath, String newPath) {
+    final oldEditorState = ref.read(editorProvider(oldPath));
+
+    final scrollStore = ref.read(scrollPositionStoreProvider.notifier);
+    final scrollPosition = scrollStore.getPosition(oldPath);
+    if (scrollPosition != null) {
+      scrollStore.removePosition(oldPath);
+      scrollStore.savePosition(
+        newPath,
+        scrollPosition.vertical,
+        scrollPosition.horizontal,
+      );
+    }
+
+    state =
+        state
+            .map(
+              (tab) => tab.path == oldPath ? tab.copyWith(path: newPath) : tab,
+            )
+            .toList();
+
+    ref.invalidate(editorProvider(oldPath));
+
+    ref.read(editorProvider(newPath).notifier).state = oldEditorState;
+    updateTabName(newPath, basename(newPath));
   }
 
   void updateTabName(String path, String newName) {

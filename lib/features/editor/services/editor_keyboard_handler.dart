@@ -7,15 +7,18 @@ import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/shared/models/position.dart';
+import 'package:meteor/shared/providers/save_manager.dart';
 
 class EditorKeyboardHandler {
   final Editor editor;
+  final SaveManager saveManager;
   final EditorState state;
   final ClipboardManager clipboardManager;
   final AsyncValue<String?> clipboardText;
 
   EditorKeyboardHandler(
     this.editor,
+    this.saveManager,
     this.state,
     this.clipboardManager,
     this.clipboardText,
@@ -35,6 +38,20 @@ class EditorKeyboardHandler {
     bool isMetaOrControlPressed,
   ) {
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyS:
+        if (isMetaOrControlPressed) {
+          if (isShiftPressed) {
+            // Save As
+            saveManager.saveAs(editor.path, state.buffer.toString());
+            return true;
+          } else {
+            // Save
+            saveManager.save(editor.path, state.buffer.toString());
+            return true;
+          }
+        }
+        return false;
+
       case LogicalKeyboardKey.keyA:
         if (isMetaOrControlPressed) {
           // Select all

@@ -20,7 +20,13 @@ class FileItemWidget extends ConsumerWidget {
       itemBuilder: (context, index) {
         final item = state.items[index];
         final relativePathDepth = _calculateDepth(basePath, item.path);
-        return _FileListItem(item: item, indentLevel: relativePathDepth);
+
+        final isInHiddenDir = _isInHiddenDirectory(item.path);
+        return _FileListItem(
+          item: item,
+          indentLevel: relativePathDepth,
+          isInHiddenDir: isInHiddenDir,
+        );
       },
     );
   }
@@ -29,17 +35,36 @@ class FileItemWidget extends ConsumerWidget {
     final relativePath = relative(itemPath, from: basePath);
     return relativePath.split(separator).length - 1;
   }
+
+  bool _isInHiddenDirectory(String path) {
+    final parts = split(path);
+
+    return parts.any((part) => part.startsWith('.'));
+  }
 }
 
 class _FileListItem extends ConsumerWidget {
   final FileItem item;
   final int indentLevel;
+  final bool isInHiddenDir;
   static const double indentWidth = 20.0;
 
-  const _FileListItem({required this.item, required this.indentLevel});
+  const _FileListItem({
+    required this.item,
+    required this.indentLevel,
+    required this.isInHiddenDir,
+  });
+
+  bool get _isHidden => basename(item.path).startsWith('.') || isInHiddenDir;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Color textColor =
+        _isHidden ? const Color(0x60FCFCFC) : const Color(0xC0FCFCFC);
+
+    final Color iconColor =
+        _isHidden ? const Color(0x40FCFCFC) : const Color(0x80FCFCFC);
+
     return MouseRegion(
       child: GestureDetector(
         onTap: () {
@@ -75,24 +100,20 @@ class _FileListItem extends ConsumerWidget {
                   : Colors.transparent,
           child: Row(
             children: [
-              SizedBox(width: indentLevel * indentWidth),
+              SizedBox(width: (0.5 + indentLevel) * indentWidth),
               if (item.isDirectory)
                 Icon(
                   item.isExpanded ? Icons.folder_open : Icons.folder,
                   size: 16,
-                  color: const Color(0x80FCFCFC),
+                  color: iconColor,
                 )
               else
-                Icon(
-                  Icons.insert_drive_file,
-                  size: 16,
-                  color: const Color(0x80FCFCFC),
-                ),
+                Icon(Icons.insert_drive_file, size: 16, color: iconColor),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   basename(item.path),
-                  style: const TextStyle(color: Color(0xC0FCFCFC)),
+                  style: TextStyle(color: textColor),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

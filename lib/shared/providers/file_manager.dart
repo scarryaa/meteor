@@ -20,4 +20,9 @@ class FileManager extends _$FileManager {
     File file = File(path);
     return file.readAsLinesSync();
   }
+
+  void writeFileAsString(String path, String content) {
+    File file = File(path);
+    file.writeAsString(content);
+  }
 }
