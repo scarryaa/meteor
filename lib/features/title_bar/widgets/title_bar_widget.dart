@@ -29,9 +29,34 @@ class TitleBarWidget extends ConsumerWidget {
                     .read(fileExplorerManagerProvider.notifier)
                     .selectDirectory();
               },
+              style: ButtonStyle(
+                foregroundColor: WidgetStatePropertyAll(
+                  const Color(0xA0FFFFFF),
+                ),
+                minimumSize: WidgetStatePropertyAll(Size(0, 0)),
+                mouseCursor: WidgetStatePropertyAll(SystemMouseCursors.basic),
+
+                padding: WidgetStatePropertyAll(
+                  EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                ),
+
+                backgroundColor: WidgetStateProperty.resolveWith<Color>((
+                  states,
+                ) {
+                  if (states.contains(WidgetState.hovered)) {
+                    return Colors.white.withValues(alpha: 0.1);
+                  }
+                  return Colors.transparent;
+                }),
+
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              ),
               child: Text(
                 basename(currentDirectoryPath ?? 'Select a directory'),
-                style: TextStyle(color: const Color(0xA0FFFFFF)),
               ),
             ),
           ],
