@@ -37,45 +37,47 @@ class _FileListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      onTap: () {
-        ref.read(fileExplorerManagerProvider.notifier).selectItem(item.path);
-        if (item.isDirectory) {
-          ref
-              .read(fileExplorerManagerProvider.notifier)
-              .toggleItemExpansion(item.path);
-        }
-      },
-      child: Container(
-        height: 24,
-        color:
-            item.isSelected
-                ? Colors.purple.withValues(alpha: 0.3)
-                : Colors.transparent,
-        child: Row(
-          children: [
-            SizedBox(width: indentLevel * indentWidth),
-            if (item.isDirectory)
-              Icon(
-                item.isExpanded ? Icons.folder_open : Icons.folder,
-                size: 16,
-                color: const Color(0x80FCFCFC),
-              )
-            else
-              Icon(
-                Icons.insert_drive_file,
-                size: 16,
-                color: const Color(0x80FCFCFC),
+    return MouseRegion(
+      child: GestureDetector(
+        onTap: () {
+          ref.read(fileExplorerManagerProvider.notifier).selectItem(item.path);
+          if (item.isDirectory) {
+            ref
+                .read(fileExplorerManagerProvider.notifier)
+                .toggleItemExpansion(item.path);
+          }
+        },
+        child: Container(
+          height: 24,
+          color:
+              item.isSelected
+                  ? Colors.purple.withValues(alpha: 0.3)
+                  : Colors.transparent,
+          child: Row(
+            children: [
+              SizedBox(width: indentLevel * indentWidth),
+              if (item.isDirectory)
+                Icon(
+                  item.isExpanded ? Icons.folder_open : Icons.folder,
+                  size: 16,
+                  color: const Color(0x80FCFCFC),
+                )
+              else
+                Icon(
+                  Icons.insert_drive_file,
+                  size: 16,
+                  color: const Color(0x80FCFCFC),
+                ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  basename(item.path),
+                  style: const TextStyle(color: Color(0xC0FCFCFC)),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                basename(item.path),
-                style: const TextStyle(color: Color(0xC0FCFCFC)),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

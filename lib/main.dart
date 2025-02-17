@@ -15,6 +15,7 @@ class MeteorApp extends StatelessWidget {
       title: 'meteor',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        splashFactory: NoSplash.splashFactory,
         scrollbarTheme: ScrollbarThemeData(
           radius: Radius.zero,
           thumbColor: WidgetStatePropertyAll(const Color(0x50FFFFFF)),

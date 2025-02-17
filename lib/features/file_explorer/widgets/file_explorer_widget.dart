@@ -10,7 +10,6 @@ class FileExplorerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 250,
-      height: double.maxFinite,
       decoration: BoxDecoration(
         border: Border(right: BorderSide(color: const Color(0x25FFFFFF))),
       ),
