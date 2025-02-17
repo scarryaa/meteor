@@ -24,7 +24,7 @@ class MeteorApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MainPage(),
+      home: Material(type: MaterialType.transparency, child: const MainPage()),
     );
   }
 }
