@@ -53,8 +53,11 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     return LayoutBuilder(
       builder:
           (context, constraints) => GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTapDown: (_) => focusNode.requestFocus(),
+            behavior: HitTestBehavior.opaque,
+            onTapDown:
+                (_) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                  focusNode.requestFocus();
+                }),
             child: Focus(
               focusNode: focusNode,
               autofocus: true,

@@ -60,7 +60,7 @@ class MainPage extends HookConsumerWidget {
     final tabs = ref.watch(tabManagerProvider);
     final tabManager = ref.read(tabManagerProvider.notifier);
     final activeTab = ref.read(tabManagerProvider.notifier).getActiveTab();
-    final focusNode = useFocusNode();
+    final focusNode = ref.watch(focusNodeByKeyProvider('mainFocusNode'));
     final editorFocusNode = ref.watch(
       focusNodeByKeyProvider('editorFocusNode'),
     );
@@ -75,9 +75,19 @@ class MainPage extends HookConsumerWidget {
               Expanded(
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTapDown: (_) => focusNode.requestFocus(),
+                  onTapDown: (_) {
+                    if (activeTab != null) {
+                      editorFocusNode.requestFocus();
+                      focusNode.unfocus();
+                    } else {
+                      focusNode.requestFocus();
+                    }
+                  },
                   child: Focus(
                     focusNode: focusNode,
+                    descendantsAreFocusable: true,
+                    descendantsAreTraversable: true,
+                    canRequestFocus: !editorFocusNode.hasFocus,
                     autofocus: true,
                     onKeyEvent:
                         (node, event) => _handleKeyEvent(node, event, ref),

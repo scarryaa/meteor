@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart' hide Tab;
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/tabs/models/tab.dart';
 import 'package:meteor/features/editor/tabs/providers/scroll_position_store.dart';
+import 'package:meteor/shared/providers/focus_node_by_key.dart';
 import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,6 +31,7 @@ class TabManager extends _$TabManager {
 
   void removeTabByPath(String path) {
     final index = state.indexWhere((tab) => tab.path == path);
+
     if (index != -1) {
       final newState = [...state];
       newState.removeAt(index);
@@ -41,6 +44,15 @@ class TabManager extends _$TabManager {
       ref.invalidate(editorProvider(path));
 
       state = newState;
+    }
+
+    if (state.isEmpty) {
+      ref.read(focusNodeByKeyProvider('editorFocusNode')).unfocus();
+
+      // TODO find a better method?
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(focusNodeByKeyProvider('mainFocusNode')).requestFocus();
+      });
     }
   }
 
