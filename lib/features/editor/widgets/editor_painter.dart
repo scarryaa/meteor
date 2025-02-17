@@ -29,6 +29,7 @@ class EditorPainter extends CustomPainter {
 
   static const fontFamily = 'MesloLGL Nerd Font Mono';
   static const fontSize = 15.0;
+  static const lineHeight = 1.5;
   static const fontColor = Color(0xFFFCFCFC);
 
   static final cursorPaint = Paint()..color = Colors.purple;
@@ -64,6 +65,7 @@ class EditorPainter extends CustomPainter {
           style: TextStyle(
             fontSize: fontSize,
             fontFamily: fontFamily,
+            height: lineHeight,
             color: fontColor,
           ),
         )

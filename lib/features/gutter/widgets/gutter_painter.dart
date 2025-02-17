@@ -47,6 +47,7 @@ class GutterPainter extends CustomPainter {
                     ? const Color(0xFFFFFFFF)
                     : const Color(0x50FFFFFF),
             fontFamily: 'MesloLGL Nerd Font Mono',
+            height: 1.5,
             fontSize: 15.0,
           ),
         )

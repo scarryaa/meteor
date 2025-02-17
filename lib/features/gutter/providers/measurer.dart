@@ -21,6 +21,7 @@ class GutterMeasurer extends _$GutterMeasurer {
             text: '1',
             style: TextStyle(
               fontSize: 15.0,
+              height: 1.5,
               fontFamily: 'MesloLGL Nerd Font Mono',
             ),
           )

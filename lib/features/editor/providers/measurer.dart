@@ -21,6 +21,7 @@ class EditorMeasurer extends _$EditorMeasurer {
             text: 'M',
             style: TextStyle(
               fontSize: 15.0,
+              height: 1.5,
               fontFamily: 'MesloLGL Nerd Font Mono',
             ),
           )
