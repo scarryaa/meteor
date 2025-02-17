@@ -45,7 +45,7 @@ class TabWidget extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildDirtyIndicator(),
-              const SizedBox(width: 8),
+              const SizedBox(width: 16),
               Text(
                 name,
                 style: const TextStyle(
