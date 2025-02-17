@@ -1,9 +1,17 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/pages/main_page.dart';
 
 void main() {
   runApp(ProviderScope(child: const MeteorApp()));
+
+  doWhenWindowReady(() {
+    const initialSize = Size(600, 450);
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.show();
+  });
 }
 
 class MeteorApp extends StatelessWidget {

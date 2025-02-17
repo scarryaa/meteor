@@ -5,6 +5,7 @@ import 'package:meteor/features/editor/tabs/widgets/tab_bar_widget.dart';
 import 'package:meteor/features/editor/widgets/editor_widget.dart';
 import 'package:meteor/features/file_explorer/widgets/file_explorer_widget.dart';
 import 'package:meteor/features/gutter/widgets/gutter_widget.dart';
+import 'package:meteor/features/title_bar/widgets/title_bar_widget.dart';
 
 class MainPage extends ConsumerWidget {
   const MainPage({super.key});
@@ -15,26 +16,35 @@ class MainPage extends ConsumerWidget {
     final tabManager = ref.read(tabManagerProvider.notifier);
     final activeTab = ref.read(tabManagerProvider.notifier).getActiveTab();
 
-    return Row(
+    return Column(
       children: [
-        FileExplorerWidget(),
+        TitleBarWidget(),
         Expanded(
-          child:
-              tabs.isEmpty
-                  ? _buildEmptyView(tabManager)
-                  : Column(
-                    children: [
-                      TabBarWidget(),
-                      Expanded(
-                        child: Row(
+          child: Row(
+            children: [
+              FileExplorerWidget(),
+              Expanded(
+                child:
+                    tabs.isEmpty
+                        ? _buildEmptyView(tabManager)
+                        : Column(
                           children: [
-                            GutterWidget(path: activeTab!.path),
-                            Expanded(child: EditorWidget(path: activeTab.path)),
+                            TabBarWidget(),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  GutterWidget(path: activeTab!.path),
+                                  Expanded(
+                                    child: EditorWidget(path: activeTab.path),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
+              ),
+            ],
+          ),
         ),
       ],
     );
