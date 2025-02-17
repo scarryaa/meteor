@@ -9,6 +9,7 @@ import 'package:meteor/features/editor/tabs/widgets/tab_bar_widget.dart';
 import 'package:meteor/features/editor/widgets/editor_widget.dart';
 import 'package:meteor/features/file_explorer/widgets/file_explorer_widget.dart';
 import 'package:meteor/features/gutter/widgets/gutter_widget.dart';
+import 'package:meteor/features/status_bar/widgets/status_bar_widget.dart';
 import 'package:meteor/features/title_bar/widgets/title_bar_widget.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
 
@@ -99,6 +100,7 @@ class MainPage extends HookConsumerWidget {
             ],
           ),
         ),
+        StatusBarWidget(),
       ],
     );
   }
