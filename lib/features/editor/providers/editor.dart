@@ -19,6 +19,7 @@ class Editor extends _$Editor {
 
   void setState(EditorState newState) {
     state = newState;
+    _updateTabDirtyState();
   }
 
   void setOriginalContent(String content) {
