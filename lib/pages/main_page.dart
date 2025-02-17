@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/editor/tabs/widgets/tab_bar_widget.dart';
 import 'package:meteor/features/editor/widgets/editor_widget.dart';
+import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
 import 'package:meteor/features/file_explorer/widgets/file_explorer_widget.dart';
 import 'package:meteor/features/gutter/widgets/gutter_widget.dart';
 import 'package:meteor/features/status_bar/widgets/status_bar_widget.dart';
@@ -29,6 +30,7 @@ class MainPage extends HookConsumerWidget {
     final editorFocusNode = ref.watch(
       focusNodeByKeyProvider('editorFocusNode'),
     );
+    final fileExplorerManager = ref.read(fileExplorerManagerProvider.notifier);
 
     if (!node.hasFocus) return KeyEventResult.ignored;
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
@@ -36,11 +38,16 @@ class MainPage extends HookConsumerWidget {
     }
 
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyB:
+        if (isMetaOrControlPressed) {
+          fileExplorerManager.toggleOpen();
+          return KeyEventResult.handled;
+        }
+
       case LogicalKeyboardKey.keyN:
         if (isMetaOrControlPressed) {
           tabManager.addTab('');
           editorFocusNode.requestFocus();
-
           return KeyEventResult.handled;
         }
     }
@@ -67,7 +74,7 @@ class MainPage extends HookConsumerWidget {
               FileExplorerWidget(),
               Expanded(
                 child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
+                  behavior: HitTestBehavior.translucent,
                   onTapDown: (_) => focusNode.requestFocus(),
                   child: Focus(
                     focusNode: focusNode,

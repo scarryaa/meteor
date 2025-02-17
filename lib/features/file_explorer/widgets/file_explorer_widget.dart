@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
+import 'package:meteor/features/file_explorer/services/keyboard_handler.dart';
 import 'package:meteor/features/file_explorer/widgets/file_item_widget.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
 
@@ -14,20 +15,27 @@ class FileExplorerWidget extends HookConsumerWidget {
     final focusNode = ref.watch(
       focusNodeByKeyProvider('fileExplorerFocusNode'),
     );
+    final fileExplorerManager = ref.read(fileExplorerManagerProvider.notifier);
+
+    final keyboardHandler = FileExplorerKeyboardHandler(fileExplorerManager);
 
     return state.isOpen
-        ? GestureDetector(
-          onTapDown: (_) => focusNode.requestFocus(),
-          child: Focus(
-            focusNode: focusNode,
-            child: Container(
-              width: 250,
-              decoration: BoxDecoration(
-                border: Border(
-                  right: BorderSide(color: const Color(0x25FFFFFF)),
+        ? Focus(
+          onKeyEvent:
+              (node, event) => keyboardHandler.handleKeyEvent(node, event),
+          child: GestureDetector(
+            onTapDown: (_) => focusNode.requestFocus(),
+            child: Focus(
+              focusNode: focusNode,
+              child: Container(
+                width: 250,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(color: const Color(0x25FFFFFF)),
+                  ),
                 ),
+                child: _buildContent(ref),
               ),
-              child: _buildContent(ref),
             ),
           ),
         )

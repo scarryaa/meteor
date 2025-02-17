@@ -7,6 +7,7 @@ import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
+import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
 import 'package:meteor/shared/models/commands/editor_delete_command.dart';
 import 'package:meteor/shared/models/commands/editor_insert_command.dart';
 import 'package:meteor/shared/models/position.dart';
@@ -18,12 +19,14 @@ class EditorKeyboardHandler {
   final SaveManager saveManager;
   final TabManager tabManager;
   final EditorState state;
+  final FileExplorerManager fileExplorerManager;
   final CommandManager commandManager;
   final ClipboardManager clipboardManager;
   final AsyncValue<String?> clipboardText;
 
   EditorKeyboardHandler(
     this.editor,
+    this.fileExplorerManager,
     this.tabManager,
     this.saveManager,
     this.commandManager,
@@ -53,6 +56,12 @@ class EditorKeyboardHandler {
     bool isMetaOrControlPressed,
   ) {
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyB:
+        if (isMetaOrControlPressed) {
+          fileExplorerManager.toggleOpen();
+          return true;
+        }
+
       case LogicalKeyboardKey.keyW:
         if (isMetaOrControlPressed) {
           // Close tab
