@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/services/editor_keyboard_handler.dart';
+import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/editor/widgets/editor_scrollable_widget.dart';
 import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
@@ -32,9 +33,11 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     final commandManager = ref.read(
       commandManagerProvider(widget.path).notifier,
     );
+    final tabManager = ref.read(tabManagerProvider.notifier);
 
     final keyboardHandler = EditorKeyboardHandler(
       editor,
+      tabManager,
       saveManager,
       commandManager,
       state,

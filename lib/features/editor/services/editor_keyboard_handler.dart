@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
+import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/shared/models/commands/editor_delete_command.dart';
 import 'package:meteor/shared/models/commands/editor_insert_command.dart';
 import 'package:meteor/shared/models/position.dart';
@@ -15,6 +16,7 @@ import 'package:meteor/shared/providers/save_manager.dart';
 class EditorKeyboardHandler {
   final Editor editor;
   final SaveManager saveManager;
+  final TabManager tabManager;
   final EditorState state;
   final CommandManager commandManager;
   final ClipboardManager clipboardManager;
@@ -22,6 +24,7 @@ class EditorKeyboardHandler {
 
   EditorKeyboardHandler(
     this.editor,
+    this.tabManager,
     this.saveManager,
     this.commandManager,
     this.state,
@@ -50,6 +53,22 @@ class EditorKeyboardHandler {
     bool isMetaOrControlPressed,
   ) {
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyW:
+        if (isMetaOrControlPressed) {
+          // Close tab
+          tabManager.removeTabByPath(tabManager.getActiveTab()!.path);
+          return true;
+        }
+        return false;
+
+      case LogicalKeyboardKey.keyN:
+        if (isMetaOrControlPressed) {
+          // Open tab
+          tabManager.addTab('');
+          return true;
+        }
+        return false;
+
       case LogicalKeyboardKey.keyZ:
         if (isMetaOrControlPressed) {
           if (isShiftPressed) {
