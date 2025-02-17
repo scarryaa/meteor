@@ -6,6 +6,7 @@ import 'package:meteor/features/editor/services/editor_keyboard_handler.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/editor/widgets/editor_scrollable_widget.dart';
 import 'package:meteor/shared/providers/command_manager.dart';
+import 'package:meteor/shared/providers/focus_node_by_key.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
 
 class EditorWidget extends ConsumerStatefulWidget {
@@ -34,6 +35,7 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
       commandManagerProvider(widget.path).notifier,
     );
     final tabManager = ref.read(tabManagerProvider.notifier);
+    final focusNode = ref.watch(focusNodeByKeyProvider('editorFocusNode'));
 
     final keyboardHandler = EditorKeyboardHandler(
       editor,
@@ -47,12 +49,16 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
 
     return LayoutBuilder(
       builder:
-          (context, constraints) => Focus(
-            autofocus: true,
-            onKeyEvent: keyboardHandler.handleKeyEvent,
-            child: EditorScrollableWidget(
-              path: widget.path,
-              constraints: constraints,
+          (context, constraints) => GestureDetector(
+            onTapDown: (_) => focusNode.requestFocus(),
+            child: Focus(
+              focusNode: focusNode,
+              autofocus: true,
+              onKeyEvent: keyboardHandler.handleKeyEvent,
+              child: EditorScrollableWidget(
+                path: widget.path,
+                constraints: constraints,
+              ),
             ),
           ),
     );
