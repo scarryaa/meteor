@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Tab;
+import 'package:meteor/features/dialogs/unsaved_changes_dialog/widgets/unsaved_changes_dialog_widget.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/tabs/models/tab.dart';
 import 'package:meteor/features/editor/tabs/providers/scroll_position_store.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
+import 'package:meteor/shared/providers/save_manager.dart';
 import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,6 +18,42 @@ class TabManager extends _$TabManager {
   @override
   List<Tab> build() {
     return [];
+  }
+
+  Future<bool> showUnsavedChangesDialog(
+    BuildContext context,
+    String path,
+  ) async {
+    final tab = state.firstWhere((tab) => tab.path == path);
+    if (!tab.isDirty) return true;
+
+    final completer = Completer<bool>();
+
+    showDialog(
+      context: context,
+      barrierColor: const Color(0x80000000),
+      builder:
+          (context) => UnsavedChangesDialogWidget(
+            fileName: tab.name,
+            onSave: () {
+              Navigator.of(context).pop();
+              ref
+                  .read(saveManagerProvider.notifier)
+                  .save(path, ref.read(editorProvider(path)).buffer.toString());
+              completer.complete(true);
+            },
+            onDiscard: () {
+              Navigator.of(context).pop();
+              completer.complete(true);
+            },
+            onCancel: () {
+              Navigator.of(context).pop();
+              completer.complete(false);
+            },
+          ),
+    );
+
+    return completer.future;
   }
 
   Tab? getActiveTab() {

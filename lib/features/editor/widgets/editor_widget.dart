@@ -40,6 +40,7 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     final fileExplorerManager = ref.read(fileExplorerManagerProvider.notifier);
 
     final keyboardHandler = EditorKeyboardHandler(
+      context,
       editor,
       fileExplorerManager,
       tabManager,

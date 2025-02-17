@@ -27,8 +27,14 @@ class TabWidget extends HookConsumerWidget {
       child: GestureDetector(
         onTapDown:
             (_) => ref.read(tabManagerProvider.notifier).setTabActive(path),
-        onTertiaryTapDown:
-            (_) => ref.read(tabManagerProvider.notifier).removeTabByPath(path),
+        onTertiaryTapDown: (_) async {
+          final canClose = await ref
+              .read(tabManagerProvider.notifier)
+              .showUnsavedChangesDialog(context, path);
+          if (canClose) {
+            ref.read(tabManagerProvider.notifier).removeTabByPath(path);
+          }
+        },
         child: Container(
           height: 35,
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -54,7 +60,7 @@ class TabWidget extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              _buildCloseButton(ref, isHovered.value),
+              _buildCloseButton(context, ref, isHovered.value),
             ],
           ),
         ),
@@ -62,7 +68,11 @@ class TabWidget extends HookConsumerWidget {
     );
   }
 
-  Widget _buildCloseButton(WidgetRef ref, bool isTabHovered) {
+  Widget _buildCloseButton(
+    BuildContext context,
+    WidgetRef ref,
+    bool isTabHovered,
+  ) {
     final isHovered = useState(false);
 
     return MouseRegion(
@@ -70,8 +80,13 @@ class TabWidget extends HookConsumerWidget {
       onEnter: (_) => isHovered.value = true,
       onExit: (_) => isHovered.value = false,
       child: GestureDetector(
-        onTap: () {
-          ref.read(tabManagerProvider.notifier).removeTabByPath(path);
+        onTap: () async {
+          final canClose = await ref
+              .read(tabManagerProvider.notifier)
+              .showUnsavedChangesDialog(context, path);
+          if (canClose) {
+            ref.read(tabManagerProvider.notifier).removeTabByPath(path);
+          }
         },
         child: Container(
           width: 16,

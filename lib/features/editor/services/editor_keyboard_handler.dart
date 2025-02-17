@@ -15,6 +15,7 @@ import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
 
 class EditorKeyboardHandler {
+  final BuildContext context;
   final Editor editor;
   final SaveManager saveManager;
   final TabManager tabManager;
@@ -25,6 +26,7 @@ class EditorKeyboardHandler {
   final AsyncValue<String?> clipboardText;
 
   EditorKeyboardHandler(
+    this.context,
     this.editor,
     this.fileExplorerManager,
     this.tabManager,
@@ -34,6 +36,16 @@ class EditorKeyboardHandler {
     this.clipboardManager,
     this.clipboardText,
   );
+
+  Future<void> _handleCloseTab() async {
+    final canClose = await tabManager.showUnsavedChangesDialog(
+      context,
+      tabManager.getActiveTab()!.path,
+    );
+    if (canClose) {
+      tabManager.removeTabByPath(tabManager.getActiveTab()!.path);
+    }
+  }
 
   Future<void> _handlePaste() async {
     final text = clipboardText.value;
@@ -64,8 +76,7 @@ class EditorKeyboardHandler {
 
       case LogicalKeyboardKey.keyW:
         if (isMetaOrControlPressed) {
-          // Close tab
-          tabManager.removeTabByPath(tabManager.getActiveTab()!.path);
+          _handleCloseTab();
           return true;
         }
         return false;
