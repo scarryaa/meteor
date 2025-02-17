@@ -3,6 +3,7 @@ import 'package:meteor/features/editor/models/selection.dart';
 import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/cursor_manager.dart';
 import 'package:meteor/features/editor/providers/selection_manager.dart';
+import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/shared/models/cursor.dart';
 import 'package:meteor/shared/models/position.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,11 +14,18 @@ part 'editor.g.dart';
 class Editor extends _$Editor {
   @override
   EditorState build(String path) {
-    return EditorState(buffer: LineBuffer());
+    return EditorState(buffer: LineBuffer(), originalContent: '');
+  }
+
+  void setOriginalContent(String content) {
+    state = state.copyWith(originalContent: content);
   }
 
   void setLines(List<String> lines) {
-    state = state.copyWith(buffer: LineBuffer(lines: lines));
+    state = state.copyWith(
+      buffer: LineBuffer(lines: lines),
+      originalContent: lines.join('\n'),
+    );
   }
 
   void selectLine(int line, {bool extendSelection = false}) {
@@ -107,6 +115,8 @@ class Editor extends _$Editor {
     final newBuffer = state.buffer.insert(position, text);
 
     state = state.copyWith(buffer: newBuffer, cursor: newCursor);
+
+    _updateTabDirtyState();
   }
 
   void delete(Position start, Position end) {
@@ -124,6 +134,7 @@ class Editor extends _$Editor {
                 : Cursor.fromPosition(res.mergePosition),
         selection: res.newSelection,
       );
+      _updateTabDirtyState();
       return;
     }
 
@@ -159,6 +170,17 @@ class Editor extends _$Editor {
         .adjustAfterDelete(start, end, result.mergePosition);
 
     state = state.copyWith(buffer: result.newBuffer, cursor: newCursor);
+
+    _updateTabDirtyState();
+  }
+
+  void _updateTabDirtyState() {
+    ref
+        .read(tabManagerProvider.notifier)
+        .setTabDirty(
+          path,
+          isDirty: state.originalContent != state.buffer.toString(),
+        );
   }
 
   void _updateOrClearSelection(bool extendSelection) {

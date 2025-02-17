@@ -9,6 +9,7 @@ part 'state.freezed.dart';
 class EditorState with _$EditorState {
   const factory EditorState({
     required IBuffer buffer,
+    required String originalContent,
     @Default(Cursor()) Cursor cursor,
     @Default(Selection()) Selection selection,
   }) = _EditorState;

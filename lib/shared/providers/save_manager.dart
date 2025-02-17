@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/shared/providers/file_manager.dart';
 import 'package:path/path.dart';
@@ -17,6 +18,8 @@ class SaveManager extends _$SaveManager {
     final fileManager = ref.read(fileManagerProvider.notifier);
 
     fileManager.writeFileAsString(path, content);
+    ref.read(tabManagerProvider.notifier).setTabDirty(path, isDirty: false);
+    ref.read(editorProvider(path).notifier).setOriginalContent(content);
   }
 
   Future<void> saveAs(String path, String content) async {
