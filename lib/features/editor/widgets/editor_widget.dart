@@ -29,7 +29,9 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     final clipboardManager = ref.read(clipboardManagerProvider.notifier);
     final clipboardText = ref.watch(clipboardManagerProvider);
     final saveManager = ref.read(saveManagerProvider.notifier);
-    final commandManager = ref.read(commandManagerProvider.notifier);
+    final commandManager = ref.read(
+      commandManagerProvider(widget.path).notifier,
+    );
 
     final keyboardHandler = EditorKeyboardHandler(
       editor,

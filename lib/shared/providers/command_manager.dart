@@ -9,7 +9,7 @@ class CommandManager extends _$CommandManager {
   final List<EditorCommand> _redoStack = [];
 
   @override
-  void build() {
+  void build(String path) {
     return;
   }
 
