@@ -89,6 +89,7 @@ class Editor extends _$Editor {
                 : Cursor.fromPosition(res.mergePosition),
         selection: res.newSelection,
       );
+      _updateTabDirtyState();
     }
   }
 
