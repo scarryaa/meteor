@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
 import 'package:meteor/features/file_explorer/widgets/file_item_widget.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
 
-class FileExplorerWidget extends ConsumerWidget {
+class FileExplorerWidget extends HookConsumerWidget {
   const FileExplorerWidget({super.key});
 
   @override
@@ -43,16 +44,44 @@ class FileExplorerWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.folder_rounded, size: 64, color: const Color(0x70FFFFFF)),
-          TextButton(
-            onPressed: () {
-              ref.read(fileExplorerManagerProvider.notifier).selectDirectory();
-            },
-            style: ButtonStyle(
-              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-            ),
-            child: Text('Select a directory'),
-          ),
+          _buildOpenDirectoryButton(ref),
         ],
+      ),
+    );
+  }
+
+  Widget _buildOpenDirectoryButton(WidgetRef ref) {
+    final isHovered = useState(false);
+    final isPressed = useState(false);
+
+    return MouseRegion(
+      onEnter: (_) => isHovered.value = true,
+      onExit: (_) => isHovered.value = false,
+      child: GestureDetector(
+        onTapDown: (_) {
+          isPressed.value = true;
+        },
+        onTap: () {
+          ref.read(fileExplorerManagerProvider.notifier).selectDirectory();
+        },
+        onTapUp: (_) => isPressed.value = false,
+        onTapCancel: () => isPressed.value = false,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color:
+                isPressed.value
+                    ? const Color(0x28FFFFFF)
+                    : isHovered.value
+                    ? const Color(0x30FFFFFF)
+                    : Colors.transparent,
+          ),
+          child: Text(
+            'Select a directory',
+            style: TextStyle(color: const Color(0xFFFCFCFC)),
+          ),
+        ),
       ),
     );
   }

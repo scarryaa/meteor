@@ -109,15 +109,46 @@ class MainPage extends HookConsumerWidget {
         spacing: 8,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.tab, size: 64, color: const Color(0x60FFFFFF)),
-          TextButton(
-            onPressed: () {
-              tabManager.addTab('');
-              editorFocusNode.requestFocus();
-            },
-            child: Text('Open a new tab'),
-          ),
+          Icon(Icons.tab, size: 64, color: const Color(0x70FFFFFF)),
+          _buildNewTabButton(tabManager, editorFocusNode),
         ],
+      ),
+    );
+  }
+
+  Widget _buildNewTabButton(TabManager tabManager, FocusNode editorFocusNode) {
+    final isHovered = useState(false);
+    final isPressed = useState(false);
+
+    return MouseRegion(
+      onEnter: (_) => isHovered.value = true,
+      onExit: (_) => isHovered.value = false,
+      child: GestureDetector(
+        onTapDown: (_) {
+          isPressed.value = true;
+        },
+        onTap: () {
+          tabManager.addTab('');
+          editorFocusNode.requestFocus();
+        },
+        onTapUp: (_) => isPressed.value = false,
+        onTapCancel: () => isPressed.value = false,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color:
+                isPressed.value
+                    ? const Color(0x28FFFFFF)
+                    : isHovered.value
+                    ? const Color(0x30FFFFFF)
+                    : Colors.transparent,
+          ),
+          child: Text(
+            'Open a new tab',
+            style: TextStyle(color: const Color(0xFFFCFCFC)),
+          ),
+        ),
       ),
     );
   }
