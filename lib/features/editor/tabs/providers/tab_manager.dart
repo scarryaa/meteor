@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:meteor/features/editor/tabs/models/tab.dart';
+import 'package:meteor/features/editor/tabs/providers/scroll_position_store.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'tab_manager.g.dart';
@@ -33,6 +34,8 @@ class TabManager extends _$TabManager {
       if (newState.isNotEmpty && !newState.any((tab) => tab.isActive)) {
         newState.last = newState.last.copyWith(isActive: true);
       }
+
+      ref.read(scrollPositionStoreProvider.notifier).removePosition(path);
 
       state = newState;
     }
