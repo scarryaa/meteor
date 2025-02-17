@@ -10,23 +10,28 @@ class FileExplorerWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(fileExplorerManagerProvider);
     final focusNode = ref.watch(
       focusNodeByKeyProvider('fileExplorerFocusNode'),
     );
 
-    return GestureDetector(
-      onTapDown: (_) => focusNode.requestFocus(),
-      child: Focus(
-        focusNode: focusNode,
-        child: Container(
-          width: 250,
-          decoration: BoxDecoration(
-            border: Border(right: BorderSide(color: const Color(0x25FFFFFF))),
+    return state.isOpen
+        ? GestureDetector(
+          onTapDown: (_) => focusNode.requestFocus(),
+          child: Focus(
+            focusNode: focusNode,
+            child: Container(
+              width: 250,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(color: const Color(0x25FFFFFF)),
+                ),
+              ),
+              child: _buildContent(ref),
+            ),
           ),
-          child: _buildContent(ref),
-        ),
-      ),
-    );
+        )
+        : SizedBox.shrink();
   }
 
   Widget _buildContent(WidgetRef ref) {

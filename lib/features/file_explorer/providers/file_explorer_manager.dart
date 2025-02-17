@@ -15,6 +15,10 @@ class FileExplorerManager extends _$FileExplorerManager {
     return const FileExplorerState();
   }
 
+  void toggleOpen() {
+    state = state.copyWith(isOpen: !state.isOpen);
+  }
+
   Future<void> selectDirectory() async {
     final newPath = await FilePicker.platform.getDirectoryPath();
 
