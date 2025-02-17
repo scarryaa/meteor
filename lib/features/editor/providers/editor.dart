@@ -9,11 +9,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'editor.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Editor extends _$Editor {
   @override
-  EditorState build() {
+  EditorState build(String path) {
     return EditorState(buffer: LineBuffer());
+  }
+
+  void setLines(List<String> lines) {
+    state = state.copyWith(buffer: LineBuffer(lines: lines));
   }
 
   void selectLine(int line, {bool extendSelection = false}) {

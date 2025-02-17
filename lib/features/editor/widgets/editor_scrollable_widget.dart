@@ -5,9 +5,14 @@ import 'package:meteor/features/editor/widgets/editor_gesture_handler_widget.dar
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorScrollableWidget extends ConsumerWidget {
-  const EditorScrollableWidget({super.key, required this.constraints});
+  const EditorScrollableWidget({
+    super.key,
+    required this.path,
+    required this.constraints,
+  });
 
   final BoxConstraints constraints;
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,14 +40,17 @@ class EditorScrollableWidget extends ConsumerWidget {
               controller: hScrollController,
               scrollDirection: Axis.horizontal,
               child: EditorGestureHandlerWidget(
+                path: path,
                 child: ListenableBuilder(
                   listenable: Listenable.merge([
                     vScrollController,
                     hScrollController,
                   ]),
                   builder:
-                      (context, child) =>
-                          EditorCanvasWidget(constraints: constraints),
+                      (context, child) => EditorCanvasWidget(
+                        path: path,
+                        constraints: constraints,
+                      ),
                 ),
               ),
             ),

@@ -6,15 +6,20 @@ import 'package:meteor/features/editor/widgets/editor_painter.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorCanvasWidget extends ConsumerWidget {
-  const EditorCanvasWidget({super.key, required this.constraints});
+  const EditorCanvasWidget({
+    super.key,
+    required this.path,
+    required this.constraints,
+  });
 
   final BoxConstraints constraints;
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final metrics = ref.watch(editorMeasurerProvider);
     final measurer = ref.read(editorMeasurerProvider.notifier);
-    final state = ref.watch(editorProvider);
+    final state = ref.watch(editorProvider(path));
     final vScrollController = ref.watch(
       scrollControllerByKeyProvider('editorVScrollController'),
     );

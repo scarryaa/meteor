@@ -12,6 +12,18 @@ class TabManager extends _$TabManager {
     return [];
   }
 
+  Tab? getActiveTab() {
+    if (state.isEmpty || !state.any((tab) => tab.isActive)) {
+      return null;
+    }
+
+    return state.firstWhere((tab) => tab.isActive);
+  }
+
+  bool hasTab(String path) {
+    return state.indexWhere((tab) => tab.path == path) != -1;
+  }
+
   void removeTabByPath(String path) {
     final index = state.indexWhere((tab) => tab.path == path);
     if (index != -1) {
@@ -81,12 +93,5 @@ class TabManager extends _$TabManager {
         state
             .map((tab) => tab.path == path ? tab.copyWith(name: newName) : tab)
             .toList();
-  }
-
-  Tab? getActiveTab() {
-    return state.firstWhere(
-      (tab) => tab.isActive,
-      orElse: () => Tab(path: '', name: ''),
-    );
   }
 }

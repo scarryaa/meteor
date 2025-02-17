@@ -9,7 +9,9 @@ import 'package:meteor/shared/models/position.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class GutterWidget extends ConsumerStatefulWidget {
-  const GutterWidget({super.key});
+  const GutterWidget({super.key, required this.path});
+
+  final String path;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => GutterWidgetState();
@@ -129,8 +131,8 @@ class GutterWidgetState extends ConsumerState<GutterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(editorProvider);
-    final editor = ref.read(editorProvider.notifier);
+    final state = ref.watch(editorProvider(widget.path));
+    final editor = ref.read(editorProvider(widget.path).notifier);
     final measurer = ref.read(gutterMeasurerProvider.notifier);
     final metrics = ref.watch(gutterMeasurerProvider);
     final vScrollController = ref.watch(

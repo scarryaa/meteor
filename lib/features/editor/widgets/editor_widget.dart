@@ -6,12 +6,14 @@ import 'package:meteor/features/editor/services/editor_keyboard_handler.dart';
 import 'package:meteor/features/editor/widgets/editor_scrollable_widget.dart';
 
 class EditorWidget extends ConsumerWidget {
-  const EditorWidget({super.key});
+  const EditorWidget({super.key, required this.path});
+
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editor = ref.read(editorProvider.notifier);
-    final state = ref.watch(editorProvider);
+    final editor = ref.read(editorProvider(path).notifier);
+    final state = ref.watch(editorProvider(path));
     final clipboardManager = ref.read(clipboardManagerProvider.notifier);
     final clipboardText = ref.watch(clipboardManagerProvider);
 
@@ -27,7 +29,7 @@ class EditorWidget extends ConsumerWidget {
           (context, constraints) => Focus(
             autofocus: true,
             onKeyEvent: keyboardHandler.handleKeyEvent,
-            child: EditorScrollableWidget(constraints: constraints),
+            child: EditorScrollableWidget(path: path, constraints: constraints),
           ),
     );
   }

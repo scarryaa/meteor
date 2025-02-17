@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meteor/features/editor/providers/editor.dart';
+import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/file_explorer/models/file_item.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
+import 'package:meteor/shared/providers/file_manager.dart';
 import 'package:path/path.dart';
 
 class FileItemWidget extends ConsumerWidget {
@@ -45,6 +48,23 @@ class _FileListItem extends ConsumerWidget {
             ref
                 .read(fileExplorerManagerProvider.notifier)
                 .toggleItemExpansion(item.path);
+          } else {
+            if (!ref.read(tabManagerProvider.notifier).hasTab(item.path)) {
+              final lines = ref
+                  .read(fileManagerProvider.notifier)
+                  .readFileAsLines(item.path);
+
+              ref
+                  .read(tabManagerProvider.notifier)
+                  .addTab(item.path, name: basename(item.path));
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(editorProvider(item.path).notifier).setLines(lines);
+              });
+            } else {
+              ref
+                  .read(tabManagerProvider.notifier)
+                  .addTab(item.path, name: basename(item.path));
+            }
           }
         },
         child: Container(

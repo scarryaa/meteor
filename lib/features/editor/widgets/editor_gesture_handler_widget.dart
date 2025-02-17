@@ -6,14 +6,19 @@ import 'package:meteor/features/editor/services/editor_gesture_handler.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorGestureHandlerWidget extends ConsumerWidget {
-  const EditorGestureHandlerWidget({super.key, required this.child});
+  const EditorGestureHandlerWidget({
+    super.key,
+    required this.path,
+    required this.child,
+  });
 
   final Widget child;
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editor = ref.read(editorProvider.notifier);
-    final state = ref.watch(editorProvider);
+    final editor = ref.read(editorProvider(path).notifier);
+    final state = ref.watch(editorProvider(path));
     final metrics = ref.watch(editorMeasurerProvider);
     final vScrollController = ref.watch(
       scrollControllerByKeyProvider('editorVScrollController'),
