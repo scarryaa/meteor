@@ -5,18 +5,32 @@ import 'package:meteor/features/file_explorer/models/file_item.dart';
 import 'package:meteor/features/file_explorer/models/state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'file_explorer_manager.g.dart';
 
 @riverpod
 class FileExplorerManager extends _$FileExplorerManager {
+  static const String _lastDirectoryKey = 'last_directory_path';
+
   @override
   FileExplorerState build() {
+    _initializeDirectory();
     return const FileExplorerState();
   }
 
   void toggleOpen() {
     state = state.copyWith(isOpen: !state.isOpen);
+  }
+
+  Future<void> _initializeDirectory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lastPath = prefs.getString(_lastDirectoryKey);
+
+    if (lastPath != null && Directory(lastPath).existsSync()) {
+      state = state.copyWith(currentDirectoryPath: lastPath);
+      await loadFiles(lastPath);
+    }
   }
 
   Future<void> selectDirectory() async {
@@ -25,6 +39,9 @@ class FileExplorerManager extends _$FileExplorerManager {
     if (newPath != null) {
       state = state.copyWith(currentDirectoryPath: newPath);
       await loadFiles(newPath);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_lastDirectoryKey, newPath);
     }
   }
 

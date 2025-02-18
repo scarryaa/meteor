@@ -19,6 +19,7 @@ dependencies:
   file_picker: ^9.0.0
   path: ^1.9.1
   bitsdojo_window: ^0.1.6
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:
