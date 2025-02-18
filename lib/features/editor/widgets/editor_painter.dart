@@ -1,8 +1,11 @@
+import 'dart:ffi' hide Size;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:meteor/bindings/tree-sitter/tree_sitter_bindings.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:meteor/features/editor/models/selection.dart';
+import 'package:meteor/features/editor/providers/tree_sitter_manager.dart';
 import 'package:meteor/shared/models/cursor.dart';
 import 'package:meteor/shared/models/visible_lines.dart';
 
@@ -13,12 +16,16 @@ class EditorPainter extends CustomPainter {
     required Selection selection,
     required EditorMetrics metrics,
     required VisibleLines visibleLines,
+    required TreeSitterManager treeSitterManager,
+    required Pointer<TSTree> tree,
   }) : _textPainter = TextPainter(textDirection: TextDirection.ltr),
        _lines = lines,
        _cursor = cursor,
        _selection = selection,
        _metrics = metrics,
-       _visibleLines = visibleLines;
+       _visibleLines = visibleLines,
+       _tree = tree,
+       _treeSitterManager = treeSitterManager;
 
   final TextPainter _textPainter;
   final List<String> _lines;
@@ -26,6 +33,9 @@ class EditorPainter extends CustomPainter {
   final Selection _selection;
   final EditorMetrics _metrics;
   final VisibleLines _visibleLines;
+
+  final TreeSitterManager _treeSitterManager;
+  final Pointer<TSTree> _tree;
 
   static const fontFamily = 'MesloLGL Nerd Font Mono';
   static const fontSize = 15.0;

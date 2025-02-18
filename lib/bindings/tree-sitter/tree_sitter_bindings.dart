@@ -8,160 +8,118 @@ import 'dart:ffi' as ffi;
 class TreeSitter {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   TreeSitter(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+    : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   TreeSitter.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
-      : _lookup = lookup;
+    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+  ) : _lookup = lookup;
 
   ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>> signal(
     int arg0,
     ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>> arg1,
   ) {
-    return _signal(
-      arg0,
-      arg1,
-    );
+    return _signal(arg0, arg1);
   }
 
   late final _signalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>> Function(
-              ffi.Int,
-              ffi.Pointer<
-                  ffi.NativeFunction<ffi.Void Function(ffi.Int)>>)>>('signal');
-  late final _signal = _signalPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>> Function(
-          int, ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>)>();
+        ffi.Int,
+        ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>,
+      )
+    >
+  >('signal');
+  late final _signal =
+      _signalPtr
+          .asFunction<
+            ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>
+            Function(
+              int,
+              ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>,
+            )
+          >();
 
-  int getpriority(
-    int arg0,
-    int arg1,
-  ) {
-    return _getpriority(
-      arg0,
-      arg1,
-    );
+  int getpriority(int arg0, int arg1) {
+    return _getpriority(arg0, arg1);
   }
 
   late final _getpriorityPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, id_t)>>(
-          'getpriority');
+        'getpriority',
+      );
   late final _getpriority =
       _getpriorityPtr.asFunction<int Function(int, int)>();
 
-  int getiopolicy_np(
-    int arg0,
-    int arg1,
-  ) {
-    return _getiopolicy_np(
-      arg0,
-      arg1,
-    );
+  int getiopolicy_np(int arg0, int arg1) {
+    return _getiopolicy_np(arg0, arg1);
   }
 
   late final _getiopolicy_npPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>(
-          'getiopolicy_np');
+        'getiopolicy_np',
+      );
   late final _getiopolicy_np =
       _getiopolicy_npPtr.asFunction<int Function(int, int)>();
 
-  int getrlimit(
-    int arg0,
-    ffi.Pointer<rlimit> arg1,
-  ) {
-    return _getrlimit(
-      arg0,
-      arg1,
-    );
+  int getrlimit(int arg0, ffi.Pointer<rlimit> arg1) {
+    return _getrlimit(arg0, arg1);
   }
 
   late final _getrlimitPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rlimit>)>>(
-      'getrlimit');
+    ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rlimit>)>
+  >('getrlimit');
   late final _getrlimit =
       _getrlimitPtr.asFunction<int Function(int, ffi.Pointer<rlimit>)>();
 
-  int getrusage(
-    int arg0,
-    ffi.Pointer<rusage> arg1,
-  ) {
-    return _getrusage(
-      arg0,
-      arg1,
-    );
+  int getrusage(int arg0, ffi.Pointer<rusage> arg1) {
+    return _getrusage(arg0, arg1);
   }
 
   late final _getrusagePtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rusage>)>>(
-      'getrusage');
+    ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rusage>)>
+  >('getrusage');
   late final _getrusage =
       _getrusagePtr.asFunction<int Function(int, ffi.Pointer<rusage>)>();
 
-  int setpriority(
-    int arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _setpriority(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int setpriority(int arg0, int arg1, int arg2) {
+    return _setpriority(arg0, arg1, arg2);
   }
 
   late final _setpriorityPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, id_t, ffi.Int)>>(
-          'setpriority');
+        'setpriority',
+      );
   late final _setpriority =
       _setpriorityPtr.asFunction<int Function(int, int, int)>();
 
-  int setiopolicy_np(
-    int arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _setiopolicy_np(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int setiopolicy_np(int arg0, int arg1, int arg2) {
+    return _setiopolicy_np(arg0, arg1, arg2);
   }
 
   late final _setiopolicy_npPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int, ffi.Int)>>(
-          'setiopolicy_np');
+        'setiopolicy_np',
+      );
   late final _setiopolicy_np =
       _setiopolicy_npPtr.asFunction<int Function(int, int, int)>();
 
-  int setrlimit(
-    int arg0,
-    ffi.Pointer<rlimit> arg1,
-  ) {
-    return _setrlimit(
-      arg0,
-      arg1,
-    );
+  int setrlimit(int arg0, ffi.Pointer<rlimit> arg1) {
+    return _setrlimit(arg0, arg1);
   }
 
   late final _setrlimitPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rlimit>)>>(
-      'setrlimit');
+    ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<rlimit>)>
+  >('setrlimit');
   late final _setrlimit =
       _setrlimitPtr.asFunction<int Function(int, ffi.Pointer<rlimit>)>();
 
-  int wait1(
-    ffi.Pointer<ffi.Int> arg0,
-  ) {
-    return _wait1(
-      arg0,
-    );
+  int wait1(ffi.Pointer<ffi.Int> arg0) {
+    return _wait1(arg0);
   }
 
   late final _wait1Ptr =
@@ -169,21 +127,13 @@ class TreeSitter {
   late final _wait1 =
       _wait1Ptr.asFunction<int Function(ffi.Pointer<ffi.Int>)>();
 
-  int waitpid(
-    int arg0,
-    ffi.Pointer<ffi.Int> arg1,
-    int arg2,
-  ) {
-    return _waitpid(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int waitpid(int arg0, ffi.Pointer<ffi.Int> arg1, int arg2) {
+    return _waitpid(arg0, arg1, arg2);
   }
 
   late final _waitpidPtr = _lookup<
-      ffi.NativeFunction<
-          pid_t Function(pid_t, ffi.Pointer<ffi.Int>, ffi.Int)>>('waitpid');
+    ffi.NativeFunction<pid_t Function(pid_t, ffi.Pointer<ffi.Int>, ffi.Int)>
+  >('waitpid');
   late final _waitpid =
       _waitpidPtr.asFunction<int Function(int, ffi.Pointer<ffi.Int>, int)>();
 
@@ -193,39 +143,32 @@ class TreeSitter {
     ffi.Pointer<siginfo_t> arg2,
     int arg3,
   ) {
-    return _waitid(
-      arg0.value,
-      arg1,
-      arg2,
-      arg3,
-    );
+    return _waitid(arg0.value, arg1, arg2, arg3);
   }
 
   late final _waitidPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.UnsignedInt, id_t, ffi.Pointer<siginfo_t>,
-              ffi.Int)>>('waitid');
-  late final _waitid = _waitidPtr
-      .asFunction<int Function(int, int, ffi.Pointer<siginfo_t>, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.UnsignedInt, id_t, ffi.Pointer<siginfo_t>, ffi.Int)
+    >
+  >('waitid');
+  late final _waitid =
+      _waitidPtr
+          .asFunction<int Function(int, int, ffi.Pointer<siginfo_t>, int)>();
 
-  int wait3(
-    ffi.Pointer<ffi.Int> arg0,
-    int arg1,
-    ffi.Pointer<rusage> arg2,
-  ) {
-    return _wait3(
-      arg0,
-      arg1,
-      arg2,
-    );
+  int wait3(ffi.Pointer<ffi.Int> arg0, int arg1, ffi.Pointer<rusage> arg2) {
+    return _wait3(arg0, arg1, arg2);
   }
 
   late final _wait3Ptr = _lookup<
-      ffi.NativeFunction<
-          pid_t Function(
-              ffi.Pointer<ffi.Int>, ffi.Int, ffi.Pointer<rusage>)>>('wait3');
-  late final _wait3 = _wait3Ptr.asFunction<
-      int Function(ffi.Pointer<ffi.Int>, int, ffi.Pointer<rusage>)>();
+    ffi.NativeFunction<
+      pid_t Function(ffi.Pointer<ffi.Int>, ffi.Int, ffi.Pointer<rusage>)
+    >
+  >('wait3');
+  late final _wait3 =
+      _wait3Ptr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Int>, int, ffi.Pointer<rusage>)
+          >();
 
   int wait4(
     int arg0,
@@ -233,149 +176,130 @@ class TreeSitter {
     int arg2,
     ffi.Pointer<rusage> arg3,
   ) {
-    return _wait4(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
+    return _wait4(arg0, arg1, arg2, arg3);
   }
 
   late final _wait4Ptr = _lookup<
-      ffi.NativeFunction<
-          pid_t Function(pid_t, ffi.Pointer<ffi.Int>, ffi.Int,
-              ffi.Pointer<rusage>)>>('wait4');
-  late final _wait4 = _wait4Ptr.asFunction<
-      int Function(int, ffi.Pointer<ffi.Int>, int, ffi.Pointer<rusage>)>();
+    ffi.NativeFunction<
+      pid_t Function(pid_t, ffi.Pointer<ffi.Int>, ffi.Int, ffi.Pointer<rusage>)
+    >
+  >('wait4');
+  late final _wait4 =
+      _wait4Ptr
+          .asFunction<
+            int Function(int, ffi.Pointer<ffi.Int>, int, ffi.Pointer<rusage>)
+          >();
 
-  ffi.Pointer<ffi.Void> alloca(
-    int arg0,
-  ) {
-    return _alloca(
-      arg0,
-    );
+  ffi.Pointer<ffi.Void> alloca(int arg0) {
+    return _alloca(arg0);
   }
 
   late final _allocaPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
-          'alloca');
+        'alloca',
+      );
   late final _alloca =
       _allocaPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
 
-  late final ffi.Pointer<ffi.Int> ___mb_cur_max =
-      _lookup<ffi.Int>('__mb_cur_max');
+  late final ffi.Pointer<ffi.Int> ___mb_cur_max = _lookup<ffi.Int>(
+    '__mb_cur_max',
+  );
 
   int get __mb_cur_max => ___mb_cur_max.value;
 
   set __mb_cur_max(int value) => ___mb_cur_max.value = value;
 
-  ffi.Pointer<ffi.Void> malloc_type_malloc(
-    int size,
-    int type_id,
-  ) {
-    return _malloc_type_malloc(
-      size,
-      type_id,
-    );
+  ffi.Pointer<ffi.Void> malloc_type_malloc(int size, int type_id) {
+    return _malloc_type_malloc(size, type_id);
   }
 
   late final _malloc_type_mallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Size, malloc_type_id_t)>>('malloc_type_malloc');
-  late final _malloc_type_malloc = _malloc_type_mallocPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Size, malloc_type_id_t)
+    >
+  >('malloc_type_malloc');
+  late final _malloc_type_malloc =
+      _malloc_type_mallocPtr
+          .asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
 
-  ffi.Pointer<ffi.Void> malloc_type_calloc(
-    int count,
-    int size,
-    int type_id,
-  ) {
-    return _malloc_type_calloc(
-      count,
-      size,
-      type_id,
-    );
+  ffi.Pointer<ffi.Void> malloc_type_calloc(int count, int size, int type_id) {
+    return _malloc_type_calloc(count, size, type_id);
   }
 
   late final _malloc_type_callocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Size, ffi.Size, malloc_type_id_t)>>('malloc_type_calloc');
-  late final _malloc_type_calloc = _malloc_type_callocPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(int, int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size, malloc_type_id_t)
+    >
+  >('malloc_type_calloc');
+  late final _malloc_type_calloc =
+      _malloc_type_callocPtr
+          .asFunction<ffi.Pointer<ffi.Void> Function(int, int, int)>();
 
-  void malloc_type_free(
-    ffi.Pointer<ffi.Void> ptr,
-    int type_id,
-  ) {
-    return _malloc_type_free(
-      ptr,
-      type_id,
-    );
+  void malloc_type_free(ffi.Pointer<ffi.Void> ptr, int type_id) {
+    return _malloc_type_free(ptr, type_id);
   }
 
   late final _malloc_type_freePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ffi.Void>, malloc_type_id_t)>>('malloc_type_free');
-  late final _malloc_type_free = _malloc_type_freePtr
-      .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<ffi.Void>, malloc_type_id_t)
+    >
+  >('malloc_type_free');
+  late final _malloc_type_free =
+      _malloc_type_freePtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
   ffi.Pointer<ffi.Void> malloc_type_realloc(
     ffi.Pointer<ffi.Void> ptr,
     int size,
     int type_id,
   ) {
-    return _malloc_type_realloc(
-      ptr,
-      size,
-      type_id,
-    );
+    return _malloc_type_realloc(ptr, size, type_id);
   }
 
   late final _malloc_type_reallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size,
-              malloc_type_id_t)>>('malloc_type_realloc');
-  late final _malloc_type_realloc = _malloc_type_reallocPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_realloc');
+  late final _malloc_type_realloc =
+      _malloc_type_reallocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int, int)
+          >();
 
-  ffi.Pointer<ffi.Void> malloc_type_valloc(
-    int size,
-    int type_id,
-  ) {
-    return _malloc_type_valloc(
-      size,
-      type_id,
-    );
+  ffi.Pointer<ffi.Void> malloc_type_valloc(int size, int type_id) {
+    return _malloc_type_valloc(size, type_id);
   }
 
   late final _malloc_type_vallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Size, malloc_type_id_t)>>('malloc_type_valloc');
-  late final _malloc_type_valloc = _malloc_type_vallocPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Size, malloc_type_id_t)
+    >
+  >('malloc_type_valloc');
+  late final _malloc_type_valloc =
+      _malloc_type_vallocPtr
+          .asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
 
   ffi.Pointer<ffi.Void> malloc_type_aligned_alloc(
     int alignment,
     int size,
     int type_id,
   ) {
-    return _malloc_type_aligned_alloc(
-      alignment,
-      size,
-      type_id,
-    );
+    return _malloc_type_aligned_alloc(alignment, size, type_id);
   }
 
   late final _malloc_type_aligned_allocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size,
-              malloc_type_id_t)>>('malloc_type_aligned_alloc');
-  late final _malloc_type_aligned_alloc = _malloc_type_aligned_allocPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(int, int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size, malloc_type_id_t)
+    >
+  >('malloc_type_aligned_alloc');
+  late final _malloc_type_aligned_alloc =
+      _malloc_type_aligned_allocPtr
+          .asFunction<ffi.Pointer<ffi.Void> Function(int, int, int)>();
 
   int malloc_type_posix_memalign(
     ffi.Pointer<ffi.Pointer<ffi.Void>> memptr,
@@ -383,40 +307,47 @@ class TreeSitter {
     int size,
     int type_id,
   ) {
-    return _malloc_type_posix_memalign(
-      memptr,
-      alignment,
-      size,
-      type_id,
-    );
+    return _malloc_type_posix_memalign(memptr, alignment, size, type_id);
   }
 
   late final _malloc_type_posix_memalignPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Size,
-              ffi.Size, malloc_type_id_t)>>('malloc_type_posix_memalign');
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.Void>>,
+        ffi.Size,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_posix_memalign');
   late final _malloc_type_posix_memalign =
-      _malloc_type_posix_memalignPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, int, int, int)>();
+      _malloc_type_posix_memalignPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, int, int, int)
+          >();
 
   ffi.Pointer<ffi.Void> malloc_type_zone_malloc(
     ffi.Pointer<malloc_zone_t> zone,
     int size,
     int type_id,
   ) {
-    return _malloc_type_zone_malloc(
-      zone,
-      size,
-      type_id,
-    );
+    return _malloc_type_zone_malloc(zone, size, type_id);
   }
 
   late final _malloc_type_zone_mallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, ffi.Size,
-              malloc_type_id_t)>>('malloc_type_zone_malloc');
-  late final _malloc_type_zone_malloc = _malloc_type_zone_mallocPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_malloc');
+  late final _malloc_type_zone_malloc =
+      _malloc_type_zone_mallocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, int, int)
+          >();
 
   ffi.Pointer<ffi.Void> malloc_type_zone_calloc(
     ffi.Pointer<malloc_zone_t> zone,
@@ -424,40 +355,56 @@ class TreeSitter {
     int size,
     int type_id,
   ) {
-    return _malloc_type_zone_calloc(
-      zone,
-      count,
-      size,
-      type_id,
-    );
+    return _malloc_type_zone_calloc(zone, count, size, type_id);
   }
 
   late final _malloc_type_zone_callocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, ffi.Size,
-              ffi.Size, malloc_type_id_t)>>('malloc_type_zone_calloc');
-  late final _malloc_type_zone_calloc = _malloc_type_zone_callocPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<malloc_zone_t>, int, int, int)>();
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Size,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_calloc');
+  late final _malloc_type_zone_calloc =
+      _malloc_type_zone_callocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<malloc_zone_t>,
+              int,
+              int,
+              int,
+            )
+          >();
 
   void malloc_type_zone_free(
     ffi.Pointer<malloc_zone_t> zone,
     ffi.Pointer<ffi.Void> ptr,
     int type_id,
   ) {
-    return _malloc_type_zone_free(
-      zone,
-      ptr,
-      type_id,
-    );
+    return _malloc_type_zone_free(zone, ptr, type_id);
   }
 
   late final _malloc_type_zone_freePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<malloc_zone_t>, ffi.Pointer<ffi.Void>,
-              malloc_type_id_t)>>('malloc_type_zone_free');
-  late final _malloc_type_zone_free = _malloc_type_zone_freePtr.asFunction<
-      void Function(ffi.Pointer<malloc_zone_t>, ffi.Pointer<ffi.Void>, int)>();
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Pointer<ffi.Void>,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_free');
+  late final _malloc_type_zone_free =
+      _malloc_type_zone_freePtr
+          .asFunction<
+            void Function(
+              ffi.Pointer<malloc_zone_t>,
+              ffi.Pointer<ffi.Void>,
+              int,
+            )
+          >();
 
   ffi.Pointer<ffi.Void> malloc_type_zone_realloc(
     ffi.Pointer<malloc_zone_t> zone,
@@ -465,44 +412,52 @@ class TreeSitter {
     int size,
     int type_id,
   ) {
-    return _malloc_type_zone_realloc(
-      zone,
-      ptr,
-      size,
-      type_id,
-    );
+    return _malloc_type_zone_realloc(zone, ptr, size, type_id);
   }
 
   late final _malloc_type_zone_reallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_realloc');
+  late final _malloc_type_zone_realloc =
+      _malloc_type_zone_reallocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(
               ffi.Pointer<malloc_zone_t>,
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              malloc_type_id_t)>>('malloc_type_zone_realloc');
-  late final _malloc_type_zone_realloc =
-      _malloc_type_zone_reallocPtr.asFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<malloc_zone_t>, ffi.Pointer<ffi.Void>, int, int)>();
+              int,
+              int,
+            )
+          >();
 
   ffi.Pointer<ffi.Void> malloc_type_zone_valloc(
     ffi.Pointer<malloc_zone_t> zone,
     int size,
     int type_id,
   ) {
-    return _malloc_type_zone_valloc(
-      zone,
-      size,
-      type_id,
-    );
+    return _malloc_type_zone_valloc(zone, size, type_id);
   }
 
   late final _malloc_type_zone_vallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, ffi.Size,
-              malloc_type_id_t)>>('malloc_type_zone_valloc');
-  late final _malloc_type_zone_valloc = _malloc_type_zone_vallocPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, int, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_valloc');
+  late final _malloc_type_zone_valloc =
+      _malloc_type_zone_vallocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, int, int)
+          >();
 
   ffi.Pointer<ffi.Void> malloc_type_zone_memalign(
     ffi.Pointer<malloc_zone_t> zone,
@@ -510,128 +465,110 @@ class TreeSitter {
     int size,
     int type_id,
   ) {
-    return _malloc_type_zone_memalign(
-      zone,
-      alignment,
-      size,
-      type_id,
-    );
+    return _malloc_type_zone_memalign(zone, alignment, size, type_id);
   }
 
   late final _malloc_type_zone_memalignPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<malloc_zone_t>, ffi.Size,
-              ffi.Size, malloc_type_id_t)>>('malloc_type_zone_memalign');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(
+        ffi.Pointer<malloc_zone_t>,
+        ffi.Size,
+        ffi.Size,
+        malloc_type_id_t,
+      )
+    >
+  >('malloc_type_zone_memalign');
   late final _malloc_type_zone_memalign =
-      _malloc_type_zone_memalignPtr.asFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<malloc_zone_t>, int, int, int)>();
+      _malloc_type_zone_memalignPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<malloc_zone_t>,
+              int,
+              int,
+              int,
+            )
+          >();
 
-  ffi.Pointer<ffi.Void> malloc(
-    int __size,
-  ) {
-    return _malloc(
-      __size,
-    );
+  ffi.Pointer<ffi.Void> malloc(int __size) {
+    return _malloc(__size);
   }
 
   late final _mallocPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
-          'malloc');
+        'malloc',
+      );
   late final _malloc =
       _mallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
 
-  ffi.Pointer<ffi.Void> calloc(
-    int __count,
-    int __size,
-  ) {
-    return _calloc(
-      __count,
-      __size,
-    );
+  ffi.Pointer<ffi.Void> calloc(int __count, int __size) {
+    return _calloc(__count, __size);
   }
 
   late final _callocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>('calloc');
+    ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>
+  >('calloc');
   late final _calloc =
       _callocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
 
-  void free(
-    ffi.Pointer<ffi.Void> arg0,
-  ) {
-    return _free(
-      arg0,
-    );
+  void free(ffi.Pointer<ffi.Void> arg0) {
+    return _free(arg0);
   }
 
   late final _freePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'free');
+        'free',
+      );
   late final _free =
       _freePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
-  ffi.Pointer<ffi.Void> realloc(
-    ffi.Pointer<ffi.Void> __ptr,
-    int __size,
-  ) {
-    return _realloc(
-      __ptr,
-      __size,
-    );
+  ffi.Pointer<ffi.Void> realloc(ffi.Pointer<ffi.Void> __ptr, int __size) {
+    return _realloc(__ptr, __size);
   }
 
   late final _reallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('realloc');
-  late final _realloc = _reallocPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)
+    >
+  >('realloc');
+  late final _realloc =
+      _reallocPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)
+          >();
 
-  ffi.Pointer<ffi.Void> reallocf(
-    ffi.Pointer<ffi.Void> __ptr,
-    int __size,
-  ) {
-    return _reallocf(
-      __ptr,
-      __size,
-    );
+  ffi.Pointer<ffi.Void> reallocf(ffi.Pointer<ffi.Void> __ptr, int __size) {
+    return _reallocf(__ptr, __size);
   }
 
   late final _reallocfPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>, ffi.Size)>>('reallocf');
-  late final _reallocf = _reallocfPtr
-      .asFunction<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)
+    >
+  >('reallocf');
+  late final _reallocf =
+      _reallocfPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)
+          >();
 
-  ffi.Pointer<ffi.Void> valloc(
-    int __size,
-  ) {
-    return _valloc(
-      __size,
-    );
+  ffi.Pointer<ffi.Void> valloc(int __size) {
+    return _valloc(__size);
   }
 
   late final _vallocPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
-          'valloc');
+        'valloc',
+      );
   late final _valloc =
       _vallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
 
-  ffi.Pointer<ffi.Void> aligned_alloc(
-    int __alignment,
-    int __size,
-  ) {
-    return _aligned_alloc(
-      __alignment,
-      __size,
-    );
+  ffi.Pointer<ffi.Void> aligned_alloc(int __alignment, int __size) {
+    return _aligned_alloc(__alignment, __size);
   }
 
   late final _aligned_allocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>('aligned_alloc');
+    ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>
+  >('aligned_alloc');
   late final _aligned_alloc =
       _aligned_allocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
 
@@ -640,122 +577,107 @@ class TreeSitter {
     int __alignment,
     int __size,
   ) {
-    return _posix_memalign(
-      __memptr,
-      __alignment,
-      __size,
-    );
+    return _posix_memalign(__memptr, __alignment, __size);
   }
 
   late final _posix_memalignPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Size,
-              ffi.Size)>>('posix_memalign');
-  late final _posix_memalign = _posix_memalignPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, int, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Size, ffi.Size)
+    >
+  >('posix_memalign');
+  late final _posix_memalign =
+      _posix_memalignPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Pointer<ffi.Void>>, int, int)
+          >();
 
   void abort() {
     return _abort();
   }
 
-  late final _abortPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('abort');
+  late final _abortPtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+    'abort',
+  );
   late final _abort = _abortPtr.asFunction<void Function()>();
 
-  int abs(
-    int arg0,
-  ) {
-    return _abs(
-      arg0,
-    );
+  int abs(int arg0) {
+    return _abs(arg0);
   }
 
-  late final _absPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('abs');
+  late final _absPtr = _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+    'abs',
+  );
   late final _abs = _absPtr.asFunction<int Function(int)>();
 
-  int atexit(
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> arg0,
-  ) {
-    return _atexit(
-      arg0,
-    );
+  int atexit(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> arg0) {
+    return _atexit(arg0);
   }
 
   late final _atexitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>>('atexit');
-  late final _atexit = _atexitPtr.asFunction<
-      int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)
+    >
+  >('atexit');
+  late final _atexit =
+      _atexitPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)
+          >();
 
-  int at_quick_exit(
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> arg0,
-  ) {
-    return _at_quick_exit(
-      arg0,
-    );
+  int at_quick_exit(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> arg0) {
+    return _at_quick_exit(arg0);
   }
 
   late final _at_quick_exitPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>>(
-      'at_quick_exit');
-  late final _at_quick_exit = _at_quick_exitPtr.asFunction<
-      int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)
+    >
+  >('at_quick_exit');
+  late final _at_quick_exit =
+      _at_quick_exitPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)
+          >();
 
-  double atof(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _atof(
-      arg0,
-    );
+  double atof(ffi.Pointer<ffi.Char> arg0) {
+    return _atof(arg0);
   }
 
   late final _atofPtr =
       _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<ffi.Char>)>>(
-          'atof');
+        'atof',
+      );
   late final _atof =
       _atofPtr.asFunction<double Function(ffi.Pointer<ffi.Char>)>();
 
-  int atoi(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _atoi(
-      arg0,
-    );
+  int atoi(ffi.Pointer<ffi.Char> arg0) {
+    return _atoi(arg0);
   }
 
   late final _atoiPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'atoi');
+        'atoi',
+      );
   late final _atoi = _atoiPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
-  int atol(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _atol(
-      arg0,
-    );
+  int atol(ffi.Pointer<ffi.Char> arg0) {
+    return _atol(arg0);
   }
 
   late final _atolPtr =
       _lookup<ffi.NativeFunction<ffi.Long Function(ffi.Pointer<ffi.Char>)>>(
-          'atol');
+        'atol',
+      );
   late final _atol = _atolPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
-  int atoll(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _atoll(
-      arg0,
-    );
+  int atoll(ffi.Pointer<ffi.Char> arg0) {
+    return _atoll(arg0);
   }
 
   late final _atollPtr =
       _lookup<ffi.NativeFunction<ffi.LongLong Function(ffi.Pointer<ffi.Char>)>>(
-          'atoll');
+        'atoll',
+      );
   late final _atoll =
       _atollPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -765,147 +687,115 @@ class TreeSitter {
     int __nel,
     int __width,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+      >
+    >
+    __compar,
   ) {
-    return _bsearch(
-      __key,
-      __base,
-      __nel,
-      __width,
-      __compar,
-    );
+    return _bsearch(__key, __base, __nel, __width, __compar);
   }
 
   late final _bsearchPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
-              ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('bsearch');
-  late final _bsearch = _bsearchPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(
-                      ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>)>();
+        ffi.Pointer<ffi.Void>,
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+          >
+        >,
+      )
+    >
+  >('bsearch');
+  late final _bsearch =
+      _bsearchPtr
+          .asFunction<
+            ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              int,
+              int,
+              ffi.Pointer<
+                ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+                >
+              >,
+            )
+          >();
 
-  div_t div(
-    int arg0,
-    int arg1,
-  ) {
-    return _div(
-      arg0,
-      arg1,
-    );
+  div_t div(int arg0, int arg1) {
+    return _div(arg0, arg1);
   }
 
   late final _divPtr =
       _lookup<ffi.NativeFunction<div_t Function(ffi.Int, ffi.Int)>>('div');
   late final _div = _divPtr.asFunction<div_t Function(int, int)>();
 
-  void exit(
-    int arg0,
-  ) {
-    return _exit(
-      arg0,
-    );
+  void exit(int arg0) {
+    return _exit(arg0);
   }
 
-  late final _exitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>('exit');
+  late final _exitPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
+    'exit',
+  );
   late final _exit = _exitPtr.asFunction<void Function(int)>();
 
-  ffi.Pointer<ffi.Char> getenv(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _getenv(
-      arg0,
-    );
+  ffi.Pointer<ffi.Char> getenv(ffi.Pointer<ffi.Char> arg0) {
+    return _getenv(arg0);
   }
 
   late final _getenvPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('getenv');
-  late final _getenv = _getenvPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>
+  >('getenv');
+  late final _getenv =
+      _getenvPtr
+          .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
-  int labs(
-    int arg0,
-  ) {
-    return _labs(
-      arg0,
-    );
+  int labs(int arg0) {
+    return _labs(arg0);
   }
 
   late final _labsPtr =
       _lookup<ffi.NativeFunction<ffi.Long Function(ffi.Long)>>('labs');
   late final _labs = _labsPtr.asFunction<int Function(int)>();
 
-  ldiv_t ldiv(
-    int arg0,
-    int arg1,
-  ) {
-    return _ldiv(
-      arg0,
-      arg1,
-    );
+  ldiv_t ldiv(int arg0, int arg1) {
+    return _ldiv(arg0, arg1);
   }
 
   late final _ldivPtr =
       _lookup<ffi.NativeFunction<ldiv_t Function(ffi.Long, ffi.Long)>>('ldiv');
   late final _ldiv = _ldivPtr.asFunction<ldiv_t Function(int, int)>();
 
-  int llabs(
-    int arg0,
-  ) {
-    return _llabs(
-      arg0,
-    );
+  int llabs(int arg0) {
+    return _llabs(arg0);
   }
 
   late final _llabsPtr =
       _lookup<ffi.NativeFunction<ffi.LongLong Function(ffi.LongLong)>>('llabs');
   late final _llabs = _llabsPtr.asFunction<int Function(int)>();
 
-  lldiv_t lldiv(
-    int arg0,
-    int arg1,
-  ) {
-    return _lldiv(
-      arg0,
-      arg1,
-    );
+  lldiv_t lldiv(int arg0, int arg1) {
+    return _lldiv(arg0, arg1);
   }
 
   late final _lldivPtr =
       _lookup<ffi.NativeFunction<lldiv_t Function(ffi.LongLong, ffi.LongLong)>>(
-          'lldiv');
+        'lldiv',
+      );
   late final _lldiv = _lldivPtr.asFunction<lldiv_t Function(int, int)>();
 
-  int mblen(
-    ffi.Pointer<ffi.Char> __s,
-    int __n,
-  ) {
-    return _mblen(
-      __s,
-      __n,
-    );
+  int mblen(ffi.Pointer<ffi.Char> __s, int __n) {
+    return _mblen(__s, __n);
   }
 
   late final _mblenPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size)>>('mblen');
+    ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size)>
+  >('mblen');
   late final _mblen =
       _mblenPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
 
@@ -914,82 +804,84 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg1,
     int arg2,
   ) {
-    return _mbstowcs(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _mbstowcs(arg0, arg1, arg2);
   }
 
   late final _mbstowcsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('mbstowcs');
-  late final _mbstowcs = _mbstowcsPtr.asFunction<
-      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      ffi.Size Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, ffi.Size)
+    >
+  >('mbstowcs');
+  late final _mbstowcs =
+      _mbstowcsPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, int)
+          >();
 
   int mbtowc(
     ffi.Pointer<ffi.WChar> arg0,
     ffi.Pointer<ffi.Char> arg1,
     int arg2,
   ) {
-    return _mbtowc(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _mbtowc(arg0, arg1, arg2);
   }
 
   late final _mbtowcPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>,
-              ffi.Size)>>('mbtowc');
-  late final _mbtowc = _mbtowcPtr.asFunction<
-      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, ffi.Size)
+    >
+  >('mbtowc');
+  late final _mbtowc =
+      _mbtowcPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Char>, int)
+          >();
 
   void qsort(
     ffi.Pointer<ffi.Void> __base,
     int __nel,
     int __width,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+      >
+    >
+    __compar,
   ) {
-    return _qsort(
-      __base,
-      __nel,
-      __width,
-      __compar,
-    );
+    return _qsort(__base, __nel, __width, __compar);
   }
 
   late final _qsortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+          >
+        >,
+      )
+    >
+  >('qsort');
+  late final _qsort =
+      _qsortPtr
+          .asFunction<
+            void Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              int,
+              int,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('qsort');
-  late final _qsort = _qsortPtr.asFunction<
-      void Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(
-                      ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+                >
+              >,
+            )
+          >();
 
-  void quick_exit(
-    int arg0,
-  ) {
-    return _quick_exit(
-      arg0,
-    );
+  void quick_exit(int arg0) {
+    return _quick_exit(arg0);
   }
 
   late final _quick_exitPtr =
@@ -1003,12 +895,8 @@ class TreeSitter {
   late final _randPtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>('rand');
   late final _rand = _randPtr.asFunction<int Function()>();
 
-  void srand(
-    int arg0,
-  ) {
-    return _srand(
-      arg0,
-    );
+  void srand(int arg0) {
+    return _srand(arg0);
   }
 
   late final _srandPtr =
@@ -1019,129 +907,166 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
   ) {
-    return _strtod(
-      arg0,
-      arg1,
-    );
+    return _strtod(arg0, arg1);
   }
 
   late final _strtodPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtod');
-  late final _strtod = _strtodPtr.asFunction<
-      double Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Double Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('strtod');
+  late final _strtod =
+      _strtodPtr
+          .asFunction<
+            double Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
   double strtof(
     ffi.Pointer<ffi.Char> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
   ) {
-    return _strtof(
-      arg0,
-      arg1,
-    );
+    return _strtof(arg0, arg1);
   }
 
   late final _strtofPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Float Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtof');
-  late final _strtof = _strtofPtr.asFunction<
-      double Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Float Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('strtof');
+  late final _strtof =
+      _strtofPtr
+          .asFunction<
+            double Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
   int strtol(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtol(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtol(__str, __endptr, __base);
   }
 
   late final _strtolPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Long Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtol');
-  late final _strtol = _strtolPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.Long Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtol');
+  late final _strtol =
+      _strtolPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
   int strtoll(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtoll(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtoll(__str, __endptr, __base);
   }
 
   late final _strtollPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.LongLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoll');
-  late final _strtoll = _strtollPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.LongLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtoll');
+  late final _strtoll =
+      _strtollPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
   int strtoul(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtoul(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtoul(__str, __endptr, __base);
   }
 
   late final _strtoulPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoul');
-  late final _strtoul = _strtoulPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.UnsignedLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtoul');
+  late final _strtoul =
+      _strtoulPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
   int strtoull(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtoull(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtoull(__str, __endptr, __base);
   }
 
   late final _strtoullPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLongLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoull');
-  late final _strtoull = _strtoullPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.UnsignedLongLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtoull');
+  late final _strtoull =
+      _strtoullPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
-  int system(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _system(
-      arg0,
-    );
+  int system(ffi.Pointer<ffi.Char> arg0) {
+    return _system(arg0);
   }
 
   late final _systemPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'system');
+        'system',
+      );
   late final _system =
       _systemPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -1150,67 +1075,55 @@ class TreeSitter {
     ffi.Pointer<ffi.WChar> arg1,
     int arg2,
   ) {
-    return _wcstombs(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _wcstombs(arg0, arg1, arg2);
   }
 
   late final _wcstombsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.WChar>,
-              ffi.Size)>>('wcstombs');
-  late final _wcstombs = _wcstombsPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.WChar>, int)>();
+    ffi.NativeFunction<
+      ffi.Size Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.WChar>, ffi.Size)
+    >
+  >('wcstombs');
+  late final _wcstombs =
+      _wcstombsPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.WChar>, int)
+          >();
 
-  int wctomb(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-  ) {
-    return _wctomb(
-      arg0,
-      arg1,
-    );
+  int wctomb(ffi.Pointer<ffi.Char> arg0, int arg1) {
+    return _wctomb(arg0, arg1);
   }
 
   late final _wctombPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.WChar)>>('wctomb');
+    ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.WChar)>
+  >('wctomb');
   late final _wctomb =
       _wctombPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
 
-  void _Exit(
-    int arg0,
-  ) {
-    return __Exit(
-      arg0,
-    );
+  void _Exit(int arg0) {
+    return __Exit(arg0);
   }
 
   late final __ExitPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>('_Exit');
   late final __Exit = __ExitPtr.asFunction<void Function(int)>();
 
-  int a64l(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _a64l(
-      arg0,
-    );
+  int a64l(ffi.Pointer<ffi.Char> arg0) {
+    return _a64l(arg0);
   }
 
   late final _a64lPtr =
       _lookup<ffi.NativeFunction<ffi.Long Function(ffi.Pointer<ffi.Char>)>>(
-          'a64l');
+        'a64l',
+      );
   late final _a64l = _a64lPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
   double drand48() {
     return _drand48();
   }
 
-  late final _drand48Ptr =
-      _lookup<ffi.NativeFunction<ffi.Double Function()>>('drand48');
+  late final _drand48Ptr = _lookup<ffi.NativeFunction<ffi.Double Function()>>(
+    'drand48',
+  );
   late final _drand48 = _drand48Ptr.asFunction<double Function()>();
 
   ffi.Pointer<ffi.Char> ecvt(
@@ -1219,33 +1132,37 @@ class TreeSitter {
     ffi.Pointer<ffi.Int> arg2,
     ffi.Pointer<ffi.Int> arg3,
   ) {
-    return _ecvt(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
+    return _ecvt(arg0, arg1, arg2, arg3);
   }
 
   late final _ecvtPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Double, ffi.Int,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('ecvt');
-  late final _ecvt = _ecvtPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Char> Function(
-          double, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+        ffi.Double,
+        ffi.Int,
+        ffi.Pointer<ffi.Int>,
+        ffi.Pointer<ffi.Int>,
+      )
+    >
+  >('ecvt');
+  late final _ecvt =
+      _ecvtPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              double,
+              int,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+            )
+          >();
 
-  double erand48(
-    ffi.Pointer<ffi.UnsignedShort> arg0,
-  ) {
-    return _erand48(
-      arg0,
-    );
+  double erand48(ffi.Pointer<ffi.UnsignedShort> arg0) {
+    return _erand48(arg0);
   }
 
   late final _erand48Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(ffi.Pointer<ffi.UnsignedShort>)>>('erand48');
+    ffi.NativeFunction<ffi.Double Function(ffi.Pointer<ffi.UnsignedShort>)>
+  >('erand48');
   late final _erand48 =
       _erand48Ptr.asFunction<double Function(ffi.Pointer<ffi.UnsignedShort>)>();
 
@@ -1255,71 +1172,78 @@ class TreeSitter {
     ffi.Pointer<ffi.Int> arg2,
     ffi.Pointer<ffi.Int> arg3,
   ) {
-    return _fcvt(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
+    return _fcvt(arg0, arg1, arg2, arg3);
   }
 
   late final _fcvtPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Double, ffi.Int,
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>>('fcvt');
-  late final _fcvt = _fcvtPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Char> Function(
-          double, int, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+        ffi.Double,
+        ffi.Int,
+        ffi.Pointer<ffi.Int>,
+        ffi.Pointer<ffi.Int>,
+      )
+    >
+  >('fcvt');
+  late final _fcvt =
+      _fcvtPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              double,
+              int,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+            )
+          >();
 
   ffi.Pointer<ffi.Char> gcvt(
     double arg0,
     int arg1,
     ffi.Pointer<ffi.Char> arg2,
   ) {
-    return _gcvt(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _gcvt(arg0, arg1, arg2);
   }
 
   late final _gcvtPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Double, ffi.Int, ffi.Pointer<ffi.Char>)>>('gcvt');
-  late final _gcvt = _gcvtPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(double, int, ffi.Pointer<ffi.Char>)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Double, ffi.Int, ffi.Pointer<ffi.Char>)
+    >
+  >('gcvt');
+  late final _gcvt =
+      _gcvtPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(double, int, ffi.Pointer<ffi.Char>)
+          >();
 
   int getsubopt(
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg2,
   ) {
-    return _getsubopt(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _getsubopt(arg0, arg1, arg2);
   }
 
   late final _getsuboptPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('getsubopt');
+  late final _getsubopt =
+      _getsuboptPtr
+          .asFunction<
+            int Function(
               ffi.Pointer<ffi.Pointer<ffi.Char>>,
               ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('getsubopt');
-  late final _getsubopt = _getsuboptPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
-  int grantpt(
-    int arg0,
-  ) {
-    return _grantpt(
-      arg0,
-    );
+  int grantpt(int arg0) {
+    return _grantpt(arg0);
   }
 
   late final _grantptPtr =
@@ -1331,58 +1255,51 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg1,
     int arg2,
   ) {
-    return _initstate(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _initstate(arg0, arg1, arg2);
   }
 
   late final _initstatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.UnsignedInt, ffi.Pointer<ffi.Char>, ffi.Size)>>('initstate');
-  late final _initstate = _initstatePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(int, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(
+        ffi.UnsignedInt,
+        ffi.Pointer<ffi.Char>,
+        ffi.Size,
+      )
+    >
+  >('initstate');
+  late final _initstate =
+      _initstatePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(int, ffi.Pointer<ffi.Char>, int)
+          >();
 
-  int jrand48(
-    ffi.Pointer<ffi.UnsignedShort> arg0,
-  ) {
-    return _jrand48(
-      arg0,
-    );
+  int jrand48(ffi.Pointer<ffi.UnsignedShort> arg0) {
+    return _jrand48(arg0);
   }
 
   late final _jrand48Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Long Function(ffi.Pointer<ffi.UnsignedShort>)>>('jrand48');
+    ffi.NativeFunction<ffi.Long Function(ffi.Pointer<ffi.UnsignedShort>)>
+  >('jrand48');
   late final _jrand48 =
       _jrand48Ptr.asFunction<int Function(ffi.Pointer<ffi.UnsignedShort>)>();
 
-  ffi.Pointer<ffi.Char> l64a(
-    int arg0,
-  ) {
-    return _l64a(
-      arg0,
-    );
+  ffi.Pointer<ffi.Char> l64a(int arg0) {
+    return _l64a(arg0);
   }
 
   late final _l64aPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Long)>>(
-          'l64a');
+        'l64a',
+      );
   late final _l64a = _l64aPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
 
-  void lcong48(
-    ffi.Pointer<ffi.UnsignedShort> arg0,
-  ) {
-    return _lcong48(
-      arg0,
-    );
+  void lcong48(ffi.Pointer<ffi.UnsignedShort> arg0) {
+    return _lcong48(arg0);
   }
 
   late final _lcong48Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.UnsignedShort>)>>('lcong48');
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.UnsignedShort>)>
+  >('lcong48');
   late final _lcong48 =
       _lcong48Ptr.asFunction<void Function(ffi.Pointer<ffi.UnsignedShort>)>();
 
@@ -1390,35 +1307,30 @@ class TreeSitter {
     return _lrand48();
   }
 
-  late final _lrand48Ptr =
-      _lookup<ffi.NativeFunction<ffi.Long Function()>>('lrand48');
+  late final _lrand48Ptr = _lookup<ffi.NativeFunction<ffi.Long Function()>>(
+    'lrand48',
+  );
   late final _lrand48 = _lrand48Ptr.asFunction<int Function()>();
 
-  ffi.Pointer<ffi.Char> mktemp(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _mktemp(
-      arg0,
-    );
+  ffi.Pointer<ffi.Char> mktemp(ffi.Pointer<ffi.Char> arg0) {
+    return _mktemp(arg0);
   }
 
   late final _mktempPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('mktemp');
-  late final _mktemp = _mktempPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>
+  >('mktemp');
+  late final _mktemp =
+      _mktempPtr
+          .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
-  int mkstemp(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _mkstemp(
-      arg0,
-    );
+  int mkstemp(ffi.Pointer<ffi.Char> arg0) {
+    return _mkstemp(arg0);
   }
 
   late final _mkstempPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'mkstemp');
+        'mkstemp',
+      );
   late final _mkstemp =
       _mkstempPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -1426,80 +1338,60 @@ class TreeSitter {
     return _mrand48();
   }
 
-  late final _mrand48Ptr =
-      _lookup<ffi.NativeFunction<ffi.Long Function()>>('mrand48');
+  late final _mrand48Ptr = _lookup<ffi.NativeFunction<ffi.Long Function()>>(
+    'mrand48',
+  );
   late final _mrand48 = _mrand48Ptr.asFunction<int Function()>();
 
-  int nrand48(
-    ffi.Pointer<ffi.UnsignedShort> arg0,
-  ) {
-    return _nrand48(
-      arg0,
-    );
+  int nrand48(ffi.Pointer<ffi.UnsignedShort> arg0) {
+    return _nrand48(arg0);
   }
 
   late final _nrand48Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Long Function(ffi.Pointer<ffi.UnsignedShort>)>>('nrand48');
+    ffi.NativeFunction<ffi.Long Function(ffi.Pointer<ffi.UnsignedShort>)>
+  >('nrand48');
   late final _nrand48 =
       _nrand48Ptr.asFunction<int Function(ffi.Pointer<ffi.UnsignedShort>)>();
 
-  int posix_openpt(
-    int arg0,
-  ) {
-    return _posix_openpt(
-      arg0,
-    );
+  int posix_openpt(int arg0) {
+    return _posix_openpt(arg0);
   }
 
   late final _posix_openptPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('posix_openpt');
   late final _posix_openpt = _posix_openptPtr.asFunction<int Function(int)>();
 
-  ffi.Pointer<ffi.Char> ptsname(
-    int arg0,
-  ) {
-    return _ptsname(
-      arg0,
-    );
+  ffi.Pointer<ffi.Char> ptsname(int arg0) {
+    return _ptsname(arg0);
   }
 
   late final _ptsnamePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
-          'ptsname');
+        'ptsname',
+      );
   late final _ptsname =
       _ptsnamePtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
 
-  int ptsname_r(
-    int fildes,
-    ffi.Pointer<ffi.Char> buffer,
-    int buflen,
-  ) {
-    return _ptsname_r(
-      fildes,
-      buffer,
-      buflen,
-    );
+  int ptsname_r(int fildes, ffi.Pointer<ffi.Char> buffer, int buflen) {
+    return _ptsname_r(fildes, buffer, buflen);
   }
 
   late final _ptsname_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)>>('ptsname_r');
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, ffi.Size)
+    >
+  >('ptsname_r');
   late final _ptsname_r =
       _ptsname_rPtr.asFunction<int Function(int, ffi.Pointer<ffi.Char>, int)>();
 
-  int putenv(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _putenv(
-      arg0,
-    );
+  int putenv(ffi.Pointer<ffi.Char> arg0) {
+    return _putenv(arg0);
   }
 
   late final _putenvPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'putenv');
+        'putenv',
+      );
   late final _putenv =
       _putenvPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -1507,21 +1399,18 @@ class TreeSitter {
     return _random();
   }
 
-  late final _randomPtr =
-      _lookup<ffi.NativeFunction<ffi.Long Function()>>('random');
+  late final _randomPtr = _lookup<ffi.NativeFunction<ffi.Long Function()>>(
+    'random',
+  );
   late final _random = _randomPtr.asFunction<int Function()>();
 
-  int rand_r(
-    ffi.Pointer<ffi.UnsignedInt> arg0,
-  ) {
-    return _rand_r(
-      arg0,
-    );
+  int rand_r(ffi.Pointer<ffi.UnsignedInt> arg0) {
+    return _rand_r(arg0);
   }
 
   late final _rand_rPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.UnsignedInt>)>>(
-      'rand_r');
+    ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.UnsignedInt>)>
+  >('rand_r');
   late final _rand_r =
       _rand_rPtr.asFunction<int Function(ffi.Pointer<ffi.UnsignedInt>)>();
 
@@ -1529,131 +1418,118 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg0,
     ffi.Pointer<ffi.Char> arg1,
   ) {
-    return _realpath(
-      arg0,
-      arg1,
-    );
+    return _realpath(arg0, arg1);
   }
 
   late final _realpathPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('realpath');
-  late final _realpath = _realpathPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+      )
+    >
+  >('realpath');
+  late final _realpath =
+      _realpathPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+            )
+          >();
 
-  ffi.Pointer<ffi.UnsignedShort> seed48(
-    ffi.Pointer<ffi.UnsignedShort> arg0,
-  ) {
-    return _seed48(
-      arg0,
-    );
+  ffi.Pointer<ffi.UnsignedShort> seed48(ffi.Pointer<ffi.UnsignedShort> arg0) {
+    return _seed48(arg0);
   }
 
   late final _seed48Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.UnsignedShort> Function(
-              ffi.Pointer<ffi.UnsignedShort>)>>('seed48');
-  late final _seed48 = _seed48Ptr.asFunction<
-      ffi.Pointer<ffi.UnsignedShort> Function(
-          ffi.Pointer<ffi.UnsignedShort>)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.UnsignedShort> Function(ffi.Pointer<ffi.UnsignedShort>)
+    >
+  >('seed48');
+  late final _seed48 =
+      _seed48Ptr
+          .asFunction<
+            ffi.Pointer<ffi.UnsignedShort> Function(
+              ffi.Pointer<ffi.UnsignedShort>,
+            )
+          >();
 
   int setenv(
     ffi.Pointer<ffi.Char> __name,
     ffi.Pointer<ffi.Char> __value,
     int __overwrite,
   ) {
-    return _setenv(
-      __name,
-      __value,
-      __overwrite,
-    );
+    return _setenv(__name, __value, __overwrite);
   }
 
   late final _setenvPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Int)>>('setenv');
-  late final _setenv = _setenvPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Int)
+    >
+  >('setenv');
+  late final _setenv =
+      _setenvPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)
+          >();
 
-  void setkey(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _setkey(
-      arg0,
-    );
+  void setkey(ffi.Pointer<ffi.Char> arg0) {
+    return _setkey(arg0);
   }
 
   late final _setkeyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char>)>>(
-          'setkey');
+        'setkey',
+      );
   late final _setkey =
       _setkeyPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
 
-  ffi.Pointer<ffi.Char> setstate(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _setstate(
-      arg0,
-    );
+  ffi.Pointer<ffi.Char> setstate(ffi.Pointer<ffi.Char> arg0) {
+    return _setstate(arg0);
   }
 
   late final _setstatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('setstate');
-  late final _setstate = _setstatePtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>
+  >('setstate');
+  late final _setstate =
+      _setstatePtr
+          .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
-  void srand48(
-    int arg0,
-  ) {
-    return _srand48(
-      arg0,
-    );
+  void srand48(int arg0) {
+    return _srand48(arg0);
   }
 
   late final _srand48Ptr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Long)>>('srand48');
   late final _srand48 = _srand48Ptr.asFunction<void Function(int)>();
 
-  void srandom(
-    int arg0,
-  ) {
-    return _srandom(
-      arg0,
-    );
+  void srandom(int arg0) {
+    return _srandom(arg0);
   }
 
   late final _srandomPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.UnsignedInt)>>(
-          'srandom');
+        'srandom',
+      );
   late final _srandom = _srandomPtr.asFunction<void Function(int)>();
 
-  int unlockpt(
-    int arg0,
-  ) {
-    return _unlockpt(
-      arg0,
-    );
+  int unlockpt(int arg0) {
+    return _unlockpt(arg0);
   }
 
   late final _unlockptPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('unlockpt');
   late final _unlockpt = _unlockptPtr.asFunction<int Function(int)>();
 
-  int unsetenv(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _unsetenv(
-      arg0,
-    );
+  int unsetenv(ffi.Pointer<ffi.Char> arg0) {
+    return _unsetenv(arg0);
   }
 
   late final _unsetenvPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'unsetenv');
+        'unsetenv',
+      );
   late final _unsetenv =
       _unsetenvPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -1665,39 +1541,29 @@ class TreeSitter {
       _lookup<ffi.NativeFunction<ffi.Uint32 Function()>>('arc4random');
   late final _arc4random = _arc4randomPtr.asFunction<int Function()>();
 
-  void arc4random_addrandom(
-    ffi.Pointer<ffi.UnsignedChar> arg0,
-    int arg1,
-  ) {
-    return _arc4random_addrandom(
-      arg0,
-      arg1,
-    );
+  void arc4random_addrandom(ffi.Pointer<ffi.UnsignedChar> arg0, int arg1) {
+    return _arc4random_addrandom(arg0, arg1);
   }
 
   late final _arc4random_addrandomPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ffi.UnsignedChar>, ffi.Int)>>('arc4random_addrandom');
-  late final _arc4random_addrandom = _arc4random_addrandomPtr
-      .asFunction<void Function(ffi.Pointer<ffi.UnsignedChar>, int)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<ffi.UnsignedChar>, ffi.Int)
+    >
+  >('arc4random_addrandom');
+  late final _arc4random_addrandom =
+      _arc4random_addrandomPtr
+          .asFunction<void Function(ffi.Pointer<ffi.UnsignedChar>, int)>();
 
-  void arc4random_buf(
-    ffi.Pointer<ffi.Void> __buf,
-    int __nbytes,
-  ) {
-    return _arc4random_buf(
-      __buf,
-      __nbytes,
-    );
+  void arc4random_buf(ffi.Pointer<ffi.Void> __buf, int __nbytes) {
+    return _arc4random_buf(__buf, __nbytes);
   }
 
   late final _arc4random_bufPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Size)>>(
-      'arc4random_buf');
-  late final _arc4random_buf = _arc4random_bufPtr
-      .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Size)>
+  >('arc4random_buf');
+  late final _arc4random_buf =
+      _arc4random_bufPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
   void arc4random_stir() {
     return _arc4random_stir();
@@ -1708,17 +1574,14 @@ class TreeSitter {
   late final _arc4random_stir =
       _arc4random_stirPtr.asFunction<void Function()>();
 
-  int arc4random_uniform(
-    int __upper_bound,
-  ) {
-    return _arc4random_uniform(
-      __upper_bound,
-    );
+  int arc4random_uniform(int __upper_bound) {
+    return _arc4random_uniform(__upper_bound);
   }
 
   late final _arc4random_uniformPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Uint32)>>(
-          'arc4random_uniform');
+        'arc4random_uniform',
+      );
   late final _arc4random_uniform =
       _arc4random_uniformPtr.asFunction<int Function(int)>();
 
@@ -1727,27 +1590,35 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg1,
     int arg2,
   ) {
-    return _cgetcap(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _cgetcap(arg0, arg1, arg2);
   }
 
   late final _cgetcapPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('cgetcap');
-  late final _cgetcap = _cgetcapPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Int,
+      )
+    >
+  >('cgetcap');
+  late final _cgetcap =
+      _cgetcapPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              int,
+            )
+          >();
 
   int cgetclose() {
     return _cgetclose();
   }
 
-  late final _cgetclosePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('cgetclose');
+  late final _cgetclosePtr = _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+    'cgetclose',
+  );
   late final _cgetclose = _cgetclosePtr.asFunction<int Function()>();
 
   int cgetent(
@@ -1755,107 +1626,126 @@ class TreeSitter {
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
     ffi.Pointer<ffi.Char> arg2,
   ) {
-    return _cgetent(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _cgetent(arg0, arg1, arg2);
   }
 
   late final _cgetentPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Char>,
+      )
+    >
+  >('cgetent');
+  late final _cgetent =
+      _cgetentPtr
+          .asFunction<
+            int Function(
               ffi.Pointer<ffi.Pointer<ffi.Char>>,
               ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Char>)>>('cgetent');
-  late final _cgetent = _cgetentPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>)>();
+              ffi.Pointer<ffi.Char>,
+            )
+          >();
 
   int cgetfirst(
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
   ) {
-    return _cgetfirst(
-      arg0,
-      arg1,
-    );
+    return _cgetfirst(arg0, arg1);
   }
 
   late final _cgetfirstPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('cgetfirst');
-  late final _cgetfirst = _cgetfirstPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('cgetfirst');
+  late final _cgetfirst =
+      _cgetfirstPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
-  int cgetmatch(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-  ) {
-    return _cgetmatch(
-      arg0,
-      arg1,
-    );
+  int cgetmatch(ffi.Pointer<ffi.Char> arg0, ffi.Pointer<ffi.Char> arg1) {
+    return _cgetmatch(arg0, arg1);
   }
 
   late final _cgetmatchPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('cgetmatch');
-  late final _cgetmatch = _cgetmatchPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)
+    >
+  >('cgetmatch');
+  late final _cgetmatch =
+      _cgetmatchPtr
+          .asFunction<
+            int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)
+          >();
 
   int cgetnext(
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
   ) {
-    return _cgetnext(
-      arg0,
-      arg1,
-    );
+    return _cgetnext(arg0, arg1);
   }
 
   late final _cgetnextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('cgetnext');
-  late final _cgetnext = _cgetnextPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('cgetnext');
+  late final _cgetnext =
+      _cgetnextPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
   int cgetnum(
     ffi.Pointer<ffi.Char> arg0,
     ffi.Pointer<ffi.Char> arg1,
     ffi.Pointer<ffi.Long> arg2,
   ) {
-    return _cgetnum(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _cgetnum(arg0, arg1, arg2);
   }
 
   late final _cgetnumPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Long>)>>('cgetnum');
-  late final _cgetnum = _cgetnumPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Long>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Long>,
+      )
+    >
+  >('cgetnum');
+  late final _cgetnum =
+      _cgetnumPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Long>,
+            )
+          >();
 
-  int cgetset(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _cgetset(
-      arg0,
-    );
+  int cgetset(ffi.Pointer<ffi.Char> arg0) {
+    return _cgetset(arg0);
   }
 
   late final _cgetsetPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'cgetset');
+        'cgetset',
+      );
   late final _cgetset =
       _cgetsetPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -1864,68 +1754,70 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> arg1,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg2,
   ) {
-    return _cgetstr(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _cgetstr(arg0, arg1, arg2);
   }
 
   late final _cgetstrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('cgetstr');
-  late final _cgetstr = _cgetstrPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('cgetstr');
+  late final _cgetstr =
+      _cgetstrPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
   int cgetustr(
     ffi.Pointer<ffi.Char> arg0,
     ffi.Pointer<ffi.Char> arg1,
     ffi.Pointer<ffi.Pointer<ffi.Char>> arg2,
   ) {
-    return _cgetustr(
-      arg0,
-      arg1,
-      arg2,
-    );
+    return _cgetustr(arg0, arg1, arg2);
   }
 
   late final _cgetustrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('cgetustr');
-  late final _cgetustr = _cgetustrPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('cgetustr');
+  late final _cgetustr =
+      _cgetustrPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
-  int daemon(
-    int arg0,
-    int arg1,
-  ) {
-    return _daemon(
-      arg0,
-      arg1,
-    );
+  int daemon(int arg0, int arg1) {
+    return _daemon(arg0, arg1);
   }
 
   late final _daemonPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>('daemon');
   late final _daemon = _daemonPtr.asFunction<int Function(int, int)>();
 
-  ffi.Pointer<ffi.Char> devname(
-    int arg0,
-    int arg1,
-  ) {
-    return _devname(
-      arg0,
-      arg1,
-    );
+  ffi.Pointer<ffi.Char> devname(int arg0, int arg1) {
+    return _devname(arg0, arg1);
   }
 
   late final _devnamePtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(dev_t, mode_t)>>(
-      'devname');
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(dev_t, mode_t)>
+  >('devname');
   late final _devname =
       _devnamePtr.asFunction<ffi.Pointer<ffi.Char> Function(int, int)>();
 
@@ -1935,52 +1827,56 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> buf,
     int len,
   ) {
-    return _devname_r(
-      arg0,
-      arg1,
-      buf,
-      len,
-    );
+    return _devname_r(arg0, arg1, buf, len);
   }
 
   late final _devname_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              dev_t, mode_t, ffi.Pointer<ffi.Char>, ffi.Int)>>('devname_r');
-  late final _devname_r = _devname_rPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(int, int, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(
+        dev_t,
+        mode_t,
+        ffi.Pointer<ffi.Char>,
+        ffi.Int,
+      )
+    >
+  >('devname_r');
+  late final _devname_r =
+      _devname_rPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(int, int, ffi.Pointer<ffi.Char>, int)
+          >();
 
   ffi.Pointer<ffi.Char> getbsize(
     ffi.Pointer<ffi.Int> arg0,
     ffi.Pointer<ffi.Long> arg1,
   ) {
-    return _getbsize(
-      arg0,
-      arg1,
-    );
+    return _getbsize(arg0, arg1);
   }
 
   late final _getbsizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Long>)>>('getbsize');
-  late final _getbsize = _getbsizePtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Long>)>();
+        ffi.Pointer<ffi.Int>,
+        ffi.Pointer<ffi.Long>,
+      )
+    >
+  >('getbsize');
+  late final _getbsize =
+      _getbsizePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Long>,
+            )
+          >();
 
-  int getloadavg(
-    ffi.Pointer<ffi.Double> arg0,
-    int arg1,
-  ) {
-    return _getloadavg(
-      arg0,
-      arg1,
-    );
+  int getloadavg(ffi.Pointer<ffi.Double> arg0, int arg1) {
+    return _getloadavg(arg0, arg1);
   }
 
   late final _getloadavgPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Double>, ffi.Int)>>('getloadavg');
+    ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Double>, ffi.Int)>
+  >('getloadavg');
   late final _getloadavg =
       _getloadavgPtr.asFunction<int Function(ffi.Pointer<ffi.Double>, int)>();
 
@@ -1990,21 +1886,19 @@ class TreeSitter {
 
   late final _getprognamePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-          'getprogname');
+        'getprogname',
+      );
   late final _getprogname =
       _getprognamePtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
-  void setprogname(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _setprogname(
-      arg0,
-    );
+  void setprogname(ffi.Pointer<ffi.Char> arg0) {
+    return _setprogname(arg0);
   }
 
   late final _setprognamePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char>)>>(
-          'setprogname');
+        'setprogname',
+      );
   late final _setprogname =
       _setprognamePtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
 
@@ -2013,111 +1907,129 @@ class TreeSitter {
     int __nel,
     int __width,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+      >
+    >
+    __compar,
   ) {
-    return _heapsort(
-      __base,
-      __nel,
-      __width,
-      __compar,
-    );
+    return _heapsort(__base, __nel, __width, __compar);
   }
 
   late final _heapsortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+          >
+        >,
+      )
+    >
+  >('heapsort');
+  late final _heapsort =
+      _heapsortPtr
+          .asFunction<
+            int Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              int,
+              int,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('heapsort');
-  late final _heapsort = _heapsortPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(
-                      ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+                >
+              >,
+            )
+          >();
 
   int mergesort(
     ffi.Pointer<ffi.Void> __base,
     int __nel,
     int __width,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+      >
+    >
+    __compar,
   ) {
-    return _mergesort(
-      __base,
-      __nel,
-      __width,
-      __compar,
-    );
+    return _mergesort(__base, __nel, __width, __compar);
   }
 
   late final _mergesortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+          >
+        >,
+      )
+    >
+  >('mergesort');
+  late final _mergesort =
+      _mergesortPtr
+          .asFunction<
+            int Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              int,
+              int,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('mergesort');
-  late final _mergesort = _mergesortPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(
-                      ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+                >
+              >,
+            )
+          >();
 
   void psort(
     ffi.Pointer<ffi.Void> __base,
     int __nel,
     int __width,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+      >
+    >
+    __compar,
   ) {
-    return _psort(
-      __base,
-      __nel,
-      __width,
-      __compar,
-    );
+    return _psort(__base, __nel, __width, __compar);
   }
 
   late final _psortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+          >
+        >,
+      )
+    >
+  >('psort');
+  late final _psort =
+      _psortPtr
+          .asFunction<
+            void Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              int,
+              int,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('psort');
-  late final _psort = _psortPtr.asFunction<
-      void Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(
-                      ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>)
+                >
+              >,
+            )
+          >();
 
   void psort_r(
     ffi.Pointer<ffi.Void> __base,
@@ -2125,43 +2037,57 @@ class TreeSitter {
     int __width,
     ffi.Pointer<ffi.Void> arg3,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-                    ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>,
+        )
+      >
+    >
+    __compar,
   ) {
-    return _psort_r(
-      __base,
-      __nel,
-      __width,
-      arg3,
-      __compar,
-    );
+    return _psort_r(__base, __nel, __width, arg3, __compar);
   }
 
   late final _psort_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<ffi.Void>,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+            )
+          >
+        >,
+      )
+    >
+  >('psort_r');
+  late final _psort_r =
+      _psort_rPtr
+          .asFunction<
+            void Function(
+              ffi.Pointer<ffi.Void>,
+              int,
+              int,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(
-                          ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('psort_r');
-  late final _psort_r = _psort_rPtr.asFunction<
-      void Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-                      ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(
+                    ffi.Pointer<ffi.Void>,
+                    ffi.Pointer<ffi.Void>,
+                    ffi.Pointer<ffi.Void>,
+                  )
+                >
+              >,
+            )
+          >();
 
   void qsort_r(
     ffi.Pointer<ffi.Void> __base,
@@ -2169,43 +2095,57 @@ class TreeSitter {
     int __width,
     ffi.Pointer<ffi.Void> arg3,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-                    ffi.Pointer<ffi.Void>)>>
-        __compar,
+      ffi.NativeFunction<
+        ffi.Int Function(
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Void>,
+        )
+      >
+    >
+    __compar,
   ) {
-    return _qsort_r(
-      __base,
-      __nel,
-      __width,
-      arg3,
-      __compar,
-    );
+    return _qsort_r(__base, __nel, __width, arg3, __compar);
   }
 
   late final _qsort_rPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Pointer<ffi.Void>,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Int Function(
               ffi.Pointer<ffi.Void>,
-              ffi.Size,
-              ffi.Size,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+            )
+          >
+        >,
+      )
+    >
+  >('qsort_r');
+  late final _qsort_r =
+      _qsort_rPtr
+          .asFunction<
+            void Function(
+              ffi.Pointer<ffi.Void>,
+              int,
+              int,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Int Function(
-                          ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>,
-                          ffi.Pointer<ffi.Void>)>>)>>('qsort_r');
-  late final _qsort_r = _qsort_rPtr.asFunction<
-      void Function(
-          ffi.Pointer<ffi.Void>,
-          int,
-          int,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
-                      ffi.Pointer<ffi.Void>)>>)>();
+                ffi.NativeFunction<
+                  ffi.Int Function(
+                    ffi.Pointer<ffi.Void>,
+                    ffi.Pointer<ffi.Void>,
+                    ffi.Pointer<ffi.Void>,
+                  )
+                >
+              >,
+            )
+          >();
 
   int radixsort(
     ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>> __base,
@@ -2213,33 +2153,38 @@ class TreeSitter {
     ffi.Pointer<ffi.UnsignedChar> __table,
     int __endbyte,
   ) {
-    return _radixsort(
-      __base,
-      __nel,
-      __table,
-      __endbyte,
-    );
+    return _radixsort(__base, __nel, __table, __endbyte);
   }
 
   late final _radixsortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>, ffi.Int,
-              ffi.Pointer<ffi.UnsignedChar>, ffi.UnsignedInt)>>('radixsort');
-  late final _radixsort = _radixsortPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>, int,
-          ffi.Pointer<ffi.UnsignedChar>, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>,
+        ffi.Int,
+        ffi.Pointer<ffi.UnsignedChar>,
+        ffi.UnsignedInt,
+      )
+    >
+  >('radixsort');
+  late final _radixsort =
+      _radixsortPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>,
+              int,
+              ffi.Pointer<ffi.UnsignedChar>,
+              int,
+            )
+          >();
 
-  int rpmatch(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _rpmatch(
-      arg0,
-    );
+  int rpmatch(ffi.Pointer<ffi.Char> arg0) {
+    return _rpmatch(arg0);
   }
 
   late final _rpmatchPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'rpmatch');
+        'rpmatch',
+      );
   late final _rpmatch =
       _rpmatchPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -2249,36 +2194,46 @@ class TreeSitter {
     ffi.Pointer<ffi.UnsignedChar> __table,
     int __endbyte,
   ) {
-    return _sradixsort(
-      __base,
-      __nel,
-      __table,
-      __endbyte,
-    );
+    return _sradixsort(__base, __nel, __table, __endbyte);
   }
 
   late final _sradixsortPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>, ffi.Int,
-              ffi.Pointer<ffi.UnsignedChar>, ffi.UnsignedInt)>>('sradixsort');
-  late final _sradixsort = _sradixsortPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>, int,
-          ffi.Pointer<ffi.UnsignedChar>, int)>();
+    ffi.NativeFunction<
+      ffi.Int Function(
+        ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>,
+        ffi.Int,
+        ffi.Pointer<ffi.UnsignedChar>,
+        ffi.UnsignedInt,
+      )
+    >
+  >('sradixsort');
+  late final _sradixsort =
+      _sradixsortPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>>,
+              int,
+              ffi.Pointer<ffi.UnsignedChar>,
+              int,
+            )
+          >();
 
   void sranddev() {
     return _sranddev();
   }
 
-  late final _sranddevPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('sranddev');
+  late final _sranddevPtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+    'sranddev',
+  );
   late final _sranddev = _sranddevPtr.asFunction<void Function()>();
 
   void srandomdev() {
     return _srandomdev();
   }
 
-  late final _srandomdevPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('srandomdev');
+  late final _srandomdevPtr = _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+    'srandomdev',
+  );
   late final _srandomdev = _srandomdevPtr.asFunction<void Function()>();
 
   int strtonum(
@@ -2287,61 +2242,83 @@ class TreeSitter {
     int __maxval,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __errstrp,
   ) {
-    return _strtonum(
-      __numstr,
-      __minval,
-      __maxval,
-      __errstrp,
-    );
+    return _strtonum(__numstr, __minval, __maxval, __errstrp);
   }
 
   late final _strtonumPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.LongLong Function(ffi.Pointer<ffi.Char>, ffi.LongLong,
-              ffi.LongLong, ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('strtonum');
-  late final _strtonum = _strtonumPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, int, int,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+    ffi.NativeFunction<
+      ffi.LongLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.LongLong,
+        ffi.LongLong,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+      )
+    >
+  >('strtonum');
+  late final _strtonum =
+      _strtonumPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              int,
+              int,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+            )
+          >();
 
   int strtoq(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtoq(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtoq(__str, __endptr, __base);
   }
 
   late final _strtoqPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.LongLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtoq');
-  late final _strtoq = _strtoqPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.LongLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtoq');
+  late final _strtoq =
+      _strtoqPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
   int strtouq(
     ffi.Pointer<ffi.Char> __str,
     ffi.Pointer<ffi.Pointer<ffi.Char>> __endptr,
     int __base,
   ) {
-    return _strtouq(
-      __str,
-      __endptr,
-      __base,
-    );
+    return _strtouq(__str, __endptr, __base);
   }
 
   late final _strtouqPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLongLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('strtouq');
-  late final _strtouq = _strtouqPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+    ffi.NativeFunction<
+      ffi.UnsignedLongLong Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int,
+      )
+    >
+  >('strtouq');
+  late final _strtouq =
+      _strtouqPtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              int,
+            )
+          >();
 
   late final ffi.Pointer<ffi.Pointer<ffi.Char>> _suboptarg =
       _lookup<ffi.Pointer<ffi.Char>>('suboptarg');
@@ -2357,40 +2334,36 @@ class TreeSitter {
 
   late final _ts_parser_newPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<TSParser> Function()>>(
-          'ts_parser_new');
+        'ts_parser_new',
+      );
   late final _ts_parser_new =
       _ts_parser_newPtr.asFunction<ffi.Pointer<TSParser> Function()>();
 
   /// Delete the parser, freeing all of the memory that it used.
-  void ts_parser_delete(
-    ffi.Pointer<TSParser> self,
-  ) {
-    return _ts_parser_delete(
-      self,
-    );
+  void ts_parser_delete(ffi.Pointer<TSParser> self) {
+    return _ts_parser_delete(self);
   }
 
   late final _ts_parser_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>)>>(
-          'ts_parser_delete');
+        'ts_parser_delete',
+      );
   late final _ts_parser_delete =
       _ts_parser_deletePtr.asFunction<void Function(ffi.Pointer<TSParser>)>();
 
   /// Get the parser's current language.
-  ffi.Pointer<TSLanguage> ts_parser_language(
-    ffi.Pointer<TSParser> self,
-  ) {
-    return _ts_parser_language(
-      self,
-    );
+  ffi.Pointer<TSLanguage> ts_parser_language(ffi.Pointer<TSParser> self) {
+    return _ts_parser_language(self);
   }
 
   late final _ts_parser_languagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLanguage> Function(
-              ffi.Pointer<TSParser>)>>('ts_parser_language');
-  late final _ts_parser_language = _ts_parser_languagePtr
-      .asFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSParser>)>();
+    ffi.NativeFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSParser>)>
+  >('ts_parser_language');
+  late final _ts_parser_language =
+      _ts_parser_languagePtr
+          .asFunction<
+            ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSParser>)
+          >();
 
   /// Set the language that the parser should use for parsing.
   ///
@@ -2404,18 +2377,19 @@ class TreeSitter {
     ffi.Pointer<TSParser> self,
     ffi.Pointer<TSLanguage> language,
   ) {
-    return _ts_parser_set_language(
-      self,
-      language,
-    );
+    return _ts_parser_set_language(self, language);
   }
 
   late final _ts_parser_set_languagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<TSLanguage>)>>('ts_parser_set_language');
-  late final _ts_parser_set_language = _ts_parser_set_languagePtr.asFunction<
-      bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSLanguage>)>();
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSLanguage>)
+    >
+  >('ts_parser_set_language');
+  late final _ts_parser_set_language =
+      _ts_parser_set_languagePtr
+          .asFunction<
+            bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSLanguage>)
+          >();
 
   /// Set the ranges of text that the parser should include when parsing.
   ///
@@ -2442,20 +2416,19 @@ class TreeSitter {
     ffi.Pointer<TSRange> ranges,
     int count,
   ) {
-    return _ts_parser_set_included_ranges(
-      self,
-      ranges,
-      count,
-    );
+    return _ts_parser_set_included_ranges(self, ranges, count);
   }
 
   late final _ts_parser_set_included_rangesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSRange>,
-              ffi.Uint32)>>('ts_parser_set_included_ranges');
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSRange>, ffi.Uint32)
+    >
+  >('ts_parser_set_included_ranges');
   late final _ts_parser_set_included_ranges =
-      _ts_parser_set_included_rangesPtr.asFunction<
-          bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSRange>, int)>();
+      _ts_parser_set_included_rangesPtr
+          .asFunction<
+            bool Function(ffi.Pointer<TSParser>, ffi.Pointer<TSRange>, int)
+          >();
 
   /// Get the ranges of text that the parser will include when parsing.
   ///
@@ -2466,20 +2439,25 @@ class TreeSitter {
     ffi.Pointer<TSParser> self,
     ffi.Pointer<ffi.Uint32> count,
   ) {
-    return _ts_parser_included_ranges(
-      self,
-      count,
-    );
+    return _ts_parser_included_ranges(self, count);
   }
 
   late final _ts_parser_included_rangesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSRange> Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<ffi.Uint32>)>>('ts_parser_included_ranges');
+    ffi.NativeFunction<
+      ffi.Pointer<TSRange> Function(
+        ffi.Pointer<TSParser>,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_parser_included_ranges');
   late final _ts_parser_included_ranges =
-      _ts_parser_included_rangesPtr.asFunction<
-          ffi.Pointer<TSRange> Function(
-              ffi.Pointer<TSParser>, ffi.Pointer<ffi.Uint32>)>();
+      _ts_parser_included_rangesPtr
+          .asFunction<
+            ffi.Pointer<TSRange> Function(
+              ffi.Pointer<TSParser>,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Use the parser to parse some source code and create a syntax tree.
   ///
@@ -2529,20 +2507,27 @@ class TreeSitter {
     ffi.Pointer<TSTree> old_tree,
     TSInput input,
   ) {
-    return _ts_parser_parse(
-      self,
-      old_tree,
-      input,
-    );
+    return _ts_parser_parse(self, old_tree, input);
   }
 
   late final _ts_parser_parsePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSTree> Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<TSTree>, TSInput)>>('ts_parser_parse');
-  late final _ts_parser_parse = _ts_parser_parsePtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<TSTree> Function(
-          ffi.Pointer<TSParser>, ffi.Pointer<TSTree>, TSInput)>();
+        ffi.Pointer<TSParser>,
+        ffi.Pointer<TSTree>,
+        TSInput,
+      )
+    >
+  >('ts_parser_parse');
+  late final _ts_parser_parse =
+      _ts_parser_parsePtr
+          .asFunction<
+            ffi.Pointer<TSTree> Function(
+              ffi.Pointer<TSParser>,
+              ffi.Pointer<TSTree>,
+              TSInput,
+            )
+          >();
 
   /// Use the parser to parse some source code and create a syntax tree, with some options.
   ///
@@ -2555,25 +2540,29 @@ class TreeSitter {
     TSInput input,
     TSParseOptions parse_options,
   ) {
-    return _ts_parser_parse_with_options(
-      self,
-      old_tree,
-      input,
-      parse_options,
-    );
+    return _ts_parser_parse_with_options(self, old_tree, input, parse_options);
   }
 
   late final _ts_parser_parse_with_optionsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSTree> Function(
+    ffi.NativeFunction<
+      ffi.Pointer<TSTree> Function(
+        ffi.Pointer<TSParser>,
+        ffi.Pointer<TSTree>,
+        TSInput,
+        TSParseOptions,
+      )
+    >
+  >('ts_parser_parse_with_options');
+  late final _ts_parser_parse_with_options =
+      _ts_parser_parse_with_optionsPtr
+          .asFunction<
+            ffi.Pointer<TSTree> Function(
               ffi.Pointer<TSParser>,
               ffi.Pointer<TSTree>,
               TSInput,
-              TSParseOptions)>>('ts_parser_parse_with_options');
-  late final _ts_parser_parse_with_options =
-      _ts_parser_parse_with_optionsPtr.asFunction<
-          ffi.Pointer<TSTree> Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<TSTree>, TSInput, TSParseOptions)>();
+              TSParseOptions,
+            )
+          >();
 
   /// Use the parser to parse some source code stored in one contiguous buffer.
   /// The first two parameters are the same as in the [`ts_parser_parse`] function
@@ -2585,24 +2574,29 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> string,
     int length,
   ) {
-    return _ts_parser_parse_string(
-      self,
-      old_tree,
-      string,
-      length,
-    );
+    return _ts_parser_parse_string(self, old_tree, string, length);
   }
 
   late final _ts_parser_parse_stringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSTree> Function(
+    ffi.NativeFunction<
+      ffi.Pointer<TSTree> Function(
+        ffi.Pointer<TSParser>,
+        ffi.Pointer<TSTree>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+      )
+    >
+  >('ts_parser_parse_string');
+  late final _ts_parser_parse_string =
+      _ts_parser_parse_stringPtr
+          .asFunction<
+            ffi.Pointer<TSTree> Function(
               ffi.Pointer<TSParser>,
               ffi.Pointer<TSTree>,
               ffi.Pointer<ffi.Char>,
-              ffi.Uint32)>>('ts_parser_parse_string');
-  late final _ts_parser_parse_string = _ts_parser_parse_stringPtr.asFunction<
-      ffi.Pointer<TSTree> Function(ffi.Pointer<TSParser>, ffi.Pointer<TSTree>,
-          ffi.Pointer<ffi.Char>, int)>();
+              int,
+            )
+          >();
 
   /// Use the parser to parse some source code stored in one contiguous buffer with
   /// a given encoding. The first four parameters work the same as in the
@@ -2625,17 +2619,27 @@ class TreeSitter {
   }
 
   late final _ts_parser_parse_string_encodingPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSTree> Function(
+    ffi.NativeFunction<
+      ffi.Pointer<TSTree> Function(
+        ffi.Pointer<TSParser>,
+        ffi.Pointer<TSTree>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+        ffi.UnsignedInt,
+      )
+    >
+  >('ts_parser_parse_string_encoding');
+  late final _ts_parser_parse_string_encoding =
+      _ts_parser_parse_string_encodingPtr
+          .asFunction<
+            ffi.Pointer<TSTree> Function(
               ffi.Pointer<TSParser>,
               ffi.Pointer<TSTree>,
               ffi.Pointer<ffi.Char>,
-              ffi.Uint32,
-              ffi.UnsignedInt)>>('ts_parser_parse_string_encoding');
-  late final _ts_parser_parse_string_encoding =
-      _ts_parser_parse_string_encodingPtr.asFunction<
-          ffi.Pointer<TSTree> Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<TSTree>, ffi.Pointer<ffi.Char>, int, int)>();
+              int,
+              int,
+            )
+          >();
 
   /// Instruct the parser to start the next parse from the beginning.
   ///
@@ -2644,17 +2648,14 @@ class TreeSitter {
   /// [`ts_parser_parse`] or other parsing functions. If you don't want to resume,
   /// and instead intend to use this parser to parse some other document, you must
   /// call [`ts_parser_reset`] first.
-  void ts_parser_reset(
-    ffi.Pointer<TSParser> self,
-  ) {
-    return _ts_parser_reset(
-      self,
-    );
+  void ts_parser_reset(ffi.Pointer<TSParser> self) {
+    return _ts_parser_reset(self);
   }
 
   late final _ts_parser_resetPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>)>>(
-          'ts_parser_reset');
+        'ts_parser_reset',
+      );
   late final _ts_parser_reset =
       _ts_parser_resetPtr.asFunction<void Function(ffi.Pointer<TSParser>)>();
 
@@ -2669,35 +2670,30 @@ class TreeSitter {
     ffi.Pointer<TSParser> self,
     int timeout_micros,
   ) {
-    return _ts_parser_set_timeout_micros(
-      self,
-      timeout_micros,
-    );
+    return _ts_parser_set_timeout_micros(self, timeout_micros);
   }
 
   late final _ts_parser_set_timeout_microsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSParser>,
-              ffi.Uint64)>>('ts_parser_set_timeout_micros');
-  late final _ts_parser_set_timeout_micros = _ts_parser_set_timeout_microsPtr
-      .asFunction<void Function(ffi.Pointer<TSParser>, int)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>, ffi.Uint64)>
+  >('ts_parser_set_timeout_micros');
+  late final _ts_parser_set_timeout_micros =
+      _ts_parser_set_timeout_microsPtr
+          .asFunction<void Function(ffi.Pointer<TSParser>, int)>();
 
   /// @deprecated use [`ts_parser_parse_with_options`] and pass in a callback instead, this will be removed in 0.26.
   ///
   /// Get the duration in microseconds that parsing is allowed to take.
-  int ts_parser_timeout_micros(
-    ffi.Pointer<TSParser> self,
-  ) {
-    return _ts_parser_timeout_micros(
-      self,
-    );
+  int ts_parser_timeout_micros(ffi.Pointer<TSParser> self) {
+    return _ts_parser_timeout_micros(self);
   }
 
   late final _ts_parser_timeout_microsPtr =
       _lookup<ffi.NativeFunction<ffi.Uint64 Function(ffi.Pointer<TSParser>)>>(
-          'ts_parser_timeout_micros');
-  late final _ts_parser_timeout_micros = _ts_parser_timeout_microsPtr
-      .asFunction<int Function(ffi.Pointer<TSParser>)>();
+        'ts_parser_timeout_micros',
+      );
+  late final _ts_parser_timeout_micros =
+      _ts_parser_timeout_microsPtr
+          .asFunction<int Function(ffi.Pointer<TSParser>)>();
 
   /// @deprecated use [`ts_parser_parse_with_options`] and pass in a callback instead, this will be removed in 0.26.
   ///
@@ -2710,19 +2706,19 @@ class TreeSitter {
     ffi.Pointer<TSParser> self,
     ffi.Pointer<ffi.Size> flag,
   ) {
-    return _ts_parser_set_cancellation_flag(
-      self,
-      flag,
-    );
+    return _ts_parser_set_cancellation_flag(self, flag);
   }
 
   late final _ts_parser_set_cancellation_flagPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<ffi.Size>)>>('ts_parser_set_cancellation_flag');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSParser>, ffi.Pointer<ffi.Size>)
+    >
+  >('ts_parser_set_cancellation_flag');
   late final _ts_parser_set_cancellation_flag =
-      _ts_parser_set_cancellation_flagPtr.asFunction<
-          void Function(ffi.Pointer<TSParser>, ffi.Pointer<ffi.Size>)>();
+      _ts_parser_set_cancellation_flagPtr
+          .asFunction<
+            void Function(ffi.Pointer<TSParser>, ffi.Pointer<ffi.Size>)
+          >();
 
   /// @deprecated use [`ts_parser_parse_with_options`] and pass in a callback instead, this will be removed in 0.26.
   ///
@@ -2730,121 +2726,96 @@ class TreeSitter {
   ffi.Pointer<ffi.Size> ts_parser_cancellation_flag(
     ffi.Pointer<TSParser> self,
   ) {
-    return _ts_parser_cancellation_flag(
-      self,
-    );
+    return _ts_parser_cancellation_flag(self);
   }
 
   late final _ts_parser_cancellation_flagPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Size> Function(
-              ffi.Pointer<TSParser>)>>('ts_parser_cancellation_flag');
-  late final _ts_parser_cancellation_flag = _ts_parser_cancellation_flagPtr
-      .asFunction<ffi.Pointer<ffi.Size> Function(ffi.Pointer<TSParser>)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Size> Function(ffi.Pointer<TSParser>)>
+  >('ts_parser_cancellation_flag');
+  late final _ts_parser_cancellation_flag =
+      _ts_parser_cancellation_flagPtr
+          .asFunction<ffi.Pointer<ffi.Size> Function(ffi.Pointer<TSParser>)>();
 
   /// Set the logger that a parser should use during parsing.
   ///
   /// The parser does not take ownership over the logger payload. If a logger was
   /// previously assigned, the caller is responsible for releasing any memory
   /// owned by the previous logger.
-  void ts_parser_set_logger(
-    ffi.Pointer<TSParser> self,
-    TSLogger logger,
-  ) {
-    return _ts_parser_set_logger(
-      self,
-      logger,
-    );
+  void ts_parser_set_logger(ffi.Pointer<TSParser> self, TSLogger logger) {
+    return _ts_parser_set_logger(self, logger);
   }
 
   late final _ts_parser_set_loggerPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>, TSLogger)>>(
-      'ts_parser_set_logger');
-  late final _ts_parser_set_logger = _ts_parser_set_loggerPtr
-      .asFunction<void Function(ffi.Pointer<TSParser>, TSLogger)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>, TSLogger)>
+  >('ts_parser_set_logger');
+  late final _ts_parser_set_logger =
+      _ts_parser_set_loggerPtr
+          .asFunction<void Function(ffi.Pointer<TSParser>, TSLogger)>();
 
   /// Get the parser's current logger.
-  TSLogger ts_parser_logger(
-    ffi.Pointer<TSParser> self,
-  ) {
-    return _ts_parser_logger(
-      self,
-    );
+  TSLogger ts_parser_logger(ffi.Pointer<TSParser> self) {
+    return _ts_parser_logger(self);
   }
 
   late final _ts_parser_loggerPtr =
       _lookup<ffi.NativeFunction<TSLogger Function(ffi.Pointer<TSParser>)>>(
-          'ts_parser_logger');
-  late final _ts_parser_logger = _ts_parser_loggerPtr
-      .asFunction<TSLogger Function(ffi.Pointer<TSParser>)>();
+        'ts_parser_logger',
+      );
+  late final _ts_parser_logger =
+      _ts_parser_loggerPtr
+          .asFunction<TSLogger Function(ffi.Pointer<TSParser>)>();
 
   /// Set the file descriptor to which the parser should write debugging graphs
   /// during parsing. The graphs are formatted in the DOT language. You may want
   /// to pipe these graphs directly to a `dot(1)` process in order to generate
   /// SVG output. You can turn off this logging by passing a negative number.
-  void ts_parser_print_dot_graphs(
-    ffi.Pointer<TSParser> self,
-    int fd,
-  ) {
-    return _ts_parser_print_dot_graphs(
-      self,
-      fd,
-    );
+  void ts_parser_print_dot_graphs(ffi.Pointer<TSParser> self, int fd) {
+    return _ts_parser_print_dot_graphs(self, fd);
   }
 
   late final _ts_parser_print_dot_graphsPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>, ffi.Int)>>(
-      'ts_parser_print_dot_graphs');
-  late final _ts_parser_print_dot_graphs = _ts_parser_print_dot_graphsPtr
-      .asFunction<void Function(ffi.Pointer<TSParser>, int)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSParser>, ffi.Int)>
+  >('ts_parser_print_dot_graphs');
+  late final _ts_parser_print_dot_graphs =
+      _ts_parser_print_dot_graphsPtr
+          .asFunction<void Function(ffi.Pointer<TSParser>, int)>();
 
   /// Create a shallow copy of the syntax tree. This is very fast.
   ///
   /// You need to copy a syntax tree in order to use it on more than one thread at
   /// a time, as syntax trees are not thread safe.
-  ffi.Pointer<TSTree> ts_tree_copy(
-    ffi.Pointer<TSTree> self,
-  ) {
-    return _ts_tree_copy(
-      self,
-    );
+  ffi.Pointer<TSTree> ts_tree_copy(ffi.Pointer<TSTree> self) {
+    return _ts_tree_copy(self);
   }
 
   late final _ts_tree_copyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSTree> Function(ffi.Pointer<TSTree>)>>('ts_tree_copy');
-  late final _ts_tree_copy = _ts_tree_copyPtr
-      .asFunction<ffi.Pointer<TSTree> Function(ffi.Pointer<TSTree>)>();
+    ffi.NativeFunction<ffi.Pointer<TSTree> Function(ffi.Pointer<TSTree>)>
+  >('ts_tree_copy');
+  late final _ts_tree_copy =
+      _ts_tree_copyPtr
+          .asFunction<ffi.Pointer<TSTree> Function(ffi.Pointer<TSTree>)>();
 
   /// Delete the syntax tree, freeing all of the memory that it used.
-  void ts_tree_delete(
-    ffi.Pointer<TSTree> self,
-  ) {
-    return _ts_tree_delete(
-      self,
-    );
+  void ts_tree_delete(ffi.Pointer<TSTree> self) {
+    return _ts_tree_delete(self);
   }
 
   late final _ts_tree_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTree>)>>(
-          'ts_tree_delete');
+        'ts_tree_delete',
+      );
   late final _ts_tree_delete =
       _ts_tree_deletePtr.asFunction<void Function(ffi.Pointer<TSTree>)>();
 
   /// Get the root node of the syntax tree.
-  TSNode ts_tree_root_node(
-    ffi.Pointer<TSTree> self,
-  ) {
-    return _ts_tree_root_node(
-      self,
-    );
+  TSNode ts_tree_root_node(ffi.Pointer<TSTree> self) {
+    return _ts_tree_root_node(self);
   }
 
   late final _ts_tree_root_nodePtr =
       _lookup<ffi.NativeFunction<TSNode Function(ffi.Pointer<TSTree>)>>(
-          'ts_tree_root_node');
+        'ts_tree_root_node',
+      );
   late final _ts_tree_root_node =
       _ts_tree_root_nodePtr.asFunction<TSNode Function(ffi.Pointer<TSTree>)>();
 
@@ -2855,35 +2826,29 @@ class TreeSitter {
     int offset_bytes,
     TSPoint offset_extent,
   ) {
-    return _ts_tree_root_node_with_offset(
-      self,
-      offset_bytes,
-      offset_extent,
-    );
+    return _ts_tree_root_node_with_offset(self, offset_bytes, offset_extent);
   }
 
   late final _ts_tree_root_node_with_offsetPtr = _lookup<
-      ffi.NativeFunction<
-          TSNode Function(ffi.Pointer<TSTree>, ffi.Uint32,
-              TSPoint)>>('ts_tree_root_node_with_offset');
-  late final _ts_tree_root_node_with_offset = _ts_tree_root_node_with_offsetPtr
-      .asFunction<TSNode Function(ffi.Pointer<TSTree>, int, TSPoint)>();
+    ffi.NativeFunction<
+      TSNode Function(ffi.Pointer<TSTree>, ffi.Uint32, TSPoint)
+    >
+  >('ts_tree_root_node_with_offset');
+  late final _ts_tree_root_node_with_offset =
+      _ts_tree_root_node_with_offsetPtr
+          .asFunction<TSNode Function(ffi.Pointer<TSTree>, int, TSPoint)>();
 
   /// Get the language that was used to parse the syntax tree.
-  ffi.Pointer<TSLanguage> ts_tree_language(
-    ffi.Pointer<TSTree> self,
-  ) {
-    return _ts_tree_language(
-      self,
-    );
+  ffi.Pointer<TSLanguage> ts_tree_language(ffi.Pointer<TSTree> self) {
+    return _ts_tree_language(self);
   }
 
   late final _ts_tree_languagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLanguage> Function(
-              ffi.Pointer<TSTree>)>>('ts_tree_language');
-  late final _ts_tree_language = _ts_tree_languagePtr
-      .asFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSTree>)>();
+    ffi.NativeFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSTree>)>
+  >('ts_tree_language');
+  late final _ts_tree_language =
+      _ts_tree_languagePtr
+          .asFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSTree>)>();
 
   /// Get the array of included ranges that was used to parse the syntax tree.
   ///
@@ -2892,41 +2857,45 @@ class TreeSitter {
     ffi.Pointer<TSTree> self,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_tree_included_ranges(
-      self,
-      length,
-    );
+    return _ts_tree_included_ranges(self, length);
   }
 
   late final _ts_tree_included_rangesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSRange> Function(ffi.Pointer<TSTree>,
-              ffi.Pointer<ffi.Uint32>)>>('ts_tree_included_ranges');
-  late final _ts_tree_included_ranges = _ts_tree_included_rangesPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<TSRange> Function(
-          ffi.Pointer<TSTree>, ffi.Pointer<ffi.Uint32>)>();
+        ffi.Pointer<TSTree>,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_tree_included_ranges');
+  late final _ts_tree_included_ranges =
+      _ts_tree_included_rangesPtr
+          .asFunction<
+            ffi.Pointer<TSRange> Function(
+              ffi.Pointer<TSTree>,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Edit the syntax tree to keep it in sync with source code that has been
   /// edited.
   ///
   /// You must describe the edit both in terms of byte offsets and in terms of
   /// (row, column) coordinates.
-  void ts_tree_edit(
-    ffi.Pointer<TSTree> self,
-    ffi.Pointer<TSInputEdit> edit,
-  ) {
-    return _ts_tree_edit(
-      self,
-      edit,
-    );
+  void ts_tree_edit(ffi.Pointer<TSTree> self, ffi.Pointer<TSInputEdit> edit) {
+    return _ts_tree_edit(self, edit);
   }
 
   late final _ts_tree_editPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<TSTree>, ffi.Pointer<TSInputEdit>)>>('ts_tree_edit');
-  late final _ts_tree_edit = _ts_tree_editPtr.asFunction<
-      void Function(ffi.Pointer<TSTree>, ffi.Pointer<TSInputEdit>)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSTree>, ffi.Pointer<TSInputEdit>)
+    >
+  >('ts_tree_edit');
+  late final _ts_tree_edit =
+      _ts_tree_editPtr
+          .asFunction<
+            void Function(ffi.Pointer<TSTree>, ffi.Pointer<TSInputEdit>)
+          >();
 
   /// Compare an old edited syntax tree to a new syntax tree representing the same
   /// document, returning an array of ranges whose syntactic structure has changed.
@@ -2952,63 +2921,55 @@ class TreeSitter {
     ffi.Pointer<TSTree> new_tree,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_tree_get_changed_ranges(
-      old_tree,
-      new_tree,
-      length,
-    );
+    return _ts_tree_get_changed_ranges(old_tree, new_tree, length);
   }
 
   late final _ts_tree_get_changed_rangesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSRange> Function(
-              ffi.Pointer<TSTree>,
-              ffi.Pointer<TSTree>,
-              ffi.Pointer<ffi.Uint32>)>>('ts_tree_get_changed_ranges');
+    ffi.NativeFunction<
+      ffi.Pointer<TSRange> Function(
+        ffi.Pointer<TSTree>,
+        ffi.Pointer<TSTree>,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_tree_get_changed_ranges');
   late final _ts_tree_get_changed_ranges =
-      _ts_tree_get_changed_rangesPtr.asFunction<
-          ffi.Pointer<TSRange> Function(ffi.Pointer<TSTree>,
-              ffi.Pointer<TSTree>, ffi.Pointer<ffi.Uint32>)>();
+      _ts_tree_get_changed_rangesPtr
+          .asFunction<
+            ffi.Pointer<TSRange> Function(
+              ffi.Pointer<TSTree>,
+              ffi.Pointer<TSTree>,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Write a DOT graph describing the syntax tree to the given file.
-  void ts_tree_print_dot_graph(
-    ffi.Pointer<TSTree> self,
-    int file_descriptor,
-  ) {
-    return _ts_tree_print_dot_graph(
-      self,
-      file_descriptor,
-    );
+  void ts_tree_print_dot_graph(ffi.Pointer<TSTree> self, int file_descriptor) {
+    return _ts_tree_print_dot_graph(self, file_descriptor);
   }
 
   late final _ts_tree_print_dot_graphPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTree>, ffi.Int)>>(
-      'ts_tree_print_dot_graph');
-  late final _ts_tree_print_dot_graph = _ts_tree_print_dot_graphPtr
-      .asFunction<void Function(ffi.Pointer<TSTree>, int)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTree>, ffi.Int)>
+  >('ts_tree_print_dot_graph');
+  late final _ts_tree_print_dot_graph =
+      _ts_tree_print_dot_graphPtr
+          .asFunction<void Function(ffi.Pointer<TSTree>, int)>();
 
   /// Get the node's type as a null-terminated string.
-  ffi.Pointer<ffi.Char> ts_node_type(
-    TSNode self,
-  ) {
-    return _ts_node_type(
-      self,
-    );
+  ffi.Pointer<ffi.Char> ts_node_type(TSNode self) {
+    return _ts_node_type(self);
   }
 
   late final _ts_node_typePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode)>>(
-          'ts_node_type');
+        'ts_node_type',
+      );
   late final _ts_node_type =
       _ts_node_typePtr.asFunction<ffi.Pointer<ffi.Char> Function(TSNode)>();
 
   /// Get the node's type as a numerical id.
-  int ts_node_symbol(
-    TSNode self,
-  ) {
-    return _ts_node_symbol(
-      self,
-    );
+  int ts_node_symbol(TSNode self) {
+    return _ts_node_symbol(self);
   }
 
   late final _ts_node_symbolPtr =
@@ -3017,110 +2978,91 @@ class TreeSitter {
       _ts_node_symbolPtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's language.
-  ffi.Pointer<TSLanguage> ts_node_language(
-    TSNode self,
-  ) {
-    return _ts_node_language(
-      self,
-    );
+  ffi.Pointer<TSLanguage> ts_node_language(TSNode self) {
+    return _ts_node_language(self);
   }
 
   late final _ts_node_languagePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<TSLanguage> Function(TSNode)>>(
-          'ts_node_language');
-  late final _ts_node_language = _ts_node_languagePtr
-      .asFunction<ffi.Pointer<TSLanguage> Function(TSNode)>();
+        'ts_node_language',
+      );
+  late final _ts_node_language =
+      _ts_node_languagePtr
+          .asFunction<ffi.Pointer<TSLanguage> Function(TSNode)>();
 
   /// Get the node's type as it appears in the grammar ignoring aliases as a
   /// null-terminated string.
-  ffi.Pointer<ffi.Char> ts_node_grammar_type(
-    TSNode self,
-  ) {
-    return _ts_node_grammar_type(
-      self,
-    );
+  ffi.Pointer<ffi.Char> ts_node_grammar_type(TSNode self) {
+    return _ts_node_grammar_type(self);
   }
 
   late final _ts_node_grammar_typePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode)>>(
-          'ts_node_grammar_type');
-  late final _ts_node_grammar_type = _ts_node_grammar_typePtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(TSNode)>();
+        'ts_node_grammar_type',
+      );
+  late final _ts_node_grammar_type =
+      _ts_node_grammar_typePtr
+          .asFunction<ffi.Pointer<ffi.Char> Function(TSNode)>();
 
   /// Get the node's type as a numerical id as it appears in the grammar ignoring
   /// aliases. This should be used in [`ts_language_next_state`] instead of
   /// [`ts_node_symbol`].
-  int ts_node_grammar_symbol(
-    TSNode self,
-  ) {
-    return _ts_node_grammar_symbol(
-      self,
-    );
+  int ts_node_grammar_symbol(TSNode self) {
+    return _ts_node_grammar_symbol(self);
   }
 
   late final _ts_node_grammar_symbolPtr =
       _lookup<ffi.NativeFunction<TSSymbol Function(TSNode)>>(
-          'ts_node_grammar_symbol');
+        'ts_node_grammar_symbol',
+      );
   late final _ts_node_grammar_symbol =
       _ts_node_grammar_symbolPtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's start byte.
-  int ts_node_start_byte(
-    TSNode self,
-  ) {
-    return _ts_node_start_byte(
-      self,
-    );
+  int ts_node_start_byte(TSNode self) {
+    return _ts_node_start_byte(self);
   }
 
   late final _ts_node_start_bytePtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(TSNode)>>(
-          'ts_node_start_byte');
+        'ts_node_start_byte',
+      );
   late final _ts_node_start_byte =
       _ts_node_start_bytePtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's start position in terms of rows and columns.
-  TSPoint ts_node_start_point(
-    TSNode self,
-  ) {
-    return _ts_node_start_point(
-      self,
-    );
+  TSPoint ts_node_start_point(TSNode self) {
+    return _ts_node_start_point(self);
   }
 
   late final _ts_node_start_pointPtr =
       _lookup<ffi.NativeFunction<TSPoint Function(TSNode)>>(
-          'ts_node_start_point');
+        'ts_node_start_point',
+      );
   late final _ts_node_start_point =
       _ts_node_start_pointPtr.asFunction<TSPoint Function(TSNode)>();
 
   /// Get the node's end byte.
-  int ts_node_end_byte(
-    TSNode self,
-  ) {
-    return _ts_node_end_byte(
-      self,
-    );
+  int ts_node_end_byte(TSNode self) {
+    return _ts_node_end_byte(self);
   }
 
   late final _ts_node_end_bytePtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(TSNode)>>(
-          'ts_node_end_byte');
+        'ts_node_end_byte',
+      );
   late final _ts_node_end_byte =
       _ts_node_end_bytePtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's end position in terms of rows and columns.
-  TSPoint ts_node_end_point(
-    TSNode self,
-  ) {
-    return _ts_node_end_point(
-      self,
-    );
+  TSPoint ts_node_end_point(TSNode self) {
+    return _ts_node_end_point(self);
   }
 
   late final _ts_node_end_pointPtr =
       _lookup<ffi.NativeFunction<TSPoint Function(TSNode)>>(
-          'ts_node_end_point');
+        'ts_node_end_point',
+      );
   late final _ts_node_end_point =
       _ts_node_end_pointPtr.asFunction<TSPoint Function(TSNode)>();
 
@@ -3128,29 +3070,22 @@ class TreeSitter {
   ///
   /// This string is allocated with `malloc` and the caller is responsible for
   /// freeing it using `free`.
-  ffi.Pointer<ffi.Char> ts_node_string(
-    TSNode self,
-  ) {
-    return _ts_node_string(
-      self,
-    );
+  ffi.Pointer<ffi.Char> ts_node_string(TSNode self) {
+    return _ts_node_string(self);
   }
 
   late final _ts_node_stringPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode)>>(
-          'ts_node_string');
+        'ts_node_string',
+      );
   late final _ts_node_string =
       _ts_node_stringPtr.asFunction<ffi.Pointer<ffi.Char> Function(TSNode)>();
 
   /// Check if the node is null. Functions like [`ts_node_child`] and
   /// [`ts_node_next_sibling`] will return a null node to indicate that no such node
   /// was found.
-  bool ts_node_is_null(
-    TSNode self,
-  ) {
-    return _ts_node_is_null(
-      self,
-    );
+  bool ts_node_is_null(TSNode self) {
+    return _ts_node_is_null(self);
   }
 
   late final _ts_node_is_nullPtr =
@@ -3161,136 +3096,108 @@ class TreeSitter {
   /// Check if the node is *named*. Named nodes correspond to named rules in the
   /// grammar, whereas *anonymous* nodes correspond to string literals in the
   /// grammar.
-  bool ts_node_is_named(
-    TSNode self,
-  ) {
-    return _ts_node_is_named(
-      self,
-    );
+  bool ts_node_is_named(TSNode self) {
+    return _ts_node_is_named(self);
   }
 
   late final _ts_node_is_namedPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_is_named');
+        'ts_node_is_named',
+      );
   late final _ts_node_is_named =
       _ts_node_is_namedPtr.asFunction<bool Function(TSNode)>();
 
   /// Check if the node is *missing*. Missing nodes are inserted by the parser in
   /// order to recover from certain kinds of syntax errors.
-  bool ts_node_is_missing(
-    TSNode self,
-  ) {
-    return _ts_node_is_missing(
-      self,
-    );
+  bool ts_node_is_missing(TSNode self) {
+    return _ts_node_is_missing(self);
   }
 
   late final _ts_node_is_missingPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_is_missing');
+        'ts_node_is_missing',
+      );
   late final _ts_node_is_missing =
       _ts_node_is_missingPtr.asFunction<bool Function(TSNode)>();
 
   /// Check if the node is *extra*. Extra nodes represent things like comments,
   /// which are not required the grammar, but can appear anywhere.
-  bool ts_node_is_extra(
-    TSNode self,
-  ) {
-    return _ts_node_is_extra(
-      self,
-    );
+  bool ts_node_is_extra(TSNode self) {
+    return _ts_node_is_extra(self);
   }
 
   late final _ts_node_is_extraPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_is_extra');
+        'ts_node_is_extra',
+      );
   late final _ts_node_is_extra =
       _ts_node_is_extraPtr.asFunction<bool Function(TSNode)>();
 
   /// Check if a syntax node has been edited.
-  bool ts_node_has_changes(
-    TSNode self,
-  ) {
-    return _ts_node_has_changes(
-      self,
-    );
+  bool ts_node_has_changes(TSNode self) {
+    return _ts_node_has_changes(self);
   }
 
   late final _ts_node_has_changesPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_has_changes');
+        'ts_node_has_changes',
+      );
   late final _ts_node_has_changes =
       _ts_node_has_changesPtr.asFunction<bool Function(TSNode)>();
 
   /// Check if the node is a syntax error or contains any syntax errors.
-  bool ts_node_has_error(
-    TSNode self,
-  ) {
-    return _ts_node_has_error(
-      self,
-    );
+  bool ts_node_has_error(TSNode self) {
+    return _ts_node_has_error(self);
   }
 
   late final _ts_node_has_errorPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_has_error');
+        'ts_node_has_error',
+      );
   late final _ts_node_has_error =
       _ts_node_has_errorPtr.asFunction<bool Function(TSNode)>();
 
   /// Check if the node is a syntax error.
-  bool ts_node_is_error(
-    TSNode self,
-  ) {
-    return _ts_node_is_error(
-      self,
-    );
+  bool ts_node_is_error(TSNode self) {
+    return _ts_node_is_error(self);
   }
 
   late final _ts_node_is_errorPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode)>>(
-          'ts_node_is_error');
+        'ts_node_is_error',
+      );
   late final _ts_node_is_error =
       _ts_node_is_errorPtr.asFunction<bool Function(TSNode)>();
 
   /// Get this node's parse state.
-  int ts_node_parse_state(
-    TSNode self,
-  ) {
-    return _ts_node_parse_state(
-      self,
-    );
+  int ts_node_parse_state(TSNode self) {
+    return _ts_node_parse_state(self);
   }
 
   late final _ts_node_parse_statePtr =
       _lookup<ffi.NativeFunction<TSStateId Function(TSNode)>>(
-          'ts_node_parse_state');
+        'ts_node_parse_state',
+      );
   late final _ts_node_parse_state =
       _ts_node_parse_statePtr.asFunction<int Function(TSNode)>();
 
   /// Get the parse state after this node.
-  int ts_node_next_parse_state(
-    TSNode self,
-  ) {
-    return _ts_node_next_parse_state(
-      self,
-    );
+  int ts_node_next_parse_state(TSNode self) {
+    return _ts_node_next_parse_state(self);
   }
 
   late final _ts_node_next_parse_statePtr =
       _lookup<ffi.NativeFunction<TSStateId Function(TSNode)>>(
-          'ts_node_next_parse_state');
+        'ts_node_next_parse_state',
+      );
   late final _ts_node_next_parse_state =
       _ts_node_next_parse_statePtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's immediate parent.
   /// Prefer [`ts_node_child_with_descendant`] for
   /// iterating over the node's ancestors.
-  TSNode ts_node_parent(
-    TSNode self,
-  ) {
-    return _ts_node_parent(
-      self,
-    );
+  TSNode ts_node_parent(TSNode self) {
+    return _ts_node_parent(self);
   }
 
   late final _ts_node_parentPtr =
@@ -3301,37 +3208,28 @@ class TreeSitter {
   /// Get the node that contains `descendant`.
   ///
   /// Note that this can return `descendant` itself.
-  TSNode ts_node_child_with_descendant(
-    TSNode self,
-    TSNode descendant,
-  ) {
-    return _ts_node_child_with_descendant(
-      self,
-      descendant,
-    );
+  TSNode ts_node_child_with_descendant(TSNode self, TSNode descendant) {
+    return _ts_node_child_with_descendant(self, descendant);
   }
 
   late final _ts_node_child_with_descendantPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, TSNode)>>(
-          'ts_node_child_with_descendant');
-  late final _ts_node_child_with_descendant = _ts_node_child_with_descendantPtr
-      .asFunction<TSNode Function(TSNode, TSNode)>();
+        'ts_node_child_with_descendant',
+      );
+  late final _ts_node_child_with_descendant =
+      _ts_node_child_with_descendantPtr
+          .asFunction<TSNode Function(TSNode, TSNode)>();
 
   /// Get the node's child at the given index, where zero represents the first
   /// child.
-  TSNode ts_node_child(
-    TSNode self,
-    int child_index,
-  ) {
-    return _ts_node_child(
-      self,
-      child_index,
-    );
+  TSNode ts_node_child(TSNode self, int child_index) {
+    return _ts_node_child(self, child_index);
   }
 
   late final _ts_node_childPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32)>>(
-          'ts_node_child');
+        'ts_node_child',
+      );
   late final _ts_node_child =
       _ts_node_childPtr.asFunction<TSNode Function(TSNode, int)>();
 
@@ -3341,18 +3239,15 @@ class TreeSitter {
     TSNode self,
     int child_index,
   ) {
-    return _ts_node_field_name_for_child(
-      self,
-      child_index,
-    );
+    return _ts_node_field_name_for_child(self, child_index);
   }
 
   late final _ts_node_field_name_for_childPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode, ffi.Uint32)>>(
-      'ts_node_field_name_for_child');
-  late final _ts_node_field_name_for_child = _ts_node_field_name_for_childPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(TSNode, int)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode, ffi.Uint32)>
+  >('ts_node_field_name_for_child');
+  late final _ts_node_field_name_for_child =
+      _ts_node_field_name_for_childPtr
+          .asFunction<ffi.Pointer<ffi.Char> Function(TSNode, int)>();
 
   /// Get the field name for node's named child at the given index, where zero
   /// represents the first named child. Returns NULL, if no field is found.
@@ -3360,68 +3255,53 @@ class TreeSitter {
     TSNode self,
     int named_child_index,
   ) {
-    return _ts_node_field_name_for_named_child(
-      self,
-      named_child_index,
-    );
+    return _ts_node_field_name_for_named_child(self, named_child_index);
   }
 
   late final _ts_node_field_name_for_named_childPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode, ffi.Uint32)>>(
-      'ts_node_field_name_for_named_child');
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(TSNode, ffi.Uint32)>
+  >('ts_node_field_name_for_named_child');
   late final _ts_node_field_name_for_named_child =
       _ts_node_field_name_for_named_childPtr
           .asFunction<ffi.Pointer<ffi.Char> Function(TSNode, int)>();
 
   /// Get the node's number of children.
-  int ts_node_child_count(
-    TSNode self,
-  ) {
-    return _ts_node_child_count(
-      self,
-    );
+  int ts_node_child_count(TSNode self) {
+    return _ts_node_child_count(self);
   }
 
   late final _ts_node_child_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(TSNode)>>(
-          'ts_node_child_count');
+        'ts_node_child_count',
+      );
   late final _ts_node_child_count =
       _ts_node_child_countPtr.asFunction<int Function(TSNode)>();
 
   /// Get the node's *named* child at the given index.
   ///
   /// See also [`ts_node_is_named`].
-  TSNode ts_node_named_child(
-    TSNode self,
-    int child_index,
-  ) {
-    return _ts_node_named_child(
-      self,
-      child_index,
-    );
+  TSNode ts_node_named_child(TSNode self, int child_index) {
+    return _ts_node_named_child(self, child_index);
   }
 
   late final _ts_node_named_childPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32)>>(
-          'ts_node_named_child');
+        'ts_node_named_child',
+      );
   late final _ts_node_named_child =
       _ts_node_named_childPtr.asFunction<TSNode Function(TSNode, int)>();
 
   /// Get the node's number of *named* children.
   ///
   /// See also [`ts_node_is_named`].
-  int ts_node_named_child_count(
-    TSNode self,
-  ) {
-    return _ts_node_named_child_count(
-      self,
-    );
+  int ts_node_named_child_count(TSNode self) {
+    return _ts_node_named_child_count(self);
   }
 
   late final _ts_node_named_child_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(TSNode)>>(
-          'ts_node_named_child_count');
+        'ts_node_named_child_count',
+      );
   late final _ts_node_named_child_count =
       _ts_node_named_child_countPtr.asFunction<int Function(TSNode)>();
 
@@ -3431,165 +3311,126 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> name,
     int name_length,
   ) {
-    return _ts_node_child_by_field_name(
-      self,
-      name,
-      name_length,
-    );
+    return _ts_node_child_by_field_name(self, name, name_length);
   }
 
   late final _ts_node_child_by_field_namePtr = _lookup<
-      ffi.NativeFunction<
-          TSNode Function(TSNode, ffi.Pointer<ffi.Char>,
-              ffi.Uint32)>>('ts_node_child_by_field_name');
-  late final _ts_node_child_by_field_name = _ts_node_child_by_field_namePtr
-      .asFunction<TSNode Function(TSNode, ffi.Pointer<ffi.Char>, int)>();
+    ffi.NativeFunction<
+      TSNode Function(TSNode, ffi.Pointer<ffi.Char>, ffi.Uint32)
+    >
+  >('ts_node_child_by_field_name');
+  late final _ts_node_child_by_field_name =
+      _ts_node_child_by_field_namePtr
+          .asFunction<TSNode Function(TSNode, ffi.Pointer<ffi.Char>, int)>();
 
   /// Get the node's child with the given numerical field id.
   ///
   /// You can convert a field name to an id using the
   /// [`ts_language_field_id_for_name`] function.
-  TSNode ts_node_child_by_field_id(
-    TSNode self,
-    int field_id,
-  ) {
-    return _ts_node_child_by_field_id(
-      self,
-      field_id,
-    );
+  TSNode ts_node_child_by_field_id(TSNode self, int field_id) {
+    return _ts_node_child_by_field_id(self, field_id);
   }
 
   late final _ts_node_child_by_field_idPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, TSFieldId)>>(
-          'ts_node_child_by_field_id');
+        'ts_node_child_by_field_id',
+      );
   late final _ts_node_child_by_field_id =
       _ts_node_child_by_field_idPtr.asFunction<TSNode Function(TSNode, int)>();
 
   /// Get the node's next / previous sibling.
-  TSNode ts_node_next_sibling(
-    TSNode self,
-  ) {
-    return _ts_node_next_sibling(
-      self,
-    );
+  TSNode ts_node_next_sibling(TSNode self) {
+    return _ts_node_next_sibling(self);
   }
 
   late final _ts_node_next_siblingPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode)>>(
-          'ts_node_next_sibling');
+        'ts_node_next_sibling',
+      );
   late final _ts_node_next_sibling =
       _ts_node_next_siblingPtr.asFunction<TSNode Function(TSNode)>();
 
-  TSNode ts_node_prev_sibling(
-    TSNode self,
-  ) {
-    return _ts_node_prev_sibling(
-      self,
-    );
+  TSNode ts_node_prev_sibling(TSNode self) {
+    return _ts_node_prev_sibling(self);
   }
 
   late final _ts_node_prev_siblingPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode)>>(
-          'ts_node_prev_sibling');
+        'ts_node_prev_sibling',
+      );
   late final _ts_node_prev_sibling =
       _ts_node_prev_siblingPtr.asFunction<TSNode Function(TSNode)>();
 
   /// Get the node's next / previous *named* sibling.
-  TSNode ts_node_next_named_sibling(
-    TSNode self,
-  ) {
-    return _ts_node_next_named_sibling(
-      self,
-    );
+  TSNode ts_node_next_named_sibling(TSNode self) {
+    return _ts_node_next_named_sibling(self);
   }
 
   late final _ts_node_next_named_siblingPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode)>>(
-          'ts_node_next_named_sibling');
+        'ts_node_next_named_sibling',
+      );
   late final _ts_node_next_named_sibling =
       _ts_node_next_named_siblingPtr.asFunction<TSNode Function(TSNode)>();
 
-  TSNode ts_node_prev_named_sibling(
-    TSNode self,
-  ) {
-    return _ts_node_prev_named_sibling(
-      self,
-    );
+  TSNode ts_node_prev_named_sibling(TSNode self) {
+    return _ts_node_prev_named_sibling(self);
   }
 
   late final _ts_node_prev_named_siblingPtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode)>>(
-          'ts_node_prev_named_sibling');
+        'ts_node_prev_named_sibling',
+      );
   late final _ts_node_prev_named_sibling =
       _ts_node_prev_named_siblingPtr.asFunction<TSNode Function(TSNode)>();
 
   /// Get the node's first child that contains or starts after the given byte offset.
-  TSNode ts_node_first_child_for_byte(
-    TSNode self,
-    int byte,
-  ) {
-    return _ts_node_first_child_for_byte(
-      self,
-      byte,
-    );
+  TSNode ts_node_first_child_for_byte(TSNode self, int byte) {
+    return _ts_node_first_child_for_byte(self, byte);
   }
 
   late final _ts_node_first_child_for_bytePtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32)>>(
-          'ts_node_first_child_for_byte');
-  late final _ts_node_first_child_for_byte = _ts_node_first_child_for_bytePtr
-      .asFunction<TSNode Function(TSNode, int)>();
+        'ts_node_first_child_for_byte',
+      );
+  late final _ts_node_first_child_for_byte =
+      _ts_node_first_child_for_bytePtr
+          .asFunction<TSNode Function(TSNode, int)>();
 
   /// Get the node's first named child that contains or starts after the given byte offset.
-  TSNode ts_node_first_named_child_for_byte(
-    TSNode self,
-    int byte,
-  ) {
-    return _ts_node_first_named_child_for_byte(
-      self,
-      byte,
-    );
+  TSNode ts_node_first_named_child_for_byte(TSNode self, int byte) {
+    return _ts_node_first_named_child_for_byte(self, byte);
   }
 
   late final _ts_node_first_named_child_for_bytePtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32)>>(
-          'ts_node_first_named_child_for_byte');
+        'ts_node_first_named_child_for_byte',
+      );
   late final _ts_node_first_named_child_for_byte =
       _ts_node_first_named_child_for_bytePtr
           .asFunction<TSNode Function(TSNode, int)>();
 
   /// Get the node's number of descendants, including one for the node itself.
-  int ts_node_descendant_count(
-    TSNode self,
-  ) {
-    return _ts_node_descendant_count(
-      self,
-    );
+  int ts_node_descendant_count(TSNode self) {
+    return _ts_node_descendant_count(self);
   }
 
   late final _ts_node_descendant_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(TSNode)>>(
-          'ts_node_descendant_count');
+        'ts_node_descendant_count',
+      );
   late final _ts_node_descendant_count =
       _ts_node_descendant_countPtr.asFunction<int Function(TSNode)>();
 
   /// Get the smallest node within this node that spans the given range of bytes
   /// or (row, column) positions.
-  TSNode ts_node_descendant_for_byte_range(
-    TSNode self,
-    int start,
-    int end,
-  ) {
-    return _ts_node_descendant_for_byte_range(
-      self,
-      start,
-      end,
-    );
+  TSNode ts_node_descendant_for_byte_range(TSNode self, int start, int end) {
+    return _ts_node_descendant_for_byte_range(self, start, end);
   }
 
   late final _ts_node_descendant_for_byte_rangePtr = _lookup<
-          ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32, ffi.Uint32)>>(
-      'ts_node_descendant_for_byte_range');
+    ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32, ffi.Uint32)>
+  >('ts_node_descendant_for_byte_range');
   late final _ts_node_descendant_for_byte_range =
       _ts_node_descendant_for_byte_rangePtr
           .asFunction<TSNode Function(TSNode, int, int)>();
@@ -3599,16 +3440,13 @@ class TreeSitter {
     TSPoint start,
     TSPoint end,
   ) {
-    return _ts_node_descendant_for_point_range(
-      self,
-      start,
-      end,
-    );
+    return _ts_node_descendant_for_point_range(self, start, end);
   }
 
   late final _ts_node_descendant_for_point_rangePtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, TSPoint, TSPoint)>>(
-          'ts_node_descendant_for_point_range');
+        'ts_node_descendant_for_point_range',
+      );
   late final _ts_node_descendant_for_point_range =
       _ts_node_descendant_for_point_rangePtr
           .asFunction<TSNode Function(TSNode, TSPoint, TSPoint)>();
@@ -3620,16 +3458,12 @@ class TreeSitter {
     int start,
     int end,
   ) {
-    return _ts_node_named_descendant_for_byte_range(
-      self,
-      start,
-      end,
-    );
+    return _ts_node_named_descendant_for_byte_range(self, start, end);
   }
 
   late final _ts_node_named_descendant_for_byte_rangePtr = _lookup<
-          ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32, ffi.Uint32)>>(
-      'ts_node_named_descendant_for_byte_range');
+    ffi.NativeFunction<TSNode Function(TSNode, ffi.Uint32, ffi.Uint32)>
+  >('ts_node_named_descendant_for_byte_range');
   late final _ts_node_named_descendant_for_byte_range =
       _ts_node_named_descendant_for_byte_rangePtr
           .asFunction<TSNode Function(TSNode, int, int)>();
@@ -3639,16 +3473,13 @@ class TreeSitter {
     TSPoint start,
     TSPoint end,
   ) {
-    return _ts_node_named_descendant_for_point_range(
-      self,
-      start,
-      end,
-    );
+    return _ts_node_named_descendant_for_point_range(self, start, end);
   }
 
   late final _ts_node_named_descendant_for_point_rangePtr =
       _lookup<ffi.NativeFunction<TSNode Function(TSNode, TSPoint, TSPoint)>>(
-          'ts_node_named_descendant_for_point_range');
+        'ts_node_named_descendant_for_point_range',
+      );
   late final _ts_node_named_descendant_for_point_range =
       _ts_node_named_descendant_for_point_rangePtr
           .asFunction<TSNode Function(TSNode, TSPoint, TSPoint)>();
@@ -3660,37 +3491,30 @@ class TreeSitter {
   /// afterward will already reflect the edit. You only need to use [`ts_node_edit`]
   /// when you have a [`TSNode`] instance that you want to keep and continue to use
   /// after an edit.
-  void ts_node_edit(
-    ffi.Pointer<TSNode> self,
-    ffi.Pointer<TSInputEdit> edit,
-  ) {
-    return _ts_node_edit(
-      self,
-      edit,
-    );
+  void ts_node_edit(ffi.Pointer<TSNode> self, ffi.Pointer<TSInputEdit> edit) {
+    return _ts_node_edit(self, edit);
   }
 
   late final _ts_node_editPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<TSNode>, ffi.Pointer<TSInputEdit>)>>('ts_node_edit');
-  late final _ts_node_edit = _ts_node_editPtr.asFunction<
-      void Function(ffi.Pointer<TSNode>, ffi.Pointer<TSInputEdit>)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSNode>, ffi.Pointer<TSInputEdit>)
+    >
+  >('ts_node_edit');
+  late final _ts_node_edit =
+      _ts_node_editPtr
+          .asFunction<
+            void Function(ffi.Pointer<TSNode>, ffi.Pointer<TSInputEdit>)
+          >();
 
   /// Check if two nodes are identical.
-  bool ts_node_eq(
-    TSNode self,
-    TSNode other,
-  ) {
-    return _ts_node_eq(
-      self,
-      other,
-    );
+  bool ts_node_eq(TSNode self, TSNode other) {
+    return _ts_node_eq(self, other);
   }
 
   late final _ts_node_eqPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(TSNode, TSNode)>>(
-          'ts_node_eq');
+        'ts_node_eq',
+      );
   late final _ts_node_eq =
       _ts_node_eqPtr.asFunction<bool Function(TSNode, TSNode)>();
 
@@ -3702,53 +3526,42 @@ class TreeSitter {
   ///
   /// Note that the given node is considered the root of the cursor,
   /// and the cursor cannot walk outside this node.
-  TSTreeCursor ts_tree_cursor_new(
-    TSNode node,
-  ) {
-    return _ts_tree_cursor_new(
-      node,
-    );
+  TSTreeCursor ts_tree_cursor_new(TSNode node) {
+    return _ts_tree_cursor_new(node);
   }
 
   late final _ts_tree_cursor_newPtr =
       _lookup<ffi.NativeFunction<TSTreeCursor Function(TSNode)>>(
-          'ts_tree_cursor_new');
+        'ts_tree_cursor_new',
+      );
   late final _ts_tree_cursor_new =
       _ts_tree_cursor_newPtr.asFunction<TSTreeCursor Function(TSNode)>();
 
   /// Delete a tree cursor, freeing all of the memory that it used.
-  void ts_tree_cursor_delete(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_delete(
-      self,
-    );
+  void ts_tree_cursor_delete(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_delete(self);
   }
 
   late final _ts_tree_cursor_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_delete');
-  late final _ts_tree_cursor_delete = _ts_tree_cursor_deletePtr
-      .asFunction<void Function(ffi.Pointer<TSTreeCursor>)>();
+        'ts_tree_cursor_delete',
+      );
+  late final _ts_tree_cursor_delete =
+      _ts_tree_cursor_deletePtr
+          .asFunction<void Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Re-initialize a tree cursor to start at the original node that the cursor was
   /// constructed with.
-  void ts_tree_cursor_reset(
-    ffi.Pointer<TSTreeCursor> self,
-    TSNode node,
-  ) {
-    return _ts_tree_cursor_reset(
-      self,
-      node,
-    );
+  void ts_tree_cursor_reset(ffi.Pointer<TSTreeCursor> self, TSNode node) {
+    return _ts_tree_cursor_reset(self, node);
   }
 
   late final _ts_tree_cursor_resetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<TSTreeCursor>, TSNode)>>('ts_tree_cursor_reset');
-  late final _ts_tree_cursor_reset = _ts_tree_cursor_resetPtr
-      .asFunction<void Function(ffi.Pointer<TSTreeCursor>, TSNode)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTreeCursor>, TSNode)>
+  >('ts_tree_cursor_reset');
+  late final _ts_tree_cursor_reset =
+      _ts_tree_cursor_resetPtr
+          .asFunction<void Function(ffi.Pointer<TSTreeCursor>, TSNode)>();
 
   /// Re-initialize a tree cursor to the same position as another cursor.
   ///
@@ -3758,33 +3571,32 @@ class TreeSitter {
     ffi.Pointer<TSTreeCursor> dst,
     ffi.Pointer<TSTreeCursor> src,
   ) {
-    return _ts_tree_cursor_reset_to(
-      dst,
-      src,
-    );
+    return _ts_tree_cursor_reset_to(dst, src);
   }
 
   late final _ts_tree_cursor_reset_toPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSTreeCursor>,
-              ffi.Pointer<TSTreeCursor>)>>('ts_tree_cursor_reset_to');
-  late final _ts_tree_cursor_reset_to = _ts_tree_cursor_reset_toPtr.asFunction<
-      void Function(ffi.Pointer<TSTreeCursor>, ffi.Pointer<TSTreeCursor>)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSTreeCursor>, ffi.Pointer<TSTreeCursor>)
+    >
+  >('ts_tree_cursor_reset_to');
+  late final _ts_tree_cursor_reset_to =
+      _ts_tree_cursor_reset_toPtr
+          .asFunction<
+            void Function(ffi.Pointer<TSTreeCursor>, ffi.Pointer<TSTreeCursor>)
+          >();
 
   /// Get the tree cursor's current node.
-  TSNode ts_tree_cursor_current_node(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_current_node(
-      self,
-    );
+  TSNode ts_tree_cursor_current_node(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_current_node(self);
   }
 
   late final _ts_tree_cursor_current_nodePtr =
       _lookup<ffi.NativeFunction<TSNode Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_current_node');
-  late final _ts_tree_cursor_current_node = _ts_tree_cursor_current_nodePtr
-      .asFunction<TSNode Function(ffi.Pointer<TSTreeCursor>)>();
+        'ts_tree_cursor_current_node',
+      );
+  late final _ts_tree_cursor_current_node =
+      _ts_tree_cursor_current_nodePtr
+          .asFunction<TSNode Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Get the field name of the tree cursor's current node.
   ///
@@ -3793,34 +3605,31 @@ class TreeSitter {
   ffi.Pointer<ffi.Char> ts_tree_cursor_current_field_name(
     ffi.Pointer<TSTreeCursor> self,
   ) {
-    return _ts_tree_cursor_current_field_name(
-      self,
-    );
+    return _ts_tree_cursor_current_field_name(self);
   }
 
   late final _ts_tree_cursor_current_field_namePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TSTreeCursor>)>>('ts_tree_cursor_current_field_name');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSTreeCursor>)
+    >
+  >('ts_tree_cursor_current_field_name');
   late final _ts_tree_cursor_current_field_name =
-      _ts_tree_cursor_current_field_namePtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSTreeCursor>)>();
+      _ts_tree_cursor_current_field_namePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSTreeCursor>)
+          >();
 
   /// Get the field id of the tree cursor's current node.
   ///
   /// This returns zero if the current node doesn't have a field.
   /// See also [`ts_node_child_by_field_id`], [`ts_language_field_id_for_name`].
-  int ts_tree_cursor_current_field_id(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_current_field_id(
-      self,
-    );
+  int ts_tree_cursor_current_field_id(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_current_field_id(self);
   }
 
   late final _ts_tree_cursor_current_field_idPtr = _lookup<
-          ffi.NativeFunction<TSFieldId Function(ffi.Pointer<TSTreeCursor>)>>(
-      'ts_tree_cursor_current_field_id');
+    ffi.NativeFunction<TSFieldId Function(ffi.Pointer<TSTreeCursor>)>
+  >('ts_tree_cursor_current_field_id');
   late final _ts_tree_cursor_current_field_id =
       _ts_tree_cursor_current_field_idPtr
           .asFunction<int Function(ffi.Pointer<TSTreeCursor>)>();
@@ -3832,19 +3641,17 @@ class TreeSitter {
   ///
   /// Note that the node the cursor was constructed with is considered the root
   /// of the cursor, and the cursor cannot walk outside this node.
-  bool ts_tree_cursor_goto_parent(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_goto_parent(
-      self,
-    );
+  bool ts_tree_cursor_goto_parent(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_goto_parent(self);
   }
 
   late final _ts_tree_cursor_goto_parentPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_goto_parent');
-  late final _ts_tree_cursor_goto_parent = _ts_tree_cursor_goto_parentPtr
-      .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
+        'ts_tree_cursor_goto_parent',
+      );
+  late final _ts_tree_cursor_goto_parent =
+      _ts_tree_cursor_goto_parentPtr
+          .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Move the cursor to the next sibling of its current node.
   ///
@@ -3853,17 +3660,14 @@ class TreeSitter {
   ///
   /// Note that the node the cursor was constructed with is considered the root
   /// of the cursor, and the cursor cannot walk outside this node.
-  bool ts_tree_cursor_goto_next_sibling(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_goto_next_sibling(
-      self,
-    );
+  bool ts_tree_cursor_goto_next_sibling(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_goto_next_sibling(self);
   }
 
   late final _ts_tree_cursor_goto_next_siblingPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_goto_next_sibling');
+        'ts_tree_cursor_goto_next_sibling',
+      );
   late final _ts_tree_cursor_goto_next_sibling =
       _ts_tree_cursor_goto_next_siblingPtr
           .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
@@ -3879,17 +3683,14 @@ class TreeSitter {
   /// previous sibling node to recalculate its position. Also note that the node the cursor
   /// was constructed with is considered the root of the cursor, and the cursor cannot
   /// walk outside this node.
-  bool ts_tree_cursor_goto_previous_sibling(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_goto_previous_sibling(
-      self,
-    );
+  bool ts_tree_cursor_goto_previous_sibling(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_goto_previous_sibling(self);
   }
 
   late final _ts_tree_cursor_goto_previous_siblingPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_goto_previous_sibling');
+        'ts_tree_cursor_goto_previous_sibling',
+      );
   late final _ts_tree_cursor_goto_previous_sibling =
       _ts_tree_cursor_goto_previous_siblingPtr
           .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
@@ -3898,17 +3699,14 @@ class TreeSitter {
   ///
   /// This returns `true` if the cursor successfully moved, and returns `false`
   /// if there were no children.
-  bool ts_tree_cursor_goto_first_child(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_goto_first_child(
-      self,
-    );
+  bool ts_tree_cursor_goto_first_child(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_goto_first_child(self);
   }
 
   late final _ts_tree_cursor_goto_first_childPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_goto_first_child');
+        'ts_tree_cursor_goto_first_child',
+      );
   late final _ts_tree_cursor_goto_first_child =
       _ts_tree_cursor_goto_first_childPtr
           .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
@@ -3921,17 +3719,14 @@ class TreeSitter {
   /// Note that this function may be slower than [`ts_tree_cursor_goto_first_child`]
   /// because it needs to iterate through all the children to compute the child's
   /// position.
-  bool ts_tree_cursor_goto_last_child(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_goto_last_child(
-      self,
-    );
+  bool ts_tree_cursor_goto_last_child(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_goto_last_child(self);
   }
 
   late final _ts_tree_cursor_goto_last_childPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSTreeCursor>)>>(
-          'ts_tree_cursor_goto_last_child');
+        'ts_tree_cursor_goto_last_child',
+      );
   late final _ts_tree_cursor_goto_last_child =
       _ts_tree_cursor_goto_last_childPtr
           .asFunction<bool Function(ffi.Pointer<TSTreeCursor>)>();
@@ -3943,52 +3738,41 @@ class TreeSitter {
     ffi.Pointer<TSTreeCursor> self,
     int goal_descendant_index,
   ) {
-    return _ts_tree_cursor_goto_descendant(
-      self,
-      goal_descendant_index,
-    );
+    return _ts_tree_cursor_goto_descendant(self, goal_descendant_index);
   }
 
   late final _ts_tree_cursor_goto_descendantPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSTreeCursor>,
-              ffi.Uint32)>>('ts_tree_cursor_goto_descendant');
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSTreeCursor>, ffi.Uint32)>
+  >('ts_tree_cursor_goto_descendant');
   late final _ts_tree_cursor_goto_descendant =
       _ts_tree_cursor_goto_descendantPtr
           .asFunction<void Function(ffi.Pointer<TSTreeCursor>, int)>();
 
   /// Get the index of the cursor's current node out of all of the
   /// descendants of the original node that the cursor was constructed with.
-  int ts_tree_cursor_current_descendant_index(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_current_descendant_index(
-      self,
-    );
+  int ts_tree_cursor_current_descendant_index(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_current_descendant_index(self);
   }
 
   late final _ts_tree_cursor_current_descendant_indexPtr = _lookup<
-          ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSTreeCursor>)>>(
-      'ts_tree_cursor_current_descendant_index');
+    ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSTreeCursor>)>
+  >('ts_tree_cursor_current_descendant_index');
   late final _ts_tree_cursor_current_descendant_index =
       _ts_tree_cursor_current_descendant_indexPtr
           .asFunction<int Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Get the depth of the cursor's current node relative to the original
   /// node that the cursor was constructed with.
-  int ts_tree_cursor_current_depth(
-    ffi.Pointer<TSTreeCursor> self,
-  ) {
-    return _ts_tree_cursor_current_depth(
-      self,
-    );
+  int ts_tree_cursor_current_depth(ffi.Pointer<TSTreeCursor> self) {
+    return _ts_tree_cursor_current_depth(self);
   }
 
   late final _ts_tree_cursor_current_depthPtr = _lookup<
-          ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSTreeCursor>)>>(
-      'ts_tree_cursor_current_depth');
-  late final _ts_tree_cursor_current_depth = _ts_tree_cursor_current_depthPtr
-      .asFunction<int Function(ffi.Pointer<TSTreeCursor>)>();
+    ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSTreeCursor>)>
+  >('ts_tree_cursor_current_depth');
+  late final _ts_tree_cursor_current_depth =
+      _ts_tree_cursor_current_depthPtr
+          .asFunction<int Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Move the cursor to the first child of its current node that contains or starts after
   /// the given byte offset or point.
@@ -3999,16 +3783,14 @@ class TreeSitter {
     ffi.Pointer<TSTreeCursor> self,
     int goal_byte,
   ) {
-    return _ts_tree_cursor_goto_first_child_for_byte(
-      self,
-      goal_byte,
-    );
+    return _ts_tree_cursor_goto_first_child_for_byte(self, goal_byte);
   }
 
   late final _ts_tree_cursor_goto_first_child_for_bytePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int64 Function(ffi.Pointer<TSTreeCursor>,
-              ffi.Uint32)>>('ts_tree_cursor_goto_first_child_for_byte');
+    ffi.NativeFunction<
+      ffi.Int64 Function(ffi.Pointer<TSTreeCursor>, ffi.Uint32)
+    >
+  >('ts_tree_cursor_goto_first_child_for_byte');
   late final _ts_tree_cursor_goto_first_child_for_byte =
       _ts_tree_cursor_goto_first_child_for_bytePtr
           .asFunction<int Function(ffi.Pointer<TSTreeCursor>, int)>();
@@ -4017,33 +3799,26 @@ class TreeSitter {
     ffi.Pointer<TSTreeCursor> self,
     TSPoint goal_point,
   ) {
-    return _ts_tree_cursor_goto_first_child_for_point(
-      self,
-      goal_point,
-    );
+    return _ts_tree_cursor_goto_first_child_for_point(self, goal_point);
   }
 
   late final _ts_tree_cursor_goto_first_child_for_pointPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int64 Function(ffi.Pointer<TSTreeCursor>,
-              TSPoint)>>('ts_tree_cursor_goto_first_child_for_point');
+    ffi.NativeFunction<ffi.Int64 Function(ffi.Pointer<TSTreeCursor>, TSPoint)>
+  >('ts_tree_cursor_goto_first_child_for_point');
   late final _ts_tree_cursor_goto_first_child_for_point =
       _ts_tree_cursor_goto_first_child_for_pointPtr
           .asFunction<int Function(ffi.Pointer<TSTreeCursor>, TSPoint)>();
 
-  TSTreeCursor ts_tree_cursor_copy(
-    ffi.Pointer<TSTreeCursor> cursor,
-  ) {
-    return _ts_tree_cursor_copy(
-      cursor,
-    );
+  TSTreeCursor ts_tree_cursor_copy(ffi.Pointer<TSTreeCursor> cursor) {
+    return _ts_tree_cursor_copy(cursor);
   }
 
   late final _ts_tree_cursor_copyPtr = _lookup<
-          ffi.NativeFunction<TSTreeCursor Function(ffi.Pointer<TSTreeCursor>)>>(
-      'ts_tree_cursor_copy');
-  late final _ts_tree_cursor_copy = _ts_tree_cursor_copyPtr
-      .asFunction<TSTreeCursor Function(ffi.Pointer<TSTreeCursor>)>();
+    ffi.NativeFunction<TSTreeCursor Function(ffi.Pointer<TSTreeCursor>)>
+  >('ts_tree_cursor_copy');
+  late final _ts_tree_cursor_copy =
+      _ts_tree_cursor_copyPtr
+          .asFunction<TSTreeCursor Function(ffi.Pointer<TSTreeCursor>)>();
 
   /// Create a new query from a string containing one or more S-expression
   /// patterns. The query is associated with a particular language, and can
@@ -4071,78 +3846,76 @@ class TreeSitter {
   }
 
   late final _ts_query_newPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSQuery> Function(
+    ffi.NativeFunction<
+      ffi.Pointer<TSQuery> Function(
+        ffi.Pointer<TSLanguage>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+        ffi.Pointer<ffi.Uint32>,
+        ffi.Pointer<ffi.UnsignedInt>,
+      )
+    >
+  >('ts_query_new');
+  late final _ts_query_new =
+      _ts_query_newPtr
+          .asFunction<
+            ffi.Pointer<TSQuery> Function(
               ffi.Pointer<TSLanguage>,
               ffi.Pointer<ffi.Char>,
-              ffi.Uint32,
+              int,
               ffi.Pointer<ffi.Uint32>,
-              ffi.Pointer<ffi.UnsignedInt>)>>('ts_query_new');
-  late final _ts_query_new = _ts_query_newPtr.asFunction<
-      ffi.Pointer<TSQuery> Function(
-          ffi.Pointer<TSLanguage>,
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Uint32>,
-          ffi.Pointer<ffi.UnsignedInt>)>();
+              ffi.Pointer<ffi.UnsignedInt>,
+            )
+          >();
 
   /// Delete a query, freeing all of the memory that it used.
-  void ts_query_delete(
-    ffi.Pointer<TSQuery> self,
-  ) {
-    return _ts_query_delete(
-      self,
-    );
+  void ts_query_delete(ffi.Pointer<TSQuery> self) {
+    return _ts_query_delete(self);
   }
 
   late final _ts_query_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSQuery>)>>(
-          'ts_query_delete');
+        'ts_query_delete',
+      );
   late final _ts_query_delete =
       _ts_query_deletePtr.asFunction<void Function(ffi.Pointer<TSQuery>)>();
 
   /// Get the number of patterns, captures, or string literals in the query.
-  int ts_query_pattern_count(
-    ffi.Pointer<TSQuery> self,
-  ) {
-    return _ts_query_pattern_count(
-      self,
-    );
+  int ts_query_pattern_count(ffi.Pointer<TSQuery> self) {
+    return _ts_query_pattern_count(self);
   }
 
   late final _ts_query_pattern_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQuery>)>>(
-          'ts_query_pattern_count');
-  late final _ts_query_pattern_count = _ts_query_pattern_countPtr
-      .asFunction<int Function(ffi.Pointer<TSQuery>)>();
+        'ts_query_pattern_count',
+      );
+  late final _ts_query_pattern_count =
+      _ts_query_pattern_countPtr
+          .asFunction<int Function(ffi.Pointer<TSQuery>)>();
 
-  int ts_query_capture_count(
-    ffi.Pointer<TSQuery> self,
-  ) {
-    return _ts_query_capture_count(
-      self,
-    );
+  int ts_query_capture_count(ffi.Pointer<TSQuery> self) {
+    return _ts_query_capture_count(self);
   }
 
   late final _ts_query_capture_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQuery>)>>(
-          'ts_query_capture_count');
-  late final _ts_query_capture_count = _ts_query_capture_countPtr
-      .asFunction<int Function(ffi.Pointer<TSQuery>)>();
+        'ts_query_capture_count',
+      );
+  late final _ts_query_capture_count =
+      _ts_query_capture_countPtr
+          .asFunction<int Function(ffi.Pointer<TSQuery>)>();
 
-  int ts_query_string_count(
-    ffi.Pointer<TSQuery> self,
-  ) {
-    return _ts_query_string_count(
-      self,
-    );
+  int ts_query_string_count(ffi.Pointer<TSQuery> self) {
+    return _ts_query_string_count(self);
   }
 
   late final _ts_query_string_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQuery>)>>(
-          'ts_query_string_count');
-  late final _ts_query_string_count = _ts_query_string_countPtr
-      .asFunction<int Function(ffi.Pointer<TSQuery>)>();
+        'ts_query_string_count',
+      );
+  late final _ts_query_string_count =
+      _ts_query_string_countPtr
+          .asFunction<int Function(ffi.Pointer<TSQuery>)>();
 
   /// Get the byte offset where the given pattern starts in the query's source.
   ///
@@ -4152,16 +3925,12 @@ class TreeSitter {
     ffi.Pointer<TSQuery> self,
     int pattern_index,
   ) {
-    return _ts_query_start_byte_for_pattern(
-      self,
-      pattern_index,
-    );
+    return _ts_query_start_byte_for_pattern(self, pattern_index);
   }
 
   late final _ts_query_start_byte_for_patternPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Uint32 Function(ffi.Pointer<TSQuery>,
-              ffi.Uint32)>>('ts_query_start_byte_for_pattern');
+    ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_start_byte_for_pattern');
   late final _ts_query_start_byte_for_pattern =
       _ts_query_start_byte_for_patternPtr
           .asFunction<int Function(ffi.Pointer<TSQuery>, int)>();
@@ -4174,18 +3943,15 @@ class TreeSitter {
     ffi.Pointer<TSQuery> self,
     int pattern_index,
   ) {
-    return _ts_query_end_byte_for_pattern(
-      self,
-      pattern_index,
-    );
+    return _ts_query_end_byte_for_pattern(self, pattern_index);
   }
 
   late final _ts_query_end_byte_for_patternPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Uint32 Function(ffi.Pointer<TSQuery>,
-              ffi.Uint32)>>('ts_query_end_byte_for_pattern');
-  late final _ts_query_end_byte_for_pattern = _ts_query_end_byte_for_patternPtr
-      .asFunction<int Function(ffi.Pointer<TSQuery>, int)>();
+    ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_end_byte_for_pattern');
+  late final _ts_query_end_byte_for_pattern =
+      _ts_query_end_byte_for_patternPtr
+          .asFunction<int Function(ffi.Pointer<TSQuery>, int)>();
 
   /// Get all of the predicates for the given pattern in the query.
   ///
@@ -4206,72 +3972,66 @@ class TreeSitter {
     int pattern_index,
     ffi.Pointer<ffi.Uint32> step_count,
   ) {
-    return _ts_query_predicates_for_pattern(
-      self,
-      pattern_index,
-      step_count,
-    );
+    return _ts_query_predicates_for_pattern(self, pattern_index, step_count);
   }
 
   late final _ts_query_predicates_for_patternPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSQueryPredicateStep> Function(
-              ffi.Pointer<TSQuery>,
-              ffi.Uint32,
-              ffi.Pointer<ffi.Uint32>)>>('ts_query_predicates_for_pattern');
+    ffi.NativeFunction<
+      ffi.Pointer<TSQueryPredicateStep> Function(
+        ffi.Pointer<TSQuery>,
+        ffi.Uint32,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_query_predicates_for_pattern');
   late final _ts_query_predicates_for_pattern =
-      _ts_query_predicates_for_patternPtr.asFunction<
-          ffi.Pointer<TSQueryPredicateStep> Function(
-              ffi.Pointer<TSQuery>, int, ffi.Pointer<ffi.Uint32>)>();
+      _ts_query_predicates_for_patternPtr
+          .asFunction<
+            ffi.Pointer<TSQueryPredicateStep> Function(
+              ffi.Pointer<TSQuery>,
+              int,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   bool ts_query_is_pattern_rooted(
     ffi.Pointer<TSQuery> self,
     int pattern_index,
   ) {
-    return _ts_query_is_pattern_rooted(
-      self,
-      pattern_index,
-    );
+    return _ts_query_is_pattern_rooted(self, pattern_index);
   }
 
   late final _ts_query_is_pattern_rootedPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>>(
-      'ts_query_is_pattern_rooted');
-  late final _ts_query_is_pattern_rooted = _ts_query_is_pattern_rootedPtr
-      .asFunction<bool Function(ffi.Pointer<TSQuery>, int)>();
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_is_pattern_rooted');
+  late final _ts_query_is_pattern_rooted =
+      _ts_query_is_pattern_rootedPtr
+          .asFunction<bool Function(ffi.Pointer<TSQuery>, int)>();
 
   bool ts_query_is_pattern_non_local(
     ffi.Pointer<TSQuery> self,
     int pattern_index,
   ) {
-    return _ts_query_is_pattern_non_local(
-      self,
-      pattern_index,
-    );
+    return _ts_query_is_pattern_non_local(self, pattern_index);
   }
 
   late final _ts_query_is_pattern_non_localPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>>(
-      'ts_query_is_pattern_non_local');
-  late final _ts_query_is_pattern_non_local = _ts_query_is_pattern_non_localPtr
-      .asFunction<bool Function(ffi.Pointer<TSQuery>, int)>();
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_is_pattern_non_local');
+  late final _ts_query_is_pattern_non_local =
+      _ts_query_is_pattern_non_localPtr
+          .asFunction<bool Function(ffi.Pointer<TSQuery>, int)>();
 
   bool ts_query_is_pattern_guaranteed_at_step(
     ffi.Pointer<TSQuery> self,
     int byte_offset,
   ) {
-    return _ts_query_is_pattern_guaranteed_at_step(
-      self,
-      byte_offset,
-    );
+    return _ts_query_is_pattern_guaranteed_at_step(self, byte_offset);
   }
 
   late final _ts_query_is_pattern_guaranteed_at_stepPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>>(
-      'ts_query_is_pattern_guaranteed_at_step');
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_is_pattern_guaranteed_at_step');
   late final _ts_query_is_pattern_guaranteed_at_step =
       _ts_query_is_pattern_guaranteed_at_stepPtr
           .asFunction<bool Function(ffi.Pointer<TSQuery>, int)>();
@@ -4284,21 +4044,27 @@ class TreeSitter {
     int index,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_query_capture_name_for_id(
-      self,
-      index,
-      length,
-    );
+    return _ts_query_capture_name_for_id(self, index, length);
   }
 
   late final _ts_query_capture_name_for_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSQuery>, ffi.Uint32,
-              ffi.Pointer<ffi.Uint32>)>>('ts_query_capture_name_for_id');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<TSQuery>,
+        ffi.Uint32,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_query_capture_name_for_id');
   late final _ts_query_capture_name_for_id =
-      _ts_query_capture_name_for_idPtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TSQuery>, int, ffi.Pointer<ffi.Uint32>)>();
+      _ts_query_capture_name_for_idPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<TSQuery>,
+              int,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Get the quantifier of the query's captures. Each capture is * associated
   /// with a numeric id based on the order that it appeared in the query's source.
@@ -4307,17 +4073,16 @@ class TreeSitter {
     int pattern_index,
     int capture_index,
   ) {
-    return TSQuantifier.fromValue(_ts_query_capture_quantifier_for_id(
-      self,
-      pattern_index,
-      capture_index,
-    ));
+    return TSQuantifier.fromValue(
+      _ts_query_capture_quantifier_for_id(self, pattern_index, capture_index),
+    );
   }
 
   late final _ts_query_capture_quantifier_for_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedInt Function(ffi.Pointer<TSQuery>, ffi.Uint32,
-              ffi.Uint32)>>('ts_query_capture_quantifier_for_id');
+    ffi.NativeFunction<
+      ffi.UnsignedInt Function(ffi.Pointer<TSQuery>, ffi.Uint32, ffi.Uint32)
+    >
+  >('ts_query_capture_quantifier_for_id');
   late final _ts_query_capture_quantifier_for_id =
       _ts_query_capture_quantifier_for_idPtr
           .asFunction<int Function(ffi.Pointer<TSQuery>, int, int)>();
@@ -4327,21 +4092,27 @@ class TreeSitter {
     int index,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_query_string_value_for_id(
-      self,
-      index,
-      length,
-    );
+    return _ts_query_string_value_for_id(self, index, length);
   }
 
   late final _ts_query_string_value_for_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSQuery>, ffi.Uint32,
-              ffi.Pointer<ffi.Uint32>)>>('ts_query_string_value_for_id');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<TSQuery>,
+        ffi.Uint32,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_query_string_value_for_id');
   late final _ts_query_string_value_for_id =
-      _ts_query_string_value_for_idPtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TSQuery>, int, ffi.Pointer<ffi.Uint32>)>();
+      _ts_query_string_value_for_idPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<TSQuery>,
+              int,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Disable a certain capture within a query.
   ///
@@ -4353,41 +4124,34 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> name,
     int length,
   ) {
-    return _ts_query_disable_capture(
-      self,
-      name,
-      length,
-    );
+    return _ts_query_disable_capture(self, name, length);
   }
 
   late final _ts_query_disable_capturePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQuery>, ffi.Pointer<ffi.Char>,
-              ffi.Uint32)>>('ts_query_disable_capture');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSQuery>, ffi.Pointer<ffi.Char>, ffi.Uint32)
+    >
+  >('ts_query_disable_capture');
   late final _ts_query_disable_capture =
-      _ts_query_disable_capturePtr.asFunction<
-          void Function(ffi.Pointer<TSQuery>, ffi.Pointer<ffi.Char>, int)>();
+      _ts_query_disable_capturePtr
+          .asFunction<
+            void Function(ffi.Pointer<TSQuery>, ffi.Pointer<ffi.Char>, int)
+          >();
 
   /// Disable a certain pattern within a query.
   ///
   /// This prevents the pattern from matching and removes most of the overhead
   /// associated with the pattern. Currently, there is no way to undo this.
-  void ts_query_disable_pattern(
-    ffi.Pointer<TSQuery> self,
-    int pattern_index,
-  ) {
-    return _ts_query_disable_pattern(
-      self,
-      pattern_index,
-    );
+  void ts_query_disable_pattern(ffi.Pointer<TSQuery> self, int pattern_index) {
+    return _ts_query_disable_pattern(self, pattern_index);
   }
 
   late final _ts_query_disable_patternPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<TSQuery>, ffi.Uint32)>>(
-      'ts_query_disable_pattern');
-  late final _ts_query_disable_pattern = _ts_query_disable_patternPtr
-      .asFunction<void Function(ffi.Pointer<TSQuery>, int)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSQuery>, ffi.Uint32)>
+  >('ts_query_disable_pattern');
+  late final _ts_query_disable_pattern =
+      _ts_query_disable_patternPtr
+          .asFunction<void Function(ffi.Pointer<TSQuery>, int)>();
 
   /// Create a new cursor for executing a given query.
   ///
@@ -4415,24 +4179,23 @@ class TreeSitter {
 
   late final _ts_query_cursor_newPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<TSQueryCursor> Function()>>(
-          'ts_query_cursor_new');
-  late final _ts_query_cursor_new = _ts_query_cursor_newPtr
-      .asFunction<ffi.Pointer<TSQueryCursor> Function()>();
+        'ts_query_cursor_new',
+      );
+  late final _ts_query_cursor_new =
+      _ts_query_cursor_newPtr
+          .asFunction<ffi.Pointer<TSQueryCursor> Function()>();
 
   /// Delete a query cursor, freeing all of the memory that it used.
-  void ts_query_cursor_delete(
-    ffi.Pointer<TSQueryCursor> self,
-  ) {
-    return _ts_query_cursor_delete(
-      self,
-    );
+  void ts_query_cursor_delete(ffi.Pointer<TSQueryCursor> self) {
+    return _ts_query_cursor_delete(self);
   }
 
   late final _ts_query_cursor_deletePtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSQueryCursor>)>>(
-      'ts_query_cursor_delete');
-  late final _ts_query_cursor_delete = _ts_query_cursor_deletePtr
-      .asFunction<void Function(ffi.Pointer<TSQueryCursor>)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSQueryCursor>)>
+  >('ts_query_cursor_delete');
+  late final _ts_query_cursor_delete =
+      _ts_query_cursor_deletePtr
+          .asFunction<void Function(ffi.Pointer<TSQueryCursor>)>();
 
   /// Start running a given query on a given node.
   void ts_query_cursor_exec(
@@ -4440,20 +4203,27 @@ class TreeSitter {
     ffi.Pointer<TSQuery> query,
     TSNode node,
   ) {
-    return _ts_query_cursor_exec(
-      self,
-      query,
-      node,
-    );
+    return _ts_query_cursor_exec(self, query, node);
   }
 
   late final _ts_query_cursor_execPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQuery>,
-              TSNode)>>('ts_query_cursor_exec');
-  late final _ts_query_cursor_exec = _ts_query_cursor_execPtr.asFunction<
-      void Function(
-          ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQuery>, TSNode)>();
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<TSQueryCursor>,
+        ffi.Pointer<TSQuery>,
+        TSNode,
+      )
+    >
+  >('ts_query_cursor_exec');
+  late final _ts_query_cursor_exec =
+      _ts_query_cursor_execPtr
+          .asFunction<
+            void Function(
+              ffi.Pointer<TSQueryCursor>,
+              ffi.Pointer<TSQuery>,
+              TSNode,
+            )
+          >();
 
   /// Start running a given query on a given node, with some options.
   void ts_query_cursor_exec_with_options(
@@ -4462,26 +4232,29 @@ class TreeSitter {
     TSNode node,
     ffi.Pointer<TSQueryCursorOptions> query_options,
   ) {
-    return _ts_query_cursor_exec_with_options(
-      self,
-      query,
-      node,
-      query_options,
-    );
+    return _ts_query_cursor_exec_with_options(self, query, node, query_options);
   }
 
   late final _ts_query_cursor_exec_with_optionsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Pointer<TSQueryCursor>,
-                  ffi.Pointer<TSQuery>,
-                  TSNode,
-                  ffi.Pointer<TSQueryCursorOptions>)>>(
-      'ts_query_cursor_exec_with_options');
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<TSQueryCursor>,
+        ffi.Pointer<TSQuery>,
+        TSNode,
+        ffi.Pointer<TSQueryCursorOptions>,
+      )
+    >
+  >('ts_query_cursor_exec_with_options');
   late final _ts_query_cursor_exec_with_options =
-      _ts_query_cursor_exec_with_optionsPtr.asFunction<
-          void Function(ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQuery>,
-              TSNode, ffi.Pointer<TSQueryCursorOptions>)>();
+      _ts_query_cursor_exec_with_optionsPtr
+          .asFunction<
+            void Function(
+              ffi.Pointer<TSQueryCursor>,
+              ffi.Pointer<TSQuery>,
+              TSNode,
+              ffi.Pointer<TSQueryCursorOptions>,
+            )
+          >();
 
   /// Manage the maximum number of in-progress matches allowed by this query
   /// cursor.
@@ -4492,49 +4265,40 @@ class TreeSitter {
   /// matches. This maximum capacity is optional — by default, query cursors allow
   /// any number of pending matches, dynamically allocating new space for them as
   /// needed as the query is executed.
-  bool ts_query_cursor_did_exceed_match_limit(
-    ffi.Pointer<TSQueryCursor> self,
-  ) {
-    return _ts_query_cursor_did_exceed_match_limit(
-      self,
-    );
+  bool ts_query_cursor_did_exceed_match_limit(ffi.Pointer<TSQueryCursor> self) {
+    return _ts_query_cursor_did_exceed_match_limit(self);
   }
 
   late final _ts_query_cursor_did_exceed_match_limitPtr = _lookup<
-          ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQueryCursor>)>>(
-      'ts_query_cursor_did_exceed_match_limit');
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQueryCursor>)>
+  >('ts_query_cursor_did_exceed_match_limit');
   late final _ts_query_cursor_did_exceed_match_limit =
       _ts_query_cursor_did_exceed_match_limitPtr
           .asFunction<bool Function(ffi.Pointer<TSQueryCursor>)>();
 
-  int ts_query_cursor_match_limit(
-    ffi.Pointer<TSQueryCursor> self,
-  ) {
-    return _ts_query_cursor_match_limit(
-      self,
-    );
+  int ts_query_cursor_match_limit(ffi.Pointer<TSQueryCursor> self) {
+    return _ts_query_cursor_match_limit(self);
   }
 
   late final _ts_query_cursor_match_limitPtr = _lookup<
-          ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQueryCursor>)>>(
-      'ts_query_cursor_match_limit');
-  late final _ts_query_cursor_match_limit = _ts_query_cursor_match_limitPtr
-      .asFunction<int Function(ffi.Pointer<TSQueryCursor>)>();
+    ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSQueryCursor>)>
+  >('ts_query_cursor_match_limit');
+  late final _ts_query_cursor_match_limit =
+      _ts_query_cursor_match_limitPtr
+          .asFunction<int Function(ffi.Pointer<TSQueryCursor>)>();
 
   void ts_query_cursor_set_match_limit(
     ffi.Pointer<TSQueryCursor> self,
     int limit,
   ) {
-    return _ts_query_cursor_set_match_limit(
-      self,
-      limit,
-    );
+    return _ts_query_cursor_set_match_limit(self, limit);
   }
 
   late final _ts_query_cursor_set_match_limitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQueryCursor>,
-              ffi.Uint32)>>('ts_query_cursor_set_match_limit');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSQueryCursor>, ffi.Uint32)
+    >
+  >('ts_query_cursor_set_match_limit');
   late final _ts_query_cursor_set_match_limit =
       _ts_query_cursor_set_match_limitPtr
           .asFunction<void Function(ffi.Pointer<TSQueryCursor>, int)>();
@@ -4550,16 +4314,14 @@ class TreeSitter {
     ffi.Pointer<TSQueryCursor> self,
     int timeout_micros,
   ) {
-    return _ts_query_cursor_set_timeout_micros(
-      self,
-      timeout_micros,
-    );
+    return _ts_query_cursor_set_timeout_micros(self, timeout_micros);
   }
 
   late final _ts_query_cursor_set_timeout_microsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQueryCursor>,
-              ffi.Uint64)>>('ts_query_cursor_set_timeout_micros');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSQueryCursor>, ffi.Uint64)
+    >
+  >('ts_query_cursor_set_timeout_micros');
   late final _ts_query_cursor_set_timeout_micros =
       _ts_query_cursor_set_timeout_microsPtr
           .asFunction<void Function(ffi.Pointer<TSQueryCursor>, int)>();
@@ -4569,17 +4331,13 @@ class TreeSitter {
   /// Get the duration in microseconds that query execution is allowed to take.
   ///
   /// This is set via [`ts_query_cursor_set_timeout_micros`].
-  int ts_query_cursor_timeout_micros(
-    ffi.Pointer<TSQueryCursor> self,
-  ) {
-    return _ts_query_cursor_timeout_micros(
-      self,
-    );
+  int ts_query_cursor_timeout_micros(ffi.Pointer<TSQueryCursor> self) {
+    return _ts_query_cursor_timeout_micros(self);
   }
 
   late final _ts_query_cursor_timeout_microsPtr = _lookup<
-          ffi.NativeFunction<ffi.Uint64 Function(ffi.Pointer<TSQueryCursor>)>>(
-      'ts_query_cursor_timeout_micros');
+    ffi.NativeFunction<ffi.Uint64 Function(ffi.Pointer<TSQueryCursor>)>
+  >('ts_query_cursor_timeout_micros');
   late final _ts_query_cursor_timeout_micros =
       _ts_query_cursor_timeout_microsPtr
           .asFunction<int Function(ffi.Pointer<TSQueryCursor>)>();
@@ -4602,17 +4360,14 @@ class TreeSitter {
     int start_byte,
     int end_byte,
   ) {
-    return _ts_query_cursor_set_byte_range(
-      self,
-      start_byte,
-      end_byte,
-    );
+    return _ts_query_cursor_set_byte_range(self, start_byte, end_byte);
   }
 
   late final _ts_query_cursor_set_byte_rangePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSQueryCursor>, ffi.Uint32,
-              ffi.Uint32)>>('ts_query_cursor_set_byte_range');
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSQueryCursor>, ffi.Uint32, ffi.Uint32)
+    >
+  >('ts_query_cursor_set_byte_range');
   late final _ts_query_cursor_set_byte_range =
       _ts_query_cursor_set_byte_rangePtr
           .asFunction<bool Function(ffi.Pointer<TSQueryCursor>, int, int)>();
@@ -4635,20 +4390,19 @@ class TreeSitter {
     TSPoint start_point,
     TSPoint end_point,
   ) {
-    return _ts_query_cursor_set_point_range(
-      self,
-      start_point,
-      end_point,
-    );
+    return _ts_query_cursor_set_point_range(self, start_point, end_point);
   }
 
   late final _ts_query_cursor_set_point_rangePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSQueryCursor>, TSPoint,
-              TSPoint)>>('ts_query_cursor_set_point_range');
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSQueryCursor>, TSPoint, TSPoint)
+    >
+  >('ts_query_cursor_set_point_range');
   late final _ts_query_cursor_set_point_range =
-      _ts_query_cursor_set_point_rangePtr.asFunction<
-          bool Function(ffi.Pointer<TSQueryCursor>, TSPoint, TSPoint)>();
+      _ts_query_cursor_set_point_rangePtr
+          .asFunction<
+            bool Function(ffi.Pointer<TSQueryCursor>, TSPoint, TSPoint)
+          >();
 
   /// Advance to the next match of the currently running query.
   ///
@@ -4658,37 +4412,35 @@ class TreeSitter {
     ffi.Pointer<TSQueryCursor> self,
     ffi.Pointer<TSQueryMatch> match,
   ) {
-    return _ts_query_cursor_next_match(
-      self,
-      match,
-    );
+    return _ts_query_cursor_next_match(self, match);
   }
 
   late final _ts_query_cursor_next_matchPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSQueryCursor>,
-              ffi.Pointer<TSQueryMatch>)>>('ts_query_cursor_next_match');
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQueryMatch>)
+    >
+  >('ts_query_cursor_next_match');
   late final _ts_query_cursor_next_match =
-      _ts_query_cursor_next_matchPtr.asFunction<
-          bool Function(
-              ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQueryMatch>)>();
+      _ts_query_cursor_next_matchPtr
+          .asFunction<
+            bool Function(ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQueryMatch>)
+          >();
 
   void ts_query_cursor_remove_match(
     ffi.Pointer<TSQueryCursor> self,
     int match_id,
   ) {
-    return _ts_query_cursor_remove_match(
-      self,
-      match_id,
-    );
+    return _ts_query_cursor_remove_match(self, match_id);
   }
 
   late final _ts_query_cursor_remove_matchPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQueryCursor>,
-              ffi.Uint32)>>('ts_query_cursor_remove_match');
-  late final _ts_query_cursor_remove_match = _ts_query_cursor_remove_matchPtr
-      .asFunction<void Function(ffi.Pointer<TSQueryCursor>, int)>();
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSQueryCursor>, ffi.Uint32)
+    >
+  >('ts_query_cursor_remove_match');
+  late final _ts_query_cursor_remove_match =
+      _ts_query_cursor_remove_matchPtr
+          .asFunction<void Function(ffi.Pointer<TSQueryCursor>, int)>();
 
   /// Advance to the next capture of the currently running query.
   ///
@@ -4699,23 +4451,27 @@ class TreeSitter {
     ffi.Pointer<TSQueryMatch> match,
     ffi.Pointer<ffi.Uint32> capture_index,
   ) {
-    return _ts_query_cursor_next_capture(
-      self,
-      match,
-      capture_index,
-    );
+    return _ts_query_cursor_next_capture(self, match, capture_index);
   }
 
   late final _ts_query_cursor_next_capturePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(
+    ffi.NativeFunction<
+      ffi.Bool Function(
+        ffi.Pointer<TSQueryCursor>,
+        ffi.Pointer<TSQueryMatch>,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_query_cursor_next_capture');
+  late final _ts_query_cursor_next_capture =
+      _ts_query_cursor_next_capturePtr
+          .asFunction<
+            bool Function(
               ffi.Pointer<TSQueryCursor>,
               ffi.Pointer<TSQueryMatch>,
-              ffi.Pointer<ffi.Uint32>)>>('ts_query_cursor_next_capture');
-  late final _ts_query_cursor_next_capture =
-      _ts_query_cursor_next_capturePtr.asFunction<
-          bool Function(ffi.Pointer<TSQueryCursor>, ffi.Pointer<TSQueryMatch>,
-              ffi.Pointer<ffi.Uint32>)>();
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Set the maximum start depth for a query cursor.
   ///
@@ -4733,81 +4489,73 @@ class TreeSitter {
     ffi.Pointer<TSQueryCursor> self,
     int max_start_depth,
   ) {
-    return _ts_query_cursor_set_max_start_depth(
-      self,
-      max_start_depth,
-    );
+    return _ts_query_cursor_set_max_start_depth(self, max_start_depth);
   }
 
   late final _ts_query_cursor_set_max_start_depthPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSQueryCursor>,
-              ffi.Uint32)>>('ts_query_cursor_set_max_start_depth');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSQueryCursor>, ffi.Uint32)
+    >
+  >('ts_query_cursor_set_max_start_depth');
   late final _ts_query_cursor_set_max_start_depth =
       _ts_query_cursor_set_max_start_depthPtr
           .asFunction<void Function(ffi.Pointer<TSQueryCursor>, int)>();
 
   /// Get another reference to the given language.
-  ffi.Pointer<TSLanguage> ts_language_copy(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_copy(
-      self,
-    );
+  ffi.Pointer<TSLanguage> ts_language_copy(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_copy(self);
   }
 
   late final _ts_language_copyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLanguage> Function(
-              ffi.Pointer<TSLanguage>)>>('ts_language_copy');
-  late final _ts_language_copy = _ts_language_copyPtr
-      .asFunction<ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLanguage>)>();
+    ffi.NativeFunction<
+      ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLanguage>)
+    >
+  >('ts_language_copy');
+  late final _ts_language_copy =
+      _ts_language_copyPtr
+          .asFunction<
+            ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLanguage>)
+          >();
 
   /// Free any dynamically-allocated resources for this language, if
   /// this is the last reference.
-  void ts_language_delete(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_delete(
-      self,
-    );
+  void ts_language_delete(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_delete(self);
   }
 
   late final _ts_language_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_delete');
-  late final _ts_language_delete = _ts_language_deletePtr
-      .asFunction<void Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_delete',
+      );
+  late final _ts_language_delete =
+      _ts_language_deletePtr
+          .asFunction<void Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the number of distinct node types in the language.
-  int ts_language_symbol_count(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_symbol_count(
-      self,
-    );
+  int ts_language_symbol_count(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_symbol_count(self);
   }
 
   late final _ts_language_symbol_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_symbol_count');
-  late final _ts_language_symbol_count = _ts_language_symbol_countPtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_symbol_count',
+      );
+  late final _ts_language_symbol_count =
+      _ts_language_symbol_countPtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the number of valid states in this language.
-  int ts_language_state_count(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_state_count(
-      self,
-    );
+  int ts_language_state_count(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_state_count(self);
   }
 
   late final _ts_language_state_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_state_count');
-  late final _ts_language_state_count = _ts_language_state_countPtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_state_count',
+      );
+  late final _ts_language_state_count =
+      _ts_language_state_countPtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the numerical id for the given node type string.
   int ts_language_symbol_for_name(
@@ -4816,56 +4564,61 @@ class TreeSitter {
     int length,
     bool is_named,
   ) {
-    return _ts_language_symbol_for_name(
-      self,
-      string,
-      length,
-      is_named,
-    );
+    return _ts_language_symbol_for_name(self, string, length, is_named);
   }
 
   late final _ts_language_symbol_for_namePtr = _lookup<
-      ffi.NativeFunction<
-          TSSymbol Function(ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Char>,
-              ffi.Uint32, ffi.Bool)>>('ts_language_symbol_for_name');
+    ffi.NativeFunction<
+      TSSymbol Function(
+        ffi.Pointer<TSLanguage>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+        ffi.Bool,
+      )
+    >
+  >('ts_language_symbol_for_name');
   late final _ts_language_symbol_for_name =
-      _ts_language_symbol_for_namePtr.asFunction<
-          int Function(
-              ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Char>, int, bool)>();
+      _ts_language_symbol_for_namePtr
+          .asFunction<
+            int Function(
+              ffi.Pointer<TSLanguage>,
+              ffi.Pointer<ffi.Char>,
+              int,
+              bool,
+            )
+          >();
 
   /// Get the number of distinct field names in the language.
-  int ts_language_field_count(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_field_count(
-      self,
-    );
+  int ts_language_field_count(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_field_count(self);
   }
 
   late final _ts_language_field_countPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_field_count');
-  late final _ts_language_field_count = _ts_language_field_countPtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_field_count',
+      );
+  late final _ts_language_field_count =
+      _ts_language_field_countPtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the field name string for the given numerical id.
   ffi.Pointer<ffi.Char> ts_language_field_name_for_id(
     ffi.Pointer<TSLanguage> self,
     int id,
   ) {
-    return _ts_language_field_name_for_id(
-      self,
-      id,
-    );
+    return _ts_language_field_name_for_id(self, id);
   }
 
   late final _ts_language_field_name_for_idPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>,
-              TSFieldId)>>('ts_language_field_name_for_id');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, TSFieldId)
+    >
+  >('ts_language_field_name_for_id');
   late final _ts_language_field_name_for_id =
-      _ts_language_field_name_for_idPtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, int)>();
+      _ts_language_field_name_for_idPtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, int)
+          >();
 
   /// Get the numerical id for the given field name string.
   int ts_language_field_id_for_name(
@@ -4873,39 +4626,48 @@ class TreeSitter {
     ffi.Pointer<ffi.Char> name,
     int name_length,
   ) {
-    return _ts_language_field_id_for_name(
-      self,
-      name,
-      name_length,
-    );
+    return _ts_language_field_id_for_name(self, name, name_length);
   }
 
   late final _ts_language_field_id_for_namePtr = _lookup<
-      ffi.NativeFunction<
-          TSFieldId Function(ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Char>,
-              ffi.Uint32)>>('ts_language_field_id_for_name');
+    ffi.NativeFunction<
+      TSFieldId Function(
+        ffi.Pointer<TSLanguage>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+      )
+    >
+  >('ts_language_field_id_for_name');
   late final _ts_language_field_id_for_name =
-      _ts_language_field_id_for_namePtr.asFunction<
-          int Function(ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Char>, int)>();
+      _ts_language_field_id_for_namePtr
+          .asFunction<
+            int Function(ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Char>, int)
+          >();
 
   /// Get a list of all supertype symbols for the language.
   ffi.Pointer<TSSymbol> ts_language_supertypes(
     ffi.Pointer<TSLanguage> self,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_language_supertypes(
-      self,
-      length,
-    );
+    return _ts_language_supertypes(self, length);
   }
 
   late final _ts_language_supertypesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSSymbol> Function(ffi.Pointer<TSLanguage>,
-              ffi.Pointer<ffi.Uint32>)>>('ts_language_supertypes');
-  late final _ts_language_supertypes = _ts_language_supertypesPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<TSSymbol> Function(
-          ffi.Pointer<TSLanguage>, ffi.Pointer<ffi.Uint32>)>();
+        ffi.Pointer<TSLanguage>,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_language_supertypes');
+  late final _ts_language_supertypes =
+      _ts_language_supertypesPtr
+          .asFunction<
+            ffi.Pointer<TSSymbol> Function(
+              ffi.Pointer<TSLanguage>,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Get a list of all subtype symbol ids for a given supertype symbol.
   ///
@@ -4915,38 +4677,46 @@ class TreeSitter {
     int supertype,
     ffi.Pointer<ffi.Uint32> length,
   ) {
-    return _ts_language_subtypes(
-      self,
-      supertype,
-      length,
-    );
+    return _ts_language_subtypes(self, supertype, length);
   }
 
   late final _ts_language_subtypesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSSymbol> Function(ffi.Pointer<TSLanguage>, TSSymbol,
-              ffi.Pointer<ffi.Uint32>)>>('ts_language_subtypes');
-  late final _ts_language_subtypes = _ts_language_subtypesPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<TSSymbol> Function(
-          ffi.Pointer<TSLanguage>, int, ffi.Pointer<ffi.Uint32>)>();
+        ffi.Pointer<TSLanguage>,
+        TSSymbol,
+        ffi.Pointer<ffi.Uint32>,
+      )
+    >
+  >('ts_language_subtypes');
+  late final _ts_language_subtypes =
+      _ts_language_subtypesPtr
+          .asFunction<
+            ffi.Pointer<TSSymbol> Function(
+              ffi.Pointer<TSLanguage>,
+              int,
+              ffi.Pointer<ffi.Uint32>,
+            )
+          >();
 
   /// Get a node type string for the given numerical id.
   ffi.Pointer<ffi.Char> ts_language_symbol_name(
     ffi.Pointer<TSLanguage> self,
     int symbol,
   ) {
-    return _ts_language_symbol_name(
-      self,
-      symbol,
-    );
+    return _ts_language_symbol_name(self, symbol);
   }
 
   late final _ts_language_symbol_namePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TSLanguage>, TSSymbol)>>('ts_language_symbol_name');
-  late final _ts_language_symbol_name = _ts_language_symbol_namePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, int)>();
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, TSSymbol)
+    >
+  >('ts_language_symbol_name');
+  late final _ts_language_symbol_name =
+      _ts_language_symbol_namePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>, int)
+          >();
 
   /// Check whether the given node type id belongs to named nodes, anonymous nodes,
   /// or a hidden nodes.
@@ -4956,18 +4726,17 @@ class TreeSitter {
     ffi.Pointer<TSLanguage> self,
     DartTSSymbol symbol,
   ) {
-    return TSSymbolType.fromValue(_ts_language_symbol_type(
-      self,
-      symbol,
-    ));
+    return TSSymbolType.fromValue(_ts_language_symbol_type(self, symbol));
   }
 
   late final _ts_language_symbol_typePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedInt Function(
-              ffi.Pointer<TSLanguage>, TSSymbol)>>('ts_language_symbol_type');
-  late final _ts_language_symbol_type = _ts_language_symbol_typePtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>, int)>();
+    ffi.NativeFunction<
+      ffi.UnsignedInt Function(ffi.Pointer<TSLanguage>, TSSymbol)
+    >
+  >('ts_language_symbol_type');
+  late final _ts_language_symbol_type =
+      _ts_language_symbol_typePtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>, int)>();
 
   /// @deprecated use [`ts_language_abi_version`] instead, this will be removed in 0.26.
   ///
@@ -4976,38 +4745,34 @@ class TreeSitter {
   /// Tree-sitter.
   ///
   /// See also [`ts_parser_set_language`].
-  int ts_language_version(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_version(
-      self,
-    );
+  int ts_language_version(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_version(self);
   }
 
   late final _ts_language_versionPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_version');
-  late final _ts_language_version = _ts_language_versionPtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_version',
+      );
+  late final _ts_language_version =
+      _ts_language_versionPtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the ABI version number for this language. This version number is used
   /// to ensure that languages were generated by a compatible version of
   /// Tree-sitter.
   ///
   /// See also [`ts_parser_set_language`].
-  int ts_language_abi_version(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_abi_version(
-      self,
-    );
+  int ts_language_abi_version(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_abi_version(self);
   }
 
   late final _ts_language_abi_versionPtr =
       _lookup<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_abi_version');
-  late final _ts_language_abi_version = _ts_language_abi_versionPtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_abi_version',
+      );
+  late final _ts_language_abi_version =
+      _ts_language_abi_versionPtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>)>();
 
   /// Get the metadata for this language. This information is generated by the
   /// CLI, and relies on the language author providing the correct metadata in
@@ -5017,17 +4782,19 @@ class TreeSitter {
   ffi.Pointer<TSLanguageMetadata> ts_language_metadata(
     ffi.Pointer<TSLanguage> self,
   ) {
-    return _ts_language_metadata(
-      self,
-    );
+    return _ts_language_metadata(self);
   }
 
   late final _ts_language_metadataPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLanguageMetadata> Function(
-              ffi.Pointer<TSLanguage>)>>('ts_language_metadata');
-  late final _ts_language_metadata = _ts_language_metadataPtr.asFunction<
-      ffi.Pointer<TSLanguageMetadata> Function(ffi.Pointer<TSLanguage>)>();
+    ffi.NativeFunction<
+      ffi.Pointer<TSLanguageMetadata> Function(ffi.Pointer<TSLanguage>)
+    >
+  >('ts_language_metadata');
+  late final _ts_language_metadata =
+      _ts_language_metadataPtr
+          .asFunction<
+            ffi.Pointer<TSLanguageMetadata> Function(ffi.Pointer<TSLanguage>)
+          >();
 
   /// Get the next parse state. Combine this with lookahead iterators to generate
   /// completion suggestions or valid symbols in error nodes. Use
@@ -5037,35 +4804,31 @@ class TreeSitter {
     int state,
     int symbol,
   ) {
-    return _ts_language_next_state(
-      self,
-      state,
-      symbol,
-    );
+    return _ts_language_next_state(self, state, symbol);
   }
 
   late final _ts_language_next_statePtr = _lookup<
-      ffi.NativeFunction<
-          TSStateId Function(ffi.Pointer<TSLanguage>, TSStateId,
-              TSSymbol)>>('ts_language_next_state');
-  late final _ts_language_next_state = _ts_language_next_statePtr
-      .asFunction<int Function(ffi.Pointer<TSLanguage>, int, int)>();
+    ffi.NativeFunction<
+      TSStateId Function(ffi.Pointer<TSLanguage>, TSStateId, TSSymbol)
+    >
+  >('ts_language_next_state');
+  late final _ts_language_next_state =
+      _ts_language_next_statePtr
+          .asFunction<int Function(ffi.Pointer<TSLanguage>, int, int)>();
 
   /// Get the name of this language. This returns `NULL` in older parsers.
-  ffi.Pointer<ffi.Char> ts_language_name(
-    ffi.Pointer<TSLanguage> self,
-  ) {
-    return _ts_language_name(
-      self,
-    );
+  ffi.Pointer<ffi.Char> ts_language_name(ffi.Pointer<TSLanguage> self) {
+    return _ts_language_name(self);
   }
 
   late final _ts_language_namePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<TSLanguage>)>>('ts_language_name');
-  late final _ts_language_name = _ts_language_namePtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>)>();
+    ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>)>
+  >('ts_language_name');
+  late final _ts_language_name =
+      _ts_language_namePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLanguage>)
+          >();
 
   /// Create a new lookahead iterator for the given language and parse state.
   ///
@@ -5084,36 +4847,37 @@ class TreeSitter {
     ffi.Pointer<TSLanguage> self,
     int state,
   ) {
-    return _ts_lookahead_iterator_new(
-      self,
-      state,
-    );
+    return _ts_lookahead_iterator_new(self, state);
   }
 
   late final _ts_lookahead_iterator_newPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLookaheadIterator> Function(ffi.Pointer<TSLanguage>,
-              TSStateId)>>('ts_lookahead_iterator_new');
+    ffi.NativeFunction<
+      ffi.Pointer<TSLookaheadIterator> Function(
+        ffi.Pointer<TSLanguage>,
+        TSStateId,
+      )
+    >
+  >('ts_lookahead_iterator_new');
   late final _ts_lookahead_iterator_new =
-      _ts_lookahead_iterator_newPtr.asFunction<
-          ffi.Pointer<TSLookaheadIterator> Function(
-              ffi.Pointer<TSLanguage>, int)>();
+      _ts_lookahead_iterator_newPtr
+          .asFunction<
+            ffi.Pointer<TSLookaheadIterator> Function(
+              ffi.Pointer<TSLanguage>,
+              int,
+            )
+          >();
 
   /// Delete a lookahead iterator freeing all the memory used.
-  void ts_lookahead_iterator_delete(
-    ffi.Pointer<TSLookaheadIterator> self,
-  ) {
-    return _ts_lookahead_iterator_delete(
-      self,
-    );
+  void ts_lookahead_iterator_delete(ffi.Pointer<TSLookaheadIterator> self) {
+    return _ts_lookahead_iterator_delete(self);
   }
 
   late final _ts_lookahead_iterator_deletePtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<TSLookaheadIterator>)>>(
-      'ts_lookahead_iterator_delete');
-  late final _ts_lookahead_iterator_delete = _ts_lookahead_iterator_deletePtr
-      .asFunction<void Function(ffi.Pointer<TSLookaheadIterator>)>();
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSLookaheadIterator>)>
+  >('ts_lookahead_iterator_delete');
+  late final _ts_lookahead_iterator_delete =
+      _ts_lookahead_iterator_deletePtr
+          .asFunction<void Function(ffi.Pointer<TSLookaheadIterator>)>();
 
   /// Reset the lookahead iterator to another state.
   ///
@@ -5123,16 +4887,14 @@ class TreeSitter {
     ffi.Pointer<TSLookaheadIterator> self,
     int state,
   ) {
-    return _ts_lookahead_iterator_reset_state(
-      self,
-      state,
-    );
+    return _ts_lookahead_iterator_reset_state(self, state);
   }
 
   late final _ts_lookahead_iterator_reset_statePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(ffi.Pointer<TSLookaheadIterator>,
-              TSStateId)>>('ts_lookahead_iterator_reset_state');
+    ffi.NativeFunction<
+      ffi.Bool Function(ffi.Pointer<TSLookaheadIterator>, TSStateId)
+    >
+  >('ts_lookahead_iterator_reset_state');
   late final _ts_lookahead_iterator_reset_state =
       _ts_lookahead_iterator_reset_statePtr
           .asFunction<bool Function(ffi.Pointer<TSLookaheadIterator>, int)>();
@@ -5146,73 +4908,70 @@ class TreeSitter {
     ffi.Pointer<TSLanguage> language,
     int state,
   ) {
-    return _ts_lookahead_iterator_reset(
-      self,
-      language,
-      state,
-    );
+    return _ts_lookahead_iterator_reset(self, language, state);
   }
 
   late final _ts_lookahead_iterator_resetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Bool Function(
+    ffi.NativeFunction<
+      ffi.Bool Function(
+        ffi.Pointer<TSLookaheadIterator>,
+        ffi.Pointer<TSLanguage>,
+        TSStateId,
+      )
+    >
+  >('ts_lookahead_iterator_reset');
+  late final _ts_lookahead_iterator_reset =
+      _ts_lookahead_iterator_resetPtr
+          .asFunction<
+            bool Function(
               ffi.Pointer<TSLookaheadIterator>,
               ffi.Pointer<TSLanguage>,
-              TSStateId)>>('ts_lookahead_iterator_reset');
-  late final _ts_lookahead_iterator_reset =
-      _ts_lookahead_iterator_resetPtr.asFunction<
-          bool Function(ffi.Pointer<TSLookaheadIterator>,
-              ffi.Pointer<TSLanguage>, int)>();
+              int,
+            )
+          >();
 
   /// Get the current language of the lookahead iterator.
   ffi.Pointer<TSLanguage> ts_lookahead_iterator_language(
     ffi.Pointer<TSLookaheadIterator> self,
   ) {
-    return _ts_lookahead_iterator_language(
-      self,
-    );
+    return _ts_lookahead_iterator_language(self);
   }
 
   late final _ts_lookahead_iterator_languagePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<TSLanguage> Function(
-                  ffi.Pointer<TSLookaheadIterator>)>>(
-      'ts_lookahead_iterator_language');
+    ffi.NativeFunction<
+      ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLookaheadIterator>)
+    >
+  >('ts_lookahead_iterator_language');
   late final _ts_lookahead_iterator_language =
-      _ts_lookahead_iterator_languagePtr.asFunction<
-          ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLookaheadIterator>)>();
+      _ts_lookahead_iterator_languagePtr
+          .asFunction<
+            ffi.Pointer<TSLanguage> Function(ffi.Pointer<TSLookaheadIterator>)
+          >();
 
   /// Advance the lookahead iterator to the next symbol.
   ///
   /// This returns `true` if there is a new symbol and `false` otherwise.
-  bool ts_lookahead_iterator_next(
-    ffi.Pointer<TSLookaheadIterator> self,
-  ) {
-    return _ts_lookahead_iterator_next(
-      self,
-    );
+  bool ts_lookahead_iterator_next(ffi.Pointer<TSLookaheadIterator> self) {
+    return _ts_lookahead_iterator_next(self);
   }
 
   late final _ts_lookahead_iterator_nextPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Bool Function(ffi.Pointer<TSLookaheadIterator>)>>(
-      'ts_lookahead_iterator_next');
-  late final _ts_lookahead_iterator_next = _ts_lookahead_iterator_nextPtr
-      .asFunction<bool Function(ffi.Pointer<TSLookaheadIterator>)>();
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSLookaheadIterator>)>
+  >('ts_lookahead_iterator_next');
+  late final _ts_lookahead_iterator_next =
+      _ts_lookahead_iterator_nextPtr
+          .asFunction<bool Function(ffi.Pointer<TSLookaheadIterator>)>();
 
   /// Get the current symbol of the lookahead iterator;
   int ts_lookahead_iterator_current_symbol(
     ffi.Pointer<TSLookaheadIterator> self,
   ) {
-    return _ts_lookahead_iterator_current_symbol(
-      self,
-    );
+    return _ts_lookahead_iterator_current_symbol(self);
   }
 
   late final _ts_lookahead_iterator_current_symbolPtr = _lookup<
-          ffi
-          .NativeFunction<TSSymbol Function(ffi.Pointer<TSLookaheadIterator>)>>(
-      'ts_lookahead_iterator_current_symbol');
+    ffi.NativeFunction<TSSymbol Function(ffi.Pointer<TSLookaheadIterator>)>
+  >('ts_lookahead_iterator_current_symbol');
   late final _ts_lookahead_iterator_current_symbol =
       _ts_lookahead_iterator_current_symbolPtr
           .asFunction<int Function(ffi.Pointer<TSLookaheadIterator>)>();
@@ -5222,53 +4981,57 @@ class TreeSitter {
   ffi.Pointer<ffi.Char> ts_lookahead_iterator_current_symbol_name(
     ffi.Pointer<TSLookaheadIterator> self,
   ) {
-    return _ts_lookahead_iterator_current_symbol_name(
-      self,
-    );
+    return _ts_lookahead_iterator_current_symbol_name(self);
   }
 
   late final _ts_lookahead_iterator_current_symbol_namePtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Pointer<ffi.Char> Function(
-                  ffi.Pointer<TSLookaheadIterator>)>>(
-      'ts_lookahead_iterator_current_symbol_name');
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLookaheadIterator>)
+    >
+  >('ts_lookahead_iterator_current_symbol_name');
   late final _ts_lookahead_iterator_current_symbol_name =
-      _ts_lookahead_iterator_current_symbol_namePtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLookaheadIterator>)>();
+      _ts_lookahead_iterator_current_symbol_namePtr
+          .asFunction<
+            ffi.Pointer<ffi.Char> Function(ffi.Pointer<TSLookaheadIterator>)
+          >();
 
   /// Create a Wasm store.
   ffi.Pointer<TSWasmStore> ts_wasm_store_new(
     ffi.Pointer<TSWasmEngine> engine,
     ffi.Pointer<TSWasmError> error,
   ) {
-    return _ts_wasm_store_new(
-      engine,
-      error,
-    );
+    return _ts_wasm_store_new(engine, error);
   }
 
   late final _ts_wasm_store_newPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSWasmStore> Function(ffi.Pointer<TSWasmEngine>,
-              ffi.Pointer<TSWasmError>)>>('ts_wasm_store_new');
-  late final _ts_wasm_store_new = _ts_wasm_store_newPtr.asFunction<
+    ffi.NativeFunction<
       ffi.Pointer<TSWasmStore> Function(
-          ffi.Pointer<TSWasmEngine>, ffi.Pointer<TSWasmError>)>();
+        ffi.Pointer<TSWasmEngine>,
+        ffi.Pointer<TSWasmError>,
+      )
+    >
+  >('ts_wasm_store_new');
+  late final _ts_wasm_store_new =
+      _ts_wasm_store_newPtr
+          .asFunction<
+            ffi.Pointer<TSWasmStore> Function(
+              ffi.Pointer<TSWasmEngine>,
+              ffi.Pointer<TSWasmError>,
+            )
+          >();
 
   /// Free the memory associated with the given Wasm store.
-  void ts_wasm_store_delete(
-    ffi.Pointer<TSWasmStore> arg0,
-  ) {
-    return _ts_wasm_store_delete(
-      arg0,
-    );
+  void ts_wasm_store_delete(ffi.Pointer<TSWasmStore> arg0) {
+    return _ts_wasm_store_delete(arg0);
   }
 
   late final _ts_wasm_store_deletePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<TSWasmStore>)>>(
-          'ts_wasm_store_delete');
-  late final _ts_wasm_store_delete = _ts_wasm_store_deletePtr
-      .asFunction<void Function(ffi.Pointer<TSWasmStore>)>();
+        'ts_wasm_store_delete',
+      );
+  late final _ts_wasm_store_delete =
+      _ts_wasm_store_deletePtr
+          .asFunction<void Function(ffi.Pointer<TSWasmStore>)>();
 
   /// Create a language from a buffer of Wasm. The resulting language behaves
   /// like any other Tree-sitter language, except that in order to use it with
@@ -5282,62 +5045,58 @@ class TreeSitter {
     int wasm_len,
     ffi.Pointer<TSWasmError> error,
   ) {
-    return _ts_wasm_store_load_language(
-      arg0,
-      name,
-      wasm,
-      wasm_len,
-      error,
-    );
+    return _ts_wasm_store_load_language(arg0, name, wasm, wasm_len, error);
   }
 
   late final _ts_wasm_store_load_languagePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSLanguage> Function(
-              ffi.Pointer<TSWasmStore>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Uint32,
-              ffi.Pointer<TSWasmError>)>>('ts_wasm_store_load_language');
+    ffi.NativeFunction<
+      ffi.Pointer<TSLanguage> Function(
+        ffi.Pointer<TSWasmStore>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Uint32,
+        ffi.Pointer<TSWasmError>,
+      )
+    >
+  >('ts_wasm_store_load_language');
   late final _ts_wasm_store_load_language =
-      _ts_wasm_store_load_languagePtr.asFunction<
-          ffi.Pointer<TSLanguage> Function(
+      _ts_wasm_store_load_languagePtr
+          .asFunction<
+            ffi.Pointer<TSLanguage> Function(
               ffi.Pointer<TSWasmStore>,
               ffi.Pointer<ffi.Char>,
               ffi.Pointer<ffi.Char>,
               int,
-              ffi.Pointer<TSWasmError>)>();
+              ffi.Pointer<TSWasmError>,
+            )
+          >();
 
   /// Get the number of languages instantiated in the given wasm store.
-  int ts_wasm_store_language_count(
-    ffi.Pointer<TSWasmStore> arg0,
-  ) {
-    return _ts_wasm_store_language_count(
-      arg0,
-    );
+  int ts_wasm_store_language_count(ffi.Pointer<TSWasmStore> arg0) {
+    return _ts_wasm_store_language_count(arg0);
   }
 
   late final _ts_wasm_store_language_countPtr =
       _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<TSWasmStore>)>>(
-          'ts_wasm_store_language_count');
-  late final _ts_wasm_store_language_count = _ts_wasm_store_language_countPtr
-      .asFunction<int Function(ffi.Pointer<TSWasmStore>)>();
+        'ts_wasm_store_language_count',
+      );
+  late final _ts_wasm_store_language_count =
+      _ts_wasm_store_language_countPtr
+          .asFunction<int Function(ffi.Pointer<TSWasmStore>)>();
 
   /// Check if the language came from a Wasm module. If so, then in order to use
   /// this language with a Parser, that parser must have a Wasm store assigned.
-  bool ts_language_is_wasm(
-    ffi.Pointer<TSLanguage> arg0,
-  ) {
-    return _ts_language_is_wasm(
-      arg0,
-    );
+  bool ts_language_is_wasm(ffi.Pointer<TSLanguage> arg0) {
+    return _ts_language_is_wasm(arg0);
   }
 
   late final _ts_language_is_wasmPtr =
       _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSLanguage>)>>(
-          'ts_language_is_wasm');
-  late final _ts_language_is_wasm = _ts_language_is_wasmPtr
-      .asFunction<bool Function(ffi.Pointer<TSLanguage>)>();
+        'ts_language_is_wasm',
+      );
+  late final _ts_language_is_wasm =
+      _ts_language_is_wasmPtr
+          .asFunction<bool Function(ffi.Pointer<TSLanguage>)>();
 
   /// Assign the given Wasm store to the parser. A parser must have a Wasm store
   /// in order to use Wasm languages.
@@ -5345,36 +5104,36 @@ class TreeSitter {
     ffi.Pointer<TSParser> arg0,
     ffi.Pointer<TSWasmStore> arg1,
   ) {
-    return _ts_parser_set_wasm_store(
-      arg0,
-      arg1,
-    );
+    return _ts_parser_set_wasm_store(arg0, arg1);
   }
 
   late final _ts_parser_set_wasm_storePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<TSParser>,
-              ffi.Pointer<TSWasmStore>)>>('ts_parser_set_wasm_store');
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Pointer<TSParser>, ffi.Pointer<TSWasmStore>)
+    >
+  >('ts_parser_set_wasm_store');
   late final _ts_parser_set_wasm_store =
-      _ts_parser_set_wasm_storePtr.asFunction<
-          void Function(ffi.Pointer<TSParser>, ffi.Pointer<TSWasmStore>)>();
+      _ts_parser_set_wasm_storePtr
+          .asFunction<
+            void Function(ffi.Pointer<TSParser>, ffi.Pointer<TSWasmStore>)
+          >();
 
   /// Remove the parser's current Wasm store and return it. This returns NULL if
   /// the parser doesn't have a Wasm store.
   ffi.Pointer<TSWasmStore> ts_parser_take_wasm_store(
     ffi.Pointer<TSParser> arg0,
   ) {
-    return _ts_parser_take_wasm_store(
-      arg0,
-    );
+    return _ts_parser_take_wasm_store(arg0);
   }
 
   late final _ts_parser_take_wasm_storePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<TSWasmStore> Function(
-              ffi.Pointer<TSParser>)>>('ts_parser_take_wasm_store');
-  late final _ts_parser_take_wasm_store = _ts_parser_take_wasm_storePtr
-      .asFunction<ffi.Pointer<TSWasmStore> Function(ffi.Pointer<TSParser>)>();
+    ffi.NativeFunction<ffi.Pointer<TSWasmStore> Function(ffi.Pointer<TSParser>)>
+  >('ts_parser_take_wasm_store');
+  late final _ts_parser_take_wasm_store =
+      _ts_parser_take_wasm_storePtr
+          .asFunction<
+            ffi.Pointer<TSWasmStore> Function(ffi.Pointer<TSParser>)
+          >();
 
   /// Set the allocation functions used by the library.
   ///
@@ -5392,56 +5151,68 @@ class TreeSitter {
   /// of freeing memory that was allocated by the old allocator.
   void ts_set_allocator(
     ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>
-        new_malloc,
+    new_malloc,
     ffi.Pointer<
-            ffi
-            .NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>
-        new_calloc,
+      ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>
+    >
+    new_calloc,
     ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Pointer<ffi.Void> Function(
-                    ffi.Pointer<ffi.Void>, ffi.Size)>>
-        new_realloc,
+      ffi.NativeFunction<
+        ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)
+      >
+    >
+    new_realloc,
     ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-        new_free,
+    new_free,
   ) {
-    return _ts_set_allocator(
-      new_malloc,
-      new_calloc,
-      new_realloc,
-      new_free,
-    );
+    return _ts_set_allocator(new_malloc, new_calloc, new_realloc, new_free);
   }
 
   late final _ts_set_allocatorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<
+          ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>
+        >,
+        ffi.Pointer<
+          ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>
+        >,
+        ffi.Pointer<
+          ffi.NativeFunction<
+            ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, ffi.Size)
+          >
+        >,
+        ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>
+        >,
+      )
+    >
+  >('ts_set_allocator');
+  late final _ts_set_allocator =
+      _ts_set_allocatorPtr
+          .asFunction<
+            void Function(
               ffi.Pointer<
-                  ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>,
+                ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>
+              >,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>,
+                ffi.NativeFunction<
+                  ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)
+                >
+              >,
               ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Pointer<ffi.Void> Function(
-                          ffi.Pointer<ffi.Void>, ffi.Size)>>,
-              ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Void Function(
-                          ffi.Pointer<ffi.Void>)>>)>>('ts_set_allocator');
-  late final _ts_set_allocator = _ts_set_allocatorPtr.asFunction<
-      void Function(
-          ffi.Pointer<
-              ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>,
-          ffi.Pointer<
-              ffi.NativeFunction<
+                ffi.NativeFunction<
                   ffi.Pointer<ffi.Void> Function(
-                      ffi.Pointer<ffi.Void>, ffi.Size)>>,
-          ffi.Pointer<
-              ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>)>();
+                    ffi.Pointer<ffi.Void>,
+                    ffi.Size,
+                  )
+                >
+              >,
+              ffi.Pointer<
+                ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>
+              >,
+            )
+          >();
 }
 
 typedef __int8_t = ffi.SignedChar;
@@ -5516,9 +5287,10 @@ typedef __darwin_uid_t = __uint32_t;
 typedef __darwin_useconds_t = __uint32_t;
 
 final class __darwin_pthread_handler_rec extends ffi.Struct {
-  external ffi
-      .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-      __routine;
+  external ffi.Pointer<
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>
+  >
+  __routine;
 
   external ffi.Pointer<ffi.Void> __arg;
 
@@ -5625,11 +5397,11 @@ enum idtype_t {
   const idtype_t(this.value);
 
   static idtype_t fromValue(int value) => switch (value) {
-        0 => P_ALL,
-        1 => P_PID,
-        2 => P_PGID,
-        _ => throw ArgumentError("Unknown value for idtype_t: $value"),
-      };
+    0 => P_ALL,
+    1 => P_PID,
+    2 => P_PGID,
+    _ => throw ArgumentError("Unknown value for idtype_t: $value"),
+  };
 }
 
 typedef pid_t = __darwin_pid_t;
@@ -5862,7 +5634,7 @@ final class sigevent extends ffi.Struct {
   external sigval sigev_value;
 
   external ffi.Pointer<ffi.NativeFunction<ffi.Void Function(sigval)>>
-      sigev_notify_function;
+  sigev_notify_function;
 
   external ffi.Pointer<pthread_attr_t> sigev_notify_attributes;
 }
@@ -5901,22 +5673,31 @@ typedef siginfo_t = __siginfo;
 
 final class __sigaction_u extends ffi.Union {
   external ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>
-      __sa_handler;
+  __sa_handler;
 
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Void Function(
-                  ffi.Int, ffi.Pointer<__siginfo>, ffi.Pointer<ffi.Void>)>>
-      __sa_sigaction;
+    ffi.NativeFunction<
+      ffi.Void Function(ffi.Int, ffi.Pointer<__siginfo>, ffi.Pointer<ffi.Void>)
+    >
+  >
+  __sa_sigaction;
 }
 
 final class __sigaction extends ffi.Struct {
   external __sigaction_u __sigaction_u1;
 
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Int, ffi.Int,
-              ffi.Pointer<siginfo_t>, ffi.Pointer<ffi.Void>)>> sa_tramp;
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Pointer<siginfo_t>,
+        ffi.Pointer<ffi.Void>,
+      )
+    >
+  >
+  sa_tramp;
 
   @sigset_t()
   external int sa_mask;
@@ -5941,7 +5722,7 @@ typedef sig_t = ffi.Pointer<ffi.NativeFunction<sig_tFunction>>;
 
 final class sigvec extends ffi.Struct {
   external ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>
-      sv_handler;
+  sv_handler;
 
   @ffi.Int()
   external int sv_mask;
@@ -6752,14 +6533,20 @@ final class TSQueryCursor extends ffi.Opaque {}
 
 final class TSLookaheadIterator extends ffi.Opaque {}
 
-typedef DecodeFunctionFunction = ffi.Uint32 Function(
-    ffi.Pointer<ffi.Uint8> string,
-    ffi.Uint32 length,
-    ffi.Pointer<ffi.Int32> code_point);
-typedef DartDecodeFunctionFunction = int Function(ffi.Pointer<ffi.Uint8> string,
-    int length, ffi.Pointer<ffi.Int32> code_point);
-typedef DecodeFunction
-    = ffi.Pointer<ffi.NativeFunction<DecodeFunctionFunction>>;
+typedef DecodeFunctionFunction =
+    ffi.Uint32 Function(
+      ffi.Pointer<ffi.Uint8> string,
+      ffi.Uint32 length,
+      ffi.Pointer<ffi.Int32> code_point,
+    );
+typedef DartDecodeFunctionFunction =
+    int Function(
+      ffi.Pointer<ffi.Uint8> string,
+      int length,
+      ffi.Pointer<ffi.Int32> code_point,
+    );
+typedef DecodeFunction =
+    ffi.Pointer<ffi.NativeFunction<DecodeFunctionFunction>>;
 
 enum TSInputEncoding {
   TSInputEncodingUTF8(0),
@@ -6771,12 +6558,12 @@ enum TSInputEncoding {
   const TSInputEncoding(this.value);
 
   static TSInputEncoding fromValue(int value) => switch (value) {
-        0 => TSInputEncodingUTF8,
-        1 => TSInputEncodingUTF16LE,
-        2 => TSInputEncodingUTF16BE,
-        3 => TSInputEncodingCustom,
-        _ => throw ArgumentError("Unknown value for TSInputEncoding: $value"),
-      };
+    0 => TSInputEncodingUTF8,
+    1 => TSInputEncodingUTF16LE,
+    2 => TSInputEncodingUTF16BE,
+    3 => TSInputEncodingCustom,
+    _ => throw ArgumentError("Unknown value for TSInputEncoding: $value"),
+  };
 }
 
 enum TSSymbolType {
@@ -6789,12 +6576,12 @@ enum TSSymbolType {
   const TSSymbolType(this.value);
 
   static TSSymbolType fromValue(int value) => switch (value) {
-        0 => TSSymbolTypeRegular,
-        1 => TSSymbolTypeAnonymous,
-        2 => TSSymbolTypeSupertype,
-        3 => TSSymbolTypeAuxiliary,
-        _ => throw ArgumentError("Unknown value for TSSymbolType: $value"),
-      };
+    0 => TSSymbolTypeRegular,
+    1 => TSSymbolTypeAnonymous,
+    2 => TSSymbolTypeSupertype,
+    3 => TSSymbolTypeAuxiliary,
+    _ => throw ArgumentError("Unknown value for TSSymbolType: $value"),
+  };
 }
 
 final class TSPoint extends ffi.Struct {
@@ -6821,12 +6608,16 @@ final class TSInput extends ffi.Struct {
   external ffi.Pointer<ffi.Void> payload;
 
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Void> payload,
-              ffi.Uint32 byte_index,
-              TSPoint position,
-              ffi.Pointer<ffi.Uint32> bytes_read)>> read;
+    ffi.NativeFunction<
+      ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<ffi.Void> payload,
+        ffi.Uint32 byte_index,
+        TSPoint position,
+        ffi.Pointer<ffi.Uint32> bytes_read,
+      )
+    >
+  >
+  read;
 
   @ffi.UnsignedInt()
   external int encodingAsInt;
@@ -6850,9 +6641,9 @@ final class TSParseOptions extends ffi.Struct {
   external ffi.Pointer<ffi.Void> payload;
 
   external ffi.Pointer<
-          ffi
-          .NativeFunction<ffi.Bool Function(ffi.Pointer<TSParseState> state)>>
-      progress_callback;
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSParseState> state)>
+  >
+  progress_callback;
 }
 
 enum TSLogType {
@@ -6863,19 +6654,25 @@ enum TSLogType {
   const TSLogType(this.value);
 
   static TSLogType fromValue(int value) => switch (value) {
-        0 => TSLogTypeParse,
-        1 => TSLogTypeLex,
-        _ => throw ArgumentError("Unknown value for TSLogType: $value"),
-      };
+    0 => TSLogTypeParse,
+    1 => TSLogTypeLex,
+    _ => throw ArgumentError("Unknown value for TSLogType: $value"),
+  };
 }
 
 final class TSLogger extends ffi.Struct {
   external ffi.Pointer<ffi.Void> payload;
 
   external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void> payload,
-              ffi.UnsignedInt log_type, ffi.Pointer<ffi.Char> buffer)>> log;
+    ffi.NativeFunction<
+      ffi.Void Function(
+        ffi.Pointer<ffi.Void> payload,
+        ffi.UnsignedInt log_type,
+        ffi.Pointer<ffi.Char> buffer,
+      )
+    >
+  >
+  log;
 }
 
 final class TSInputEdit extends ffi.Struct {
@@ -6931,13 +6728,13 @@ enum TSQuantifier {
   const TSQuantifier(this.value);
 
   static TSQuantifier fromValue(int value) => switch (value) {
-        0 => TSQuantifierZero,
-        1 => TSQuantifierZeroOrOne,
-        2 => TSQuantifierZeroOrMore,
-        3 => TSQuantifierOne,
-        4 => TSQuantifierOneOrMore,
-        _ => throw ArgumentError("Unknown value for TSQuantifier: $value"),
-      };
+    0 => TSQuantifierZero,
+    1 => TSQuantifierZeroOrOne,
+    2 => TSQuantifierZeroOrMore,
+    3 => TSQuantifierOne,
+    4 => TSQuantifierOneOrMore,
+    _ => throw ArgumentError("Unknown value for TSQuantifier: $value"),
+  };
 }
 
 final class TSQueryMatch extends ffi.Struct {
@@ -6962,12 +6759,12 @@ enum TSQueryPredicateStepType {
   const TSQueryPredicateStepType(this.value);
 
   static TSQueryPredicateStepType fromValue(int value) => switch (value) {
-        0 => TSQueryPredicateStepTypeDone,
-        1 => TSQueryPredicateStepTypeCapture,
-        2 => TSQueryPredicateStepTypeString,
-        _ => throw ArgumentError(
-            "Unknown value for TSQueryPredicateStepType: $value"),
-      };
+    0 => TSQueryPredicateStepTypeDone,
+    1 => TSQueryPredicateStepTypeCapture,
+    2 => TSQueryPredicateStepTypeString,
+    _ =>
+      throw ArgumentError("Unknown value for TSQueryPredicateStepType: $value"),
+  };
 }
 
 final class TSQueryPredicateStep extends ffi.Struct {
@@ -6994,15 +6791,15 @@ enum TSQueryError {
   const TSQueryError(this.value);
 
   static TSQueryError fromValue(int value) => switch (value) {
-        0 => TSQueryErrorNone,
-        1 => TSQueryErrorSyntax,
-        2 => TSQueryErrorNodeType,
-        3 => TSQueryErrorField,
-        4 => TSQueryErrorCapture,
-        5 => TSQueryErrorStructure,
-        6 => TSQueryErrorLanguage,
-        _ => throw ArgumentError("Unknown value for TSQueryError: $value"),
-      };
+    0 => TSQueryErrorNone,
+    1 => TSQueryErrorSyntax,
+    2 => TSQueryErrorNodeType,
+    3 => TSQueryErrorField,
+    4 => TSQueryErrorCapture,
+    5 => TSQueryErrorStructure,
+    6 => TSQueryErrorLanguage,
+    _ => throw ArgumentError("Unknown value for TSQueryError: $value"),
+  };
 }
 
 final class TSQueryCursorState extends ffi.Struct {
@@ -7016,9 +6813,9 @@ final class TSQueryCursorOptions extends ffi.Struct {
   external ffi.Pointer<ffi.Void> payload;
 
   external ffi.Pointer<
-          ffi.NativeFunction<
-              ffi.Bool Function(ffi.Pointer<TSQueryCursorState> state)>>
-      progress_callback;
+    ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<TSQueryCursorState> state)>
+  >
+  progress_callback;
 }
 
 final class wasm_engine_t extends ffi.Opaque {}
@@ -7039,13 +6836,13 @@ enum TSWasmErrorKind {
   const TSWasmErrorKind(this.value);
 
   static TSWasmErrorKind fromValue(int value) => switch (value) {
-        0 => TSWasmErrorKindNone,
-        1 => TSWasmErrorKindParse,
-        2 => TSWasmErrorKindCompile,
-        3 => TSWasmErrorKindInstantiate,
-        4 => TSWasmErrorKindAllocate,
-        _ => throw ArgumentError("Unknown value for TSWasmErrorKind: $value"),
-      };
+    0 => TSWasmErrorKindNone,
+    1 => TSWasmErrorKindParse,
+    2 => TSWasmErrorKindCompile,
+    3 => TSWasmErrorKindInstantiate,
+    4 => TSWasmErrorKindAllocate,
+    _ => throw ArgumentError("Unknown value for TSWasmErrorKind: $value"),
+  };
 }
 
 final class TSWasmError extends ffi.Struct {

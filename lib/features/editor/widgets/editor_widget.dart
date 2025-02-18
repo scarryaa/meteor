@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/providers/measurer.dart';
+import 'package:meteor/features/editor/providers/tree_sitter_manager.dart';
 import 'package:meteor/features/editor/services/editor_keyboard_handler.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/editor/widgets/editor_scrollable_widget.dart';
@@ -43,6 +44,11 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     );
     final metrics = ref.watch(editorMeasurerProvider);
 
+    final treeSitterManager = ref.read(treeSitterManagerProvider.notifier);
+    final dartLanguage = treeSitterManager.getLanguage('dart');
+    treeSitterManager.setLanguage(dartLanguage);
+    final tree = treeSitterManager.parseString(state.buffer.toString());
+
     final keyboardHandler = EditorKeyboardHandler(
       ref,
       widget.path,
@@ -77,6 +83,8 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
               child: EditorScrollableWidget(
                 path: widget.path,
                 constraints: constraints,
+                tree: tree,
+                treeSitterManager: treeSitterManager,
               ),
             ),
           ),

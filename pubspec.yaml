@@ -21,6 +21,7 @@ dependencies:
   bitsdojo_window: ^0.1.6
   shared_preferences: ^2.5.2
   ffigen: ^17.0.0
+  ffi: ^2.1.4
 
 dev_dependencies:
   flutter_test:

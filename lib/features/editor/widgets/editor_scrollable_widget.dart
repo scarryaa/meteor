@@ -1,7 +1,11 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meteor/bindings/tree-sitter/tree_sitter_bindings.dart';
+import 'package:meteor/features/editor/providers/tree_sitter_manager.dart';
 import 'package:meteor/features/editor/tabs/providers/scroll_position_store.dart';
 import 'package:meteor/features/editor/widgets/editor_canvas_widget.dart';
 import 'package:meteor/features/editor/widgets/editor_gesture_handler_widget.dart';
@@ -12,8 +16,12 @@ class EditorScrollableWidget extends ConsumerStatefulWidget {
     super.key,
     required this.path,
     required this.constraints,
+    required this.treeSitterManager,
+    required this.tree,
   });
 
+  final TreeSitterManager treeSitterManager;
+  final Pointer<TSTree> tree;
   final BoxConstraints constraints;
   final String path;
 
@@ -124,6 +132,8 @@ class _EditorScrollableWidgetState
                             (context, child) => EditorCanvasWidget(
                               path: widget.path,
                               constraints: widget.constraints,
+                              tree: widget.tree,
+                              treeSitterManager: widget.treeSitterManager,
                             ),
                       ),
                     ),
