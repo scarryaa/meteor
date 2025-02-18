@@ -123,31 +123,36 @@ class _DesktopTooltipState extends State<DesktopTooltip> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        MouseRegion(
-                          onEnter:
-                              (event) =>
-                                  _showHotkeyTooltip(context, event.position),
-                          onExit: (_) => _removeHotkeyTooltip(),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(0x40FFFFFF),
-                                width: 0.5,
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTapDown: (_) => _removeHotkeyTooltip(),
+                          onSecondaryTapDown: (_) => _removeHotkeyTooltip(),
+                          child: MouseRegion(
+                            onEnter:
+                                (event) =>
+                                    _showHotkeyTooltip(context, event.position),
+                            onExit: (_) => _removeHotkeyTooltip(),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 2,
                               ),
-                              color: const Color(0xFF101010),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              _hotkeyText!,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xAAFFFFFF),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color(0x40FFFFFF),
+                                  width: 0.5,
+                                ),
+                                color: const Color(0xFF101010),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                _hotkeyText!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Color(0xAAFFFFFF),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
