@@ -32,6 +32,24 @@ class MeteorApp extends StatelessWidget {
           thickness: WidgetStatePropertyAll(12.0),
         ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        tooltipTheme: TooltipThemeData(
+          decoration: BoxDecoration(
+            color: const Color(0xFF272727),
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          textStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
       home: Material(type: MaterialType.transparency, child: const MainPage()),
     );
