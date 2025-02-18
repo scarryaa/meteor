@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:meteor/features/editor/models/state.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
@@ -15,6 +16,8 @@ import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
 
 class EditorKeyboardHandler {
+  final WidgetRef ref;
+  final String path;
   final BuildContext context;
   final Editor editor;
   final SaveManager saveManager;
@@ -26,6 +29,8 @@ class EditorKeyboardHandler {
   final AsyncValue<String?> clipboardText;
 
   EditorKeyboardHandler(
+    this.ref,
+    this.path,
     this.context,
     this.editor,
     this.fileExplorerManager,
@@ -47,7 +52,13 @@ class EditorKeyboardHandler {
     }
   }
 
-  Future<void> _handlePaste() async {
+  Future<void> _handlePaste(
+    ScrollController vScrollController,
+    ScrollController hScrollController,
+    EditorMetrics metrics,
+    double viewportWidth,
+    double viewportHeight,
+  ) async {
     final text = clipboardText.value;
 
     if (text != null) {
@@ -59,6 +70,98 @@ class EditorKeyboardHandler {
           text,
         ),
       );
+
+      _scrollToCursor(
+        ref,
+        vScrollController,
+        hScrollController,
+        metrics,
+        viewportWidth,
+        viewportHeight,
+        delayed: true,
+      );
+    }
+  }
+
+  void _scrollToCursor(
+    WidgetRef ref,
+    ScrollController vScrollController,
+    ScrollController hScrollController,
+    EditorMetrics metrics,
+    double viewportWidth,
+    double viewportHeight, {
+    bool delayed = false,
+  }) {
+    if (delayed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final newState = ref.read(editorProvider(path));
+        scrollToCursor(
+          newState,
+          vScrollController,
+          hScrollController,
+          metrics,
+          viewportWidth,
+          viewportHeight,
+        );
+      });
+    } else {
+      scrollToCursor(
+        state,
+        vScrollController,
+        hScrollController,
+        metrics,
+        viewportWidth,
+        viewportHeight,
+      );
+    }
+  }
+
+  void scrollToCursor(
+    EditorState state,
+    ScrollController vScrollController,
+    ScrollController hScrollController,
+    EditorMetrics metrics,
+    double viewportWidth,
+    double viewportHeight,
+  ) {
+    double lineHeight = metrics.lineHeight;
+    double charWidth = metrics.charWidth;
+
+    final cursorY = state.cursor.line * lineHeight;
+    final cursorX = state.cursor.column * charWidth;
+
+    if (cursorY < vScrollController.offset + metrics.heightPadding) {
+      vScrollController.jumpTo(
+        (cursorY - metrics.heightPadding).clamp(
+          0,
+          vScrollController.position.maxScrollExtent,
+        ),
+      );
+    } else if (cursorY + metrics.heightPadding >
+        vScrollController.offset + viewportHeight - lineHeight) {
+      vScrollController.jumpTo(
+        (cursorY - viewportHeight + lineHeight + metrics.heightPadding).clamp(
+          0,
+          vScrollController.position.maxScrollExtent,
+        ),
+      );
+    }
+
+    if (cursorX < hScrollController.offset + metrics.widthPadding) {
+      hScrollController.jumpTo(
+        (cursorX - metrics.widthPadding).clamp(
+          0,
+          hScrollController.position.maxScrollExtent,
+        ),
+      );
+    } else if (cursorX + metrics.widthPadding >
+        hScrollController.offset + viewportWidth - charWidth * 2) {
+      hScrollController.jumpTo(
+        (cursorX - viewportWidth + charWidth * 2 + metrics.widthPadding).clamp(
+          0,
+          hScrollController.position.maxScrollExtent,
+        ),
+      );
     }
   }
 
@@ -67,6 +170,12 @@ class EditorKeyboardHandler {
     bool isShiftPressed,
     bool isMetaOrControlPressed,
     bool isAltPressed,
+    ScrollController vScrollController,
+    ScrollController hScrollController,
+    EditorMetrics metrics,
+    double viewportWidth,
+    double viewportHeight,
+    WidgetRef ref,
   ) {
     switch (event.logicalKey) {
       case LogicalKeyboardKey.keyO:
@@ -105,10 +214,30 @@ class EditorKeyboardHandler {
           if (isShiftPressed) {
             // Redo
             commandManager.redo();
+
+            _scrollToCursor(
+              ref,
+              vScrollController,
+              hScrollController,
+              metrics,
+              viewportWidth,
+              viewportHeight,
+              delayed: true,
+            );
             return true;
           } else {
             // Undo
             commandManager.undo();
+
+            _scrollToCursor(
+              ref,
+              vScrollController,
+              hScrollController,
+              metrics,
+              viewportWidth,
+              viewportHeight,
+              delayed: true,
+            );
             return true;
           }
         }
@@ -157,12 +286,28 @@ class EditorKeyboardHandler {
               Position.fromCursor(state.cursor),
             ),
           );
+
+          _scrollToCursor(
+            ref,
+            vScrollController,
+            hScrollController,
+            metrics,
+            viewportWidth,
+            viewportHeight,
+            delayed: true,
+          );
           return true;
         }
       case LogicalKeyboardKey.keyV:
         if (isMetaOrControlPressed) {
           // Paste
-          _handlePaste();
+          _handlePaste(
+            vScrollController,
+            hScrollController,
+            metrics,
+            viewportWidth,
+            viewportHeight,
+          );
           return true;
         }
     }
@@ -189,7 +334,15 @@ class EditorKeyboardHandler {
     return false;
   }
 
-  KeyEventResult handleKeyEvent(FocusNode node, KeyEvent event) {
+  KeyEventResult handleKeyEvent(
+    FocusNode node,
+    KeyEvent event,
+    ScrollController vScrollController,
+    ScrollController hScrollController,
+    EditorMetrics metrics,
+    double viewportWidth,
+    double viewportHeight,
+  ) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
       return KeyEventResult.ignored;
     }
@@ -206,11 +359,25 @@ class EditorKeyboardHandler {
       isShiftPressed,
       isMetaOrControlPressed,
       isAltPressed,
+      vScrollController,
+      hScrollController,
+      metrics,
+      viewportWidth,
+      viewportHeight,
+      ref,
     )) {
       return KeyEventResult.handled;
     }
 
     if (_handleArrowKeys(event, isShiftPressed)) {
+      _scrollToCursor(
+        ref,
+        vScrollController,
+        hScrollController,
+        metrics,
+        viewportWidth,
+        viewportHeight,
+      );
       return KeyEventResult.handled;
     }
 
@@ -224,6 +391,16 @@ class EditorKeyboardHandler {
             '\n',
           ),
         );
+
+        _scrollToCursor(
+          ref,
+          vScrollController,
+          hScrollController,
+          metrics,
+          viewportWidth,
+          viewportHeight,
+          delayed: true,
+        );
         return KeyEventResult.handled;
 
       case LogicalKeyboardKey.backspace:
@@ -234,6 +411,16 @@ class EditorKeyboardHandler {
             Position(line: state.cursor.line, column: state.cursor.column - 1),
             Position.fromCursor(state.cursor),
           ),
+        );
+
+        _scrollToCursor(
+          ref,
+          vScrollController,
+          hScrollController,
+          metrics,
+          viewportWidth,
+          viewportHeight,
+          delayed: true,
         );
         return KeyEventResult.handled;
 
@@ -246,6 +433,15 @@ class EditorKeyboardHandler {
               Position.fromCursor(state.cursor),
               event.character!,
             ),
+          );
+
+          _scrollToCursor(
+            ref,
+            vScrollController,
+            hScrollController,
+            metrics,
+            viewportWidth,
+            viewportHeight,
           );
           return KeyEventResult.handled;
         }
