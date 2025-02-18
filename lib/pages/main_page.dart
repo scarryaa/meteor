@@ -26,6 +26,7 @@ class MainPage extends HookConsumerWidget {
         Platform.isMacOS
             ? HardwareKeyboard.instance.isMetaPressed
             : HardwareKeyboard.instance.isControlPressed;
+    final isAltPressed = HardwareKeyboard.instance.isAltPressed;
     final tabManager = ref.read(tabManagerProvider.notifier);
     final editorFocusNode = ref.watch(
       focusNodeByKeyProvider('editorFocusNode'),
@@ -38,6 +39,16 @@ class MainPage extends HookConsumerWidget {
     }
 
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyO:
+        if (isMetaOrControlPressed) {
+          if (isAltPressed) {
+            ref.read(fileExplorerManagerProvider.notifier).selectDirectory();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+
       case LogicalKeyboardKey.keyB:
         if (isMetaOrControlPressed) {
           fileExplorerManager.toggleOpen();

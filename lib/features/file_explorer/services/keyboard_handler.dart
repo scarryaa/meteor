@@ -14,12 +14,23 @@ class FileExplorerKeyboardHandler {
       return KeyEventResult.ignored;
     }
 
+    final isAltPressed = HardwareKeyboard.instance.isAltPressed;
     final isMetaOrControlPressed =
         Platform.isMacOS
             ? HardwareKeyboard.instance.isMetaPressed
             : HardwareKeyboard.instance.isControlPressed;
 
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyO:
+        if (isMetaOrControlPressed) {
+          if (isAltPressed) {
+            fileExplorerManager.selectDirectory();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+
       case LogicalKeyboardKey.keyB:
         if (isMetaOrControlPressed) {
           fileExplorerManager.toggleOpen();

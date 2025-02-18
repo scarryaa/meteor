@@ -66,8 +66,19 @@ class EditorKeyboardHandler {
     KeyEvent event,
     bool isShiftPressed,
     bool isMetaOrControlPressed,
+    bool isAltPressed,
   ) {
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyO:
+        if (isMetaOrControlPressed) {
+          if (isAltPressed) {
+            fileExplorerManager.selectDirectory();
+            return true;
+          }
+          return false;
+        }
+        return false;
+
       case LogicalKeyboardKey.keyB:
         if (isMetaOrControlPressed) {
           fileExplorerManager.toggleOpen();
@@ -183,13 +194,19 @@ class EditorKeyboardHandler {
       return KeyEventResult.ignored;
     }
 
+    final isAltPressed = HardwareKeyboard.instance.isAltPressed;
     final isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
     final isMetaOrControlPressed =
         Platform.isMacOS
             ? HardwareKeyboard.instance.isMetaPressed
             : HardwareKeyboard.instance.isControlPressed;
 
-    if (_handleShortcutKeys(event, isShiftPressed, isMetaOrControlPressed)) {
+    if (_handleShortcutKeys(
+      event,
+      isShiftPressed,
+      isMetaOrControlPressed,
+      isAltPressed,
+    )) {
       return KeyEventResult.handled;
     }
 
