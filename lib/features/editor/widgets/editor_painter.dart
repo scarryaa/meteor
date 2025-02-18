@@ -18,7 +18,7 @@ class EditorPainter extends CustomPainter {
     required EditorMetrics metrics,
     required VisibleLines visibleLines,
     required TreeSitterManager treeSitterManager,
-    required Pointer<TSTree> tree,
+    required Pointer<TSTree>? tree,
   }) : _syntaxHighlighter = SyntaxHighlighter(
          treeSitterManager: treeSitterManager,
          tree: tree,

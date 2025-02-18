@@ -20,7 +20,7 @@ class EditorCanvasWidget extends ConsumerWidget {
   });
 
   final TreeSitterManager treeSitterManager;
-  final Pointer<TSTree> tree;
+  final Pointer<TSTree>? tree;
   final BoxConstraints constraints;
   final String path;
 

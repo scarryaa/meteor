@@ -8,7 +8,7 @@ import 'package:meteor/features/editor/providers/tree_sitter_manager.dart';
 
 class SyntaxHighlighter {
   final TreeSitterManager treeSitterManager;
-  final Pointer<TSTree> tree;
+  final Pointer<TSTree>? tree;
 
   SyntaxHighlighter({required this.treeSitterManager, required this.tree});
 
@@ -156,9 +156,11 @@ class SyntaxHighlighter {
     String fullText,
     int visibleStart,
   ) {
+    if (tree == null) return [];
+
     final List<SyntaxNode> flatNodes = [];
     final TSNode rootNode = treeSitterManager.treeSitter.ts_tree_root_node(
-      tree,
+      tree!,
     );
     final int visibleEnd = visibleStart + visibleText.length;
 

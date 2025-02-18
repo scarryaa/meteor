@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:meteor/bindings/tree-sitter/tree_sitter_bindings.dart';
 import 'package:meteor/features/editor/providers/clipboard_manager.dart';
 import 'package:meteor/features/editor/providers/editor.dart';
 import 'package:meteor/features/editor/providers/measurer.dart';
@@ -12,6 +15,7 @@ import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
+import 'package:path/path.dart';
 
 class EditorWidget extends ConsumerStatefulWidget {
   const EditorWidget({super.key, required this.path});
@@ -45,9 +49,15 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
     final metrics = ref.watch(editorMeasurerProvider);
 
     final treeSitterManager = ref.read(treeSitterManagerProvider.notifier);
-    final dartLanguage = treeSitterManager.getLanguage('dart');
-    treeSitterManager.setLanguage(dartLanguage);
-    final tree = treeSitterManager.parseString(state.buffer.toString());
+    final language = treeSitterManager.getLanguage(
+      basename(widget.path).split('.')[1],
+    );
+
+    Pointer<TSTree>? tree;
+    if (language != null) {
+      treeSitterManager.setLanguage(language);
+      tree = treeSitterManager.parseString(state.buffer.toString());
+    }
 
     final keyboardHandler = EditorKeyboardHandler(
       ref,

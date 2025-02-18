@@ -24,27 +24,31 @@ class TreeSitterManager extends _$TreeSitterManager {
     });
   }
 
-  ffi.Pointer<TSLanguage> getLanguage(String languageName) {
+  ffi.Pointer<TSLanguage>? getLanguage(String languageName) {
     final Directory current = Directory.current;
     final String rootDir = current.path;
     final String bindingsPath =
         Platform.isWindows ? '$rootDir\\native' : '$rootDir/native';
 
     ffi.DynamicLibrary langLib;
-    if (Platform.isMacOS) {
-      langLib = ffi.DynamicLibrary.open(
-        '$bindingsPath/libtree-sitter-$languageName.dylib',
-      );
-    } else if (Platform.isWindows) {
-      langLib = ffi.DynamicLibrary.open(
-        '$bindingsPath\\tree-sitter-$languageName.dll',
-      );
-    } else if (Platform.isLinux) {
-      langLib = ffi.DynamicLibrary.open(
-        '$bindingsPath/libtree-sitter-$languageName.so',
-      );
-    } else {
-      throw UnsupportedError('Unsupported platform');
+    try {
+      if (Platform.isMacOS) {
+        langLib = ffi.DynamicLibrary.open(
+          '$bindingsPath/libtree-sitter-$languageName.dylib',
+        );
+      } else if (Platform.isWindows) {
+        langLib = ffi.DynamicLibrary.open(
+          '$bindingsPath\\tree-sitter-$languageName.dll',
+        );
+      } else if (Platform.isLinux) {
+        langLib = ffi.DynamicLibrary.open(
+          '$bindingsPath/libtree-sitter-$languageName.so',
+        );
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
 
     final languageFunction = langLib.lookupFunction<
