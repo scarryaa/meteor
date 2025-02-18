@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
+import 'package:meteor/shared/models/hotkeys.dart';
+import 'package:meteor/shared/widgets/desktop_tooltip/widgets/desktop_tooltip.dart';
 
 class StatusBarWidget extends HookConsumerWidget {
   const StatusBarWidget({super.key});
@@ -21,11 +23,16 @@ class StatusBarWidget extends HookConsumerWidget {
     final fileExplorerManager = ref.read(fileExplorerManagerProvider.notifier);
     final fileExplorerState = ref.watch(fileExplorerManagerProvider);
 
-    return _buildButton(
-      fileExplorerState.isOpen ? Icons.folder : Icons.folder_outlined,
-      () {
-        fileExplorerManager.toggleOpen();
-      },
+    return DesktopTooltip(
+      message: 'Toggle file explorer',
+      hotkeys: [Hotkey.modifier],
+      hotkeyLetter: 'B',
+      child: _buildButton(
+        fileExplorerState.isOpen ? Icons.folder : Icons.folder_outlined,
+        () {
+          fileExplorerManager.toggleOpen();
+        },
+      ),
     );
   }
 
