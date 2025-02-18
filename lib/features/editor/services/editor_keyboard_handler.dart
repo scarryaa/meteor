@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:meteor/shared/models/commands/editor_insert_command.dart';
 import 'package:meteor/shared/models/position.dart';
 import 'package:meteor/shared/providers/command_manager.dart';
 import 'package:meteor/shared/providers/save_manager.dart';
+import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 
 class EditorKeyboardHandler {
   final WidgetRef ref;
@@ -103,16 +106,29 @@ class EditorKeyboardHandler {
           viewportWidth,
           viewportHeight,
         );
+
+        vScrollController.notifyListeners();
+        hScrollController.notifyListeners();
+        ref
+            .read(scrollControllerByKeyProvider('gutterVScrollController'))
+            .notifyListeners();
       });
     } else {
+      final newState = ref.read(editorProvider(path));
       scrollToCursor(
-        state,
+        newState,
         vScrollController,
         hScrollController,
         metrics,
         viewportWidth,
         viewportHeight,
       );
+
+      vScrollController.notifyListeners();
+      hScrollController.notifyListeners();
+      ref
+          .read(scrollControllerByKeyProvider('gutterVScrollController'))
+          .notifyListeners();
     }
   }
 
@@ -238,6 +254,7 @@ class EditorKeyboardHandler {
               viewportHeight,
               delayed: true,
             );
+
             return true;
           }
         }
