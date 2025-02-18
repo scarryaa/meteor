@@ -1,0 +1,6 @@
+output: 'bindings/tree-sitter/tree_sitter_bindings.dart'
+headers:
+  entry-points:
+    - 'vendor/tree-sitter/lib/include/tree_sitter/api.h'
+name: 'TreeSitter'
+description: 'Bindings to Tree-Sitter'
