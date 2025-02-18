@@ -93,8 +93,14 @@ class EditorPainter extends CustomPainter {
             height: lineHeight,
           ),
         )
-        ..layout(maxWidth: size.width)
-        ..paint(canvas, Offset(0, (lineIndex) * _metrics.lineHeight));
+        ..layout()
+        ..paint(
+          canvas,
+          Offset(
+            _visibleLines.firstVisibleChar! * _metrics.charWidth,
+            (lineIndex) * _metrics.lineHeight,
+          ),
+        );
     }
   }
 
