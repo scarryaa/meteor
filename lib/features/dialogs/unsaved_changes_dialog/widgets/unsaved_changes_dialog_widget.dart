@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:meteor/features/dialogs/unsaved_changes_dialog/models/dialog_button.type.dart';
 
 class UnsavedChangesDialogWidget extends StatelessWidget {
@@ -15,60 +16,91 @@ class UnsavedChangesDialogWidget extends StatelessWidget {
   final VoidCallback onDiscard;
   final VoidCallback onCancel;
 
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (!node.hasFocus) return KeyEventResult.ignored;
+    if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
+      return KeyEventResult.ignored;
+    }
+
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.keyC:
+        // Cancel
+        onCancel();
+        return KeyEventResult.handled;
+      case LogicalKeyboardKey.keyD:
+        // Don't save
+        onDiscard();
+        return KeyEventResult.handled;
+      case LogicalKeyboardKey.keyS:
+        // Save
+        onSave();
+        return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Center(
-        child: Container(
-          width: 400,
-          decoration: BoxDecoration(
-            color: const Color(0xFF000000),
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: const Color(0x30FFFFFF)),
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Unsaved Changes',
-                style: TextStyle(
-                  color: const Color(0xFFFCFCFC),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+    return Focus(
+      autofocus: true,
+      onKeyEvent: (node, event) => _handleKeyEvent(node, event),
+      child: Material(
+        color: Colors.transparent,
+        child: Center(
+          child: Container(
+            width: 400,
+            decoration: BoxDecoration(
+              color: const Color(0xFF000000),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: const Color(0x30FFFFFF)),
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Unsaved Changes',
+                  style: TextStyle(
+                    color: const Color(0xFFFCFCFC),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Do you want to save the changes made to "$fileName"?',
-                style: TextStyle(color: const Color(0xE5FCFCFC), fontSize: 14),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _DialogButton(
-                    label: 'Cancel',
-                    onPressed: onCancel,
-                    type: DialogButtonType.secondary,
+                const SizedBox(height: 16),
+                Text(
+                  'Do you want to save the changes made to "$fileName"?',
+                  style: TextStyle(
+                    color: const Color(0xE5FCFCFC),
+                    fontSize: 14,
                   ),
-                  const SizedBox(width: 8),
-                  _DialogButton(
-                    label: "Don't Save",
-                    onPressed: onDiscard,
-                    type: DialogButtonType.destructive,
-                  ),
-                  const SizedBox(width: 8),
-                  _DialogButton(
-                    label: 'Save',
-                    onPressed: onSave,
-                    type: DialogButtonType.primary,
-                  ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _DialogButton(
+                      label: 'Cancel',
+                      onPressed: onCancel,
+                      type: DialogButtonType.secondary,
+                    ),
+                    const SizedBox(width: 8),
+                    _DialogButton(
+                      label: "Don't Save",
+                      onPressed: onDiscard,
+                      type: DialogButtonType.destructive,
+                    ),
+                    const SizedBox(width: 8),
+                    _DialogButton(
+                      label: 'Save',
+                      onPressed: onSave,
+                      type: DialogButtonType.primary,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -134,9 +166,26 @@ class _DialogButtonState extends State<_DialogButton> {
                     ? Border.all(color: const Color(0x40FFFFFF))
                     : null,
           ),
-          child: Text(
-            widget.label,
-            style: TextStyle(color: const Color(0xFFFCFCFC), fontSize: 14),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: widget.label[0],
+                  style: TextStyle(
+                    color: const Color(0xFFFCFCFC),
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                TextSpan(
+                  text: widget.label.substring(1),
+                  style: TextStyle(
+                    color: const Color(0xFFFCFCFC),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
