@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:meteor/features/editor/providers/editor.dart';
+import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/file_explorer/models/file_item.dart';
 import 'package:meteor/features/file_explorer/models/state.dart';
+import 'package:meteor/shared/providers/file_manager.dart';
 import 'package:meteor/shared/providers/focus_node_by_key.dart';
 import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -100,6 +104,10 @@ class FileExplorerManager extends _$FileExplorerManager {
     }
   }
 
+  FileItem getItemByPath(String path) {
+    return state.items.firstWhere((item) => item.path == path);
+  }
+
   Future<void> selectDirectory() async {
     final newPath = await FilePicker.platform.getDirectoryPath();
 
@@ -109,6 +117,27 @@ class FileExplorerManager extends _$FileExplorerManager {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_lastDirectoryKey, newPath);
+    }
+  }
+
+  void openInEditor(String path) {
+    if (!ref.read(tabManagerProvider.notifier).hasTab(path)) {
+      final lines = ref
+          .read(fileManagerProvider.notifier)
+          .readFileAsLines(path);
+
+      ref
+          .read(tabManagerProvider.notifier)
+          .addTab(path, name: p.basename(path));
+      // TODO find a better method
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(editorProvider(path).notifier).setLines(lines);
+        ref.read(focusNodeByKeyProvider('editorFocusNode')).requestFocus();
+      });
+    } else {
+      ref
+          .read(tabManagerProvider.notifier)
+          .addTab(path, name: p.basename(path));
     }
   }
 
@@ -138,6 +167,7 @@ class FileExplorerManager extends _$FileExplorerManager {
     if (itemIndex == -1) return;
 
     if (!newItems[itemIndex].isDirectory) return;
+
     if (newItems[itemIndex].isExpanded) return moveDown();
 
     String currentPath = path;

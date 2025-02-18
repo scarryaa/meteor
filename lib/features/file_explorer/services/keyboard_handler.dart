@@ -23,6 +23,21 @@ class FileExplorerKeyboardHandler {
             : HardwareKeyboard.instance.isControlPressed;
 
     switch (event.logicalKey) {
+      case LogicalKeyboardKey.space:
+      case LogicalKeyboardKey.enter:
+        if (state.selectedItemPath != null) {
+          final item = fileExplorerManager.getItemByPath(
+            state.selectedItemPath!,
+          );
+
+          if (!item.isDirectory) {
+            fileExplorerManager.openInEditor(state.selectedItemPath!);
+          } else {
+            fileExplorerManager.toggleItemExpansion(state.selectedItemPath!);
+          }
+        }
+        return KeyEventResult.handled;
+
       case LogicalKeyboardKey.keyO:
         if (isMetaOrControlPressed) {
           if (isAltPressed) {
