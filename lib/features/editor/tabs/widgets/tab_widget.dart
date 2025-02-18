@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
+import 'package:meteor/shared/models/hotkeys.dart';
+import 'package:meteor/shared/widgets/desktop_tooltip/widgets/desktop_tooltip.dart';
 
 class TabWidget extends HookConsumerWidget {
   const TabWidget({
@@ -60,7 +62,12 @@ class TabWidget extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              _buildCloseButton(context, ref, isHovered.value),
+              DesktopTooltip(
+                message: 'Close tab',
+                hotkeys: [Hotkey.modifier],
+                hotkeyLetter: 'W',
+                child: _buildCloseButton(context, ref, isHovered.value),
+              ),
             ],
           ),
         ),

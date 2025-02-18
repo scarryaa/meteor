@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/editor/tabs/widgets/tab_widget.dart';
+import 'package:meteor/shared/models/hotkeys.dart';
+import 'package:meteor/shared/widgets/desktop_tooltip/widgets/desktop_tooltip.dart';
 
 class TabBarWidget extends HookConsumerWidget {
   const TabBarWidget({super.key});
@@ -51,7 +53,12 @@ class TabBarWidget extends HookConsumerWidget {
                 ),
               ),
             ),
-            _buildAddTabButton(tabManager, scrollController),
+            DesktopTooltip(
+              message: 'Add tab',
+              hotkeys: [Hotkey.modifier],
+              hotkeyLetter: 'N',
+              child: _buildAddTabButton(tabManager, scrollController),
+            ),
           ],
         ),
       ),
