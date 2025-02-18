@@ -3,6 +3,14 @@
 A modern editor.
 
 ## Build Instructions
-Run `bash
-flutter pub run ffigen --config ffigen.yaml`
-to generate the tree-sitter bindings.
+
+1. Run this command to generate the tree-sitter bindings:
+
+```bash
+flutter pub run ffigen --config ffigen.yaml
+```
+
+2. Run the app
+```bash
+flutter run
+```
