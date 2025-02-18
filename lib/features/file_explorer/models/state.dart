@@ -10,5 +10,6 @@ class FileExplorerState with _$FileExplorerState {
     @Default([]) List<FileItem> items,
     @Default({}) Set<String> expandedPaths,
     @Default(true) bool isOpen,
+    @Default(null) String? selectedItemPath,
   }) = _FileExplorerState;
 }

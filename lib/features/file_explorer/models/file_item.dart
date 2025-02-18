@@ -7,6 +7,7 @@ class FileItem with _$FileItem {
   const factory FileItem({
     @Default(false) bool isSelected,
     @Default(false) bool isExpanded,
+    @Default(0) int level,
     required bool isDirectory,
     required String path,
   }) = _FileItem;

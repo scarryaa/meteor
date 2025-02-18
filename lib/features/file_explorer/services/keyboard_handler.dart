@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:meteor/features/file_explorer/models/state.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
 
 class FileExplorerKeyboardHandler {
   final FileExplorerManager fileExplorerManager;
+  final FileExplorerState state;
 
-  FileExplorerKeyboardHandler(this.fileExplorerManager);
+  FileExplorerKeyboardHandler(this.fileExplorerManager, this.state);
 
   KeyEventResult handleKeyEvent(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) {
@@ -36,6 +38,23 @@ class FileExplorerKeyboardHandler {
           fileExplorerManager.toggleOpen();
           return KeyEventResult.handled;
         }
+
+      case LogicalKeyboardKey.arrowLeft:
+        if (state.selectedItemPath != null) {
+          fileExplorerManager.collapseItem(state.selectedItemPath!);
+        }
+        return KeyEventResult.handled;
+      case LogicalKeyboardKey.arrowRight:
+        if (state.selectedItemPath != null) {
+          fileExplorerManager.expandItem(state.selectedItemPath!);
+        }
+        return KeyEventResult.handled;
+      case LogicalKeyboardKey.arrowUp:
+        fileExplorerManager.moveUp();
+        return KeyEventResult.handled;
+      case LogicalKeyboardKey.arrowDown:
+        fileExplorerManager.moveDown();
+        return KeyEventResult.handled;
     }
 
     return KeyEventResult.ignored;

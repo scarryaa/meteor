@@ -5,6 +5,7 @@ import 'package:meteor/features/editor/tabs/providers/tab_manager.dart';
 import 'package:meteor/features/file_explorer/models/file_item.dart';
 import 'package:meteor/features/file_explorer/providers/file_explorer_manager.dart';
 import 'package:meteor/shared/providers/file_manager.dart';
+import 'package:meteor/shared/providers/scroll_controller_by_key.dart';
 import 'package:path/path.dart';
 
 class FileItemWidget extends ConsumerWidget {
@@ -14,8 +15,12 @@ class FileItemWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(fileExplorerManagerProvider);
     final basePath = state.currentDirectoryPath ?? '';
+    final scrollController = ref.watch(
+      scrollControllerByKeyProvider('fileExplorerScrollController'),
+    );
 
     return ListView.builder(
+      controller: scrollController,
       itemCount: state.items.length,
       itemBuilder: (context, index) {
         final item = state.items[index];

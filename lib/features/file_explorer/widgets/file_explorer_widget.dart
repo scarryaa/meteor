@@ -17,13 +17,17 @@ class FileExplorerWidget extends HookConsumerWidget {
     );
     final fileExplorerManager = ref.read(fileExplorerManagerProvider.notifier);
 
-    final keyboardHandler = FileExplorerKeyboardHandler(fileExplorerManager);
+    final keyboardHandler = FileExplorerKeyboardHandler(
+      fileExplorerManager,
+      state,
+    );
 
     return state.isOpen
         ? Focus(
           onKeyEvent:
               (node, event) => keyboardHandler.handleKeyEvent(node, event),
           child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTapDown: (_) => focusNode.requestFocus(),
             child: Focus(
               focusNode: focusNode,
