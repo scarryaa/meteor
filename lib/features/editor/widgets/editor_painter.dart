@@ -6,6 +6,7 @@ import 'package:meteor/bindings/tree-sitter/tree_sitter_bindings.dart';
 import 'package:meteor/features/editor/models/metrics.dart';
 import 'package:meteor/features/editor/models/selection.dart';
 import 'package:meteor/features/editor/providers/tree_sitter_manager.dart';
+import 'package:meteor/features/editor/services/syntax_highlighter.dart';
 import 'package:meteor/shared/models/cursor.dart';
 import 'package:meteor/shared/models/visible_lines.dart';
 
@@ -18,14 +19,16 @@ class EditorPainter extends CustomPainter {
     required VisibleLines visibleLines,
     required TreeSitterManager treeSitterManager,
     required Pointer<TSTree> tree,
-  }) : _textPainter = TextPainter(textDirection: TextDirection.ltr),
+  }) : _syntaxHighlighter = SyntaxHighlighter(
+         treeSitterManager: treeSitterManager,
+         tree: tree,
+       ),
+       _textPainter = TextPainter(textDirection: TextDirection.ltr),
        _lines = lines,
        _cursor = cursor,
        _selection = selection,
        _metrics = metrics,
-       _visibleLines = visibleLines,
-       _tree = tree,
-       _treeSitterManager = treeSitterManager;
+       _visibleLines = visibleLines;
 
   final TextPainter _textPainter;
   final List<String> _lines;
@@ -34,8 +37,7 @@ class EditorPainter extends CustomPainter {
   final EditorMetrics _metrics;
   final VisibleLines _visibleLines;
 
-  final TreeSitterManager _treeSitterManager;
-  final Pointer<TSTree> _tree;
+  final SyntaxHighlighter _syntaxHighlighter;
 
   static const fontFamily = 'MesloLGL Nerd Font Mono';
   static const fontSize = 15.0;
@@ -63,30 +65,36 @@ class EditorPainter extends CustomPainter {
 
   void _drawText(Canvas canvas, Size size) {
     for (
-      int i = _visibleLines.firstVisibleLine;
-      i < _visibleLines.lastVisibleLine;
-      i++
+      int lineIndex = _visibleLines.firstVisibleLine;
+      lineIndex < min(_visibleLines.lastVisibleLine, _lines.length);
+      lineIndex++
     ) {
-      final String visibleText = _getVisibleText(_lines[i]);
+      final String currentLine = _lines[lineIndex];
+      final String visibleText = _getVisibleText(currentLine);
+
+      int contextStart = _lines.take(lineIndex).join('\n').length;
+      if (lineIndex > 0) {
+        contextStart += 1;
+      }
+      contextStart += _visibleLines.firstVisibleChar!;
+
+      final List<TextSpan> highlightedSpans = _syntaxHighlighter.highlightText(
+        visibleText,
+        _lines.join('\n'),
+        contextStart,
+      );
 
       _textPainter
         ..text = TextSpan(
-          text: visibleText,
-          style: TextStyle(
+          children: highlightedSpans,
+          style: const TextStyle(
             fontSize: fontSize,
             fontFamily: fontFamily,
             height: lineHeight,
-            color: fontColor,
           ),
         )
-        ..layout()
-        ..paint(
-          canvas,
-          Offset(
-            _visibleLines.firstVisibleChar! * _metrics.charWidth,
-            i * _metrics.lineHeight,
-          ),
-        );
+        ..layout(maxWidth: size.width)
+        ..paint(canvas, Offset(0, (lineIndex) * _metrics.lineHeight));
     }
   }
 
