@@ -50,7 +50,7 @@ class EditorWidgetState extends ConsumerState<EditorWidget> {
 
     final treeSitterManager = ref.read(treeSitterManagerProvider.notifier);
     final language = treeSitterManager.getLanguage(
-      basename(widget.path).split('.')[1],
+      widget.path.contains('.') ? basename(widget.path).split('.').last : '',
     );
 
     Pointer<TSTree>? tree;
